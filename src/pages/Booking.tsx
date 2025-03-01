@@ -39,8 +39,8 @@ const RouteMap = () => {
     <div className="relative w-full h-[400px] rounded-lg overflow-hidden mt-4 mb-6">
       <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
         <img 
-          src="/lovable-uploads/6d153727-082d-4151-8d87-83b4d2df35fc.png" 
-          alt="Ship route map from Lomé to Praia" 
+          src="/lovable-uploads/6462364d-51d2-44c2-9ac6-52ede7aeb9e4.png" 
+          alt="Ship route map from West Africa to Cape Verde" 
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
