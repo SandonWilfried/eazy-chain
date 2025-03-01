@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import { Ship, Package, Truck, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -88,6 +87,34 @@ const Index = () => {
               alt="Eazy Chain Digital Platform" 
               className="w-full h-auto object-cover"
             />
+          </div>
+        </div>
+      </section>
+
+      {/* Partners Section */}
+      <section className="py-16 bg-gradient-to-b from-background to-accent/10">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold mb-3">Our Trusted Partners</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              We collaborate with industry leaders to provide the best shipping solutions
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+            <div className="glass-panel p-6 flex justify-center items-center transition-all duration-300 hover:shadow-md">
+              <img 
+                src="/lovable-uploads/6d153727-082d-4151-8d87-83b4d2df35fc.png" 
+                alt="Africa Global Logistics" 
+                className="h-32 w-auto object-contain"
+              />
+            </div>
+            <div className="glass-panel p-6 flex justify-center items-center transition-all duration-300 hover:shadow-md">
+              <img 
+                src="/lovable-uploads/19953a92-d5a2-493f-a1ec-42d9c0c38412.png" 
+                alt="ECOWAS FECCIAO" 
+                className="h-32 w-auto object-contain"
+              />
+            </div>
           </div>
         </div>
       </section>
