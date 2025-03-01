@@ -54,7 +54,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* About Us Section - New Section */}
+      {/* About Us Section */}
       <section id="about-us" className="py-20 bg-gradient-to-b from-accent/20 to-background">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
@@ -193,6 +193,62 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Features Section */}
+      <section id="features" className="section-container">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl font-bold mb-3">Our Services</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Everything you need to efficiently manage your cargo shipping needs
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Feature 1 */}
+          <div className="glass-panel p-6 text-center transition-all duration-300 hover:shadow-md">
+            <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
+              <Ship className="h-8 w-8 text-primary" />
+            </div>
+            <h3 className="text-xl font-semibold mb-2">Vessel Booking</h3>
+            <p className="text-muted-foreground">
+              Book space on our vessels with real-time availability and competitive rates.
+            </p>
+          </div>
+
+          {/* Feature 2 */}
+          <div className="glass-panel p-6 text-center transition-all duration-300 hover:shadow-md">
+            <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
+              <Package className="h-8 w-8 text-primary" />
+            </div>
+            <h3 className="text-xl font-semibold mb-2">Cargo Tracking</h3>
+            <p className="text-muted-foreground">
+              Real-time visibility into your cargo's location and status throughout its journey.
+            </p>
+          </div>
+
+          {/* Feature 3 */}
+          <div className="glass-panel p-6 text-center transition-all duration-300 hover:shadow-md">
+            <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
+              <Truck className="h-8 w-8 text-primary" />
+            </div>
+            <h3 className="text-xl font-semibold mb-2">Logistics Support</h3>
+            <p className="text-muted-foreground">
+              Comprehensive logistics solutions to ensure smooth operations at every stage.
+            </p>
+          </div>
+
+          {/* Feature 4 */}
+          <div className="glass-panel p-6 text-center transition-all duration-300 hover:shadow-md">
+            <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
+              <CreditCard className="h-8 w-8 text-primary" />
+            </div>
+            <h3 className="text-xl font-semibold mb-2">Easy Payments</h3>
+            <p className="text-muted-foreground">
+              Secure and convenient payment processing for your shipping transactions.
+            </p>
+          </div>
+        </div>
+      </section>
+      
       {/* Vessel Image Section */}
       <section className="py-16 bg-gradient-to-b from-background to-accent/20">
         <div className="container mx-auto px-4">
@@ -262,62 +318,6 @@ const Index = () => {
                 className="h-32 w-auto object-contain"
               />
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section id="features" className="section-container">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold mb-3">Our Services</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Everything you need to efficiently manage your cargo shipping needs
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Feature 1 */}
-          <div className="glass-panel p-6 text-center transition-all duration-300 hover:shadow-md">
-            <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
-              <Ship className="h-8 w-8 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold mb-2">Vessel Booking</h3>
-            <p className="text-muted-foreground">
-              Book space on our vessels with real-time availability and competitive rates.
-            </p>
-          </div>
-
-          {/* Feature 2 */}
-          <div className="glass-panel p-6 text-center transition-all duration-300 hover:shadow-md">
-            <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
-              <Package className="h-8 w-8 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold mb-2">Cargo Tracking</h3>
-            <p className="text-muted-foreground">
-              Real-time visibility into your cargo's location and status throughout its journey.
-            </p>
-          </div>
-
-          {/* Feature 3 */}
-          <div className="glass-panel p-6 text-center transition-all duration-300 hover:shadow-md">
-            <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
-              <Truck className="h-8 w-8 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold mb-2">Logistics Support</h3>
-            <p className="text-muted-foreground">
-              Comprehensive logistics solutions to ensure smooth operations at every stage.
-            </p>
-          </div>
-
-          {/* Feature 4 */}
-          <div className="glass-panel p-6 text-center transition-all duration-300 hover:shadow-md">
-            <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
-              <CreditCard className="h-8 w-8 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold mb-2">Easy Payments</h3>
-            <p className="text-muted-foreground">
-              Secure and convenient payment processing for your shipping transactions.
-            </p>
           </div>
         </div>
       </section>
