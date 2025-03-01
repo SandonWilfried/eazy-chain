@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import BookingForm from "@/components/BookingForm";
@@ -33,7 +34,7 @@ const portStops = [
   },
   {
     name: "Port of San Pedro, Côte d'Ivoire",
-    imageUrl: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "/lovable-uploads/651aee85-46ba-4155-ab92-d07e64f078d6.png"
   },
   {
     name: "Port of Monrovia, Liberia",
