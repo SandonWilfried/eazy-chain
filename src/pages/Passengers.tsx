@@ -12,7 +12,7 @@ import { Card, CardContent } from "@/components/ui/card";
 const availableRooms: RoomProps[] = [
   {
     id: "premium-1",
-    name: "Premium Cabin 1",
+    name: "Timbuktu",
     capacity: 2,
     available: 2,
     price: 100,
@@ -21,7 +21,7 @@ const availableRooms: RoomProps[] = [
   },
   {
     id: "premium-2",
-    name: "Premium Cabin 2",
+    name: "Lalibela",
     capacity: 2,
     available: 2,
     price: 100,
@@ -30,7 +30,7 @@ const availableRooms: RoomProps[] = [
   },
   {
     id: "premium-3",
-    name: "Premium Cabin 3",
+    name: "Ouidah",
     capacity: 2,
     available: 2,
     price: 100,
@@ -39,7 +39,7 @@ const availableRooms: RoomProps[] = [
   },
   {
     id: "premium-4",
-    name: "Premium Cabin 4",
+    name: "Abidjan",
     capacity: 2,
     available: 2,
     price: 100,
@@ -48,7 +48,7 @@ const availableRooms: RoomProps[] = [
   },
   {
     id: "premium-5",
-    name: "Premium Cabin 5",
+    name: "Zanzibar",
     capacity: 2,
     available: 2,
     price: 100,
@@ -57,7 +57,7 @@ const availableRooms: RoomProps[] = [
   },
   {
     id: "premium-6",
-    name: "Premium Cabin 6",
+    name: "Nosy Be",
     capacity: 2,
     available: 2,
     price: 100,
