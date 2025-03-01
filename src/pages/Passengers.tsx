@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import RoomCard, { RoomProps } from "@/components/RoomCard";
@@ -17,7 +16,7 @@ const availableRooms: RoomProps[] = [
     available: 2,
     price: 100,
     amenities: ["Luxurious bathroom", "King-size bed", "Panoramic view", "Sitting area", "Room service", "Premium amenities", "Free WiFi", "Breakfast included", "Lunch included", "Dinner included"],
-    imageUrl: "/lovable-uploads/4f1849ef-25b4-4c4a-99c8-923ed3b3d4ce.png"
+    imageUrl: "/lovable-uploads/e3fd6dab-0bc4-469c-9c15-f714d7767334.png"
   },
   {
     id: "premium-2",
@@ -26,7 +25,7 @@ const availableRooms: RoomProps[] = [
     available: 2,
     price: 100,
     amenities: ["Luxurious bathroom", "King-size bed", "Panoramic view", "Sitting area", "Room service", "Premium amenities", "Free WiFi", "Breakfast included", "Lunch included", "Dinner included"],
-    imageUrl: "/lovable-uploads/0166031e-471c-41a2-b706-ba4695891108.png"
+    imageUrl: "/lovable-uploads/0de33748-89e1-424d-8fc8-67b808131ea3.png"
   },
   {
     id: "premium-3",
@@ -35,7 +34,7 @@ const availableRooms: RoomProps[] = [
     available: 2,
     price: 100,
     amenities: ["Luxurious bathroom", "King-size bed", "Panoramic view", "Sitting area", "Room service", "Premium amenities", "Free WiFi", "Breakfast included", "Lunch included", "Dinner included"],
-    imageUrl: "/lovable-uploads/4f1849ef-25b4-4c4a-99c8-923ed3b3d4ce.png"
+    imageUrl: "/lovable-uploads/e3fd6dab-0bc4-469c-9c15-f714d7767334.png"
   },
   {
     id: "premium-4",
@@ -44,7 +43,7 @@ const availableRooms: RoomProps[] = [
     available: 2,
     price: 100,
     amenities: ["Luxurious bathroom", "King-size bed", "Panoramic view", "Sitting area", "Room service", "Premium amenities", "Free WiFi", "Breakfast included", "Lunch included", "Dinner included"],
-    imageUrl: "/lovable-uploads/0166031e-471c-41a2-b706-ba4695891108.png"
+    imageUrl: "/lovable-uploads/0de33748-89e1-424d-8fc8-67b808131ea3.png"
   },
   {
     id: "premium-5",
@@ -53,7 +52,7 @@ const availableRooms: RoomProps[] = [
     available: 2,
     price: 100,
     amenities: ["Luxurious bathroom", "King-size bed", "Panoramic view", "Sitting area", "Room service", "Premium amenities", "Free WiFi", "Breakfast included", "Lunch included", "Dinner included"],
-    imageUrl: "/lovable-uploads/4f1849ef-25b4-4c4a-99c8-923ed3b3d4ce.png"
+    imageUrl: "/lovable-uploads/e3fd6dab-0bc4-469c-9c15-f714d7767334.png"
   },
   {
     id: "premium-6",
@@ -62,7 +61,7 @@ const availableRooms: RoomProps[] = [
     available: 2,
     price: 100,
     amenities: ["Luxurious bathroom", "King-size bed", "Panoramic view", "Sitting area", "Room service", "Premium amenities", "Free WiFi", "Breakfast included", "Lunch included", "Dinner included"],
-    imageUrl: "/lovable-uploads/0166031e-471c-41a2-b706-ba4695891108.png"
+    imageUrl: "/lovable-uploads/0de33748-89e1-424d-8fc8-67b808131ea3.png"
   }
 ];
 
