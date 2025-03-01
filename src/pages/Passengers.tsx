@@ -88,27 +88,33 @@ const vesselFeatures = [
 const additionalRoomImages = [
   {
     id: 1,
-    title: "Panoramic Ocean View",
-    description: "Wake up to breathtaking ocean views from your cabin window",
-    imageUrl: "/lovable-uploads/71824e94-558d-479d-804e-e766cffa8885.png"
+    title: "Dining Hall",
+    description: "Enjoy meals with stunning ocean views in our spacious dining area",
+    imageUrl: "/lovable-uploads/446a165f-ea4b-4987-8046-9239e77b97d3.png"
   },
   {
     id: 2,
-    title: "Luxurious Bathroom",
-    description: "Enjoy our premium bathroom facilities during your journey",
-    imageUrl: "/lovable-uploads/6d153727-082d-4151-8d87-83b4d2df35fc.png"
+    title: "Common Lounge",
+    description: "Relax in our comfortable lounge areas with panoramic windows",
+    imageUrl: "/lovable-uploads/442bc872-147f-4c60-8391-775238e3487c.png"
   },
   {
     id: 3,
-    title: "Dining Experience",
-    description: "Savor delicious meals in our comfortable dining areas",
-    imageUrl: "/lovable-uploads/c2a686f5-5007-4e3b-8c3f-989d6ab63354.png"
+    title: "Social Space",
+    description: "Spacious social areas for relaxing and connecting with fellow travelers",
+    imageUrl: "/lovable-uploads/da599504-e72a-4f32-a42d-b7428e612fbc.png"
   },
   {
     id: 4,
-    title: "Relaxation Space",
-    description: "Unwind in our thoughtfully designed relaxation areas",
-    imageUrl: "/lovable-uploads/a3a0ca37-4b5c-499a-b77d-1b4930d1b070.png"
+    title: "Premium Lounge",
+    description: "Modern lounge spaces with elegant design and ocean views",
+    imageUrl: "/lovable-uploads/f078f7e9-23fe-429b-9be4-96e4a7a5cf23.png"
+  },
+  {
+    id: 5,
+    title: "Reading Corner",
+    description: "Cozy seating areas perfect for reading or quiet conversation",
+    imageUrl: "/lovable-uploads/94de7d15-c25c-4cae-8c72-1b856127f12c.png"
   }
 ];
 
