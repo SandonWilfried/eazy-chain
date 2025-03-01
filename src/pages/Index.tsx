@@ -129,6 +129,45 @@ const Index = () => {
                   </div>
                 </div>
               </div>
+              
+              <div className="mt-8 pt-8 border-t">
+                <h3 className="text-2xl font-semibold mb-4">The Challenges We Address</h3>
+                <p className="mb-6">
+                  We face three major challenges in West African shipping:
+                </p>
+                <ul className="space-y-4 mb-6">
+                  <li className="flex gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                      <span className="font-semibold text-primary">1</span>
+                    </div>
+                    <div>
+                      <span className="font-medium">Port congestion:</span> Logistical delays paralyze trade, increasing costs.
+                    </div>
+                  </li>
+                  <li className="flex gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                      <span className="font-semibold text-primary">2</span>
+                    </div>
+                    <div>
+                      <span className="font-medium">Lack of connectivity and digitalization:</span> It is difficult to transport goods from one port to another along the entire West African coast due to the lack of efficient connections. Also, reservations and freight management are still manual, which reduces the competitiveness of our African companies.
+                    </div>
+                  </li>
+                  <li className="flex gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                      <span className="font-semibold text-primary">3</span>
+                    </div>
+                    <div>
+                      <span className="font-medium">Low intra-regional trade:</span> In West Africa, trade between countries represents only about 15% of trade, compared to 68% in Europe, 59% in Asia and 30% in South America.
+                    </div>
+                  </li>
+                </ul>
+                <p className="mb-6">
+                  This weak economic integration is a brake on our development. Without efficient logistics, it is impossible to increase intra-African trade and strengthen our competitiveness.
+                </p>
+                <p className="mb-6">
+                  Faced with all these challenges, Eazy Chain offers an innovative solution with the introduction of coastal vessels and a digital logistics management platform. Our 1,100-tonne, fully palletized vessel will connect the port of Lomé to the port of Praia, with successive stops in the ports of Abidjan, San Pedro, Monrovia, Conakry and Dakar. This sailing cargo ship will reduce 5,000 tonnes of CO2 per year and streamline intra-regional trade. In addition, our digital platform will offer automated booking, real-time tracking and secure payments, guaranteeing transparency and efficiency.
+                </p>
+              </div>
             </div>
             
             <div className="mt-12">
