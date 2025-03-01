@@ -74,6 +74,16 @@ const cargoDescriptions = [
   "Musical Instruments",
   "Office Supplies",
   "Toys",
+  "Manufactured Products",
+  "Cocoa",
+  "Coffee",
+  "Soya Beans",
+  "Bottles",
+  "Timber",
+  "Grains",
+  "Cotton",
+  "Rubber",
+  "Spices",
   "Other"
 ];
 
