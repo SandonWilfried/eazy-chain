@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { CreditCard, Phone, Paypal } from "lucide-react";
+import { CreditCard, Phone } from "lucide-react";
 
 export interface PaymentFormProps {
   shipmentId: string;
@@ -249,7 +249,11 @@ const PaymentForm = ({ shipmentId, amount, onPaymentSuccess }: PaymentFormProps)
                             <RadioGroupItem value="paypal" />
                           </FormControl>
                           <FormLabel className="font-normal flex items-center gap-2">
-                            <Paypal size={18} />
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M7 11l4.06-6.5C12.48 2.34 14.5 1.5 16.5 1.5c2.53 0 4.35 1.5 4.89 3.87.43 2-.84 4.24-2.13 5.13H17"/>
+                              <path d="M13.5 9.5L8.21 15.9c-1.42 1.71-3.44 2.55-5.44 2.55-2.53 0-4.35-1.5-4.89-3.87-.43-2 .84-4.24 2.13-5.13H3"/>
+                              <path d="M4.5 13.5L10 8"/>
+                            </svg>
                             PayPal
                           </FormLabel>
                         </FormItem>
