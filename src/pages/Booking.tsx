@@ -46,7 +46,7 @@ const portStops = [
   },
   {
     name: "Port of Dakar, Senegal",
-    imageUrl: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "/lovable-uploads/0166031e-471c-41a2-b706-ba4695891108.png"
   },
   {
     name: "Port of Praia, Cape Verde (Arrival)",
