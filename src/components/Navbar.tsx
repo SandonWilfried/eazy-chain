@@ -30,7 +30,7 @@ const Navbar = () => {
 
   const navLinks = [
     { title: "Home", path: "/" },
-    { title: "About Us", path: "/#about-us" }, // Added About Us link
+    // Removed "About Us" link
     { title: "Book", path: "/booking" },
     { title: "Passengers", path: "/passengers" },
     { title: "Track", path: "/tracking" },
