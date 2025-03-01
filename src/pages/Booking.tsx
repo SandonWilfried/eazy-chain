@@ -26,7 +26,7 @@ const availableVessels: VesselProps[] = [
 const portStops = [
   {
     name: "Port of Lomé, Togo (Departure)",
-    imageUrl: "https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "/lovable-uploads/dc49cca7-a192-430c-b5b2-20afa5343515.png"
   },
   {
     name: "Port of Abidjan, Côte d'Ivoire",
