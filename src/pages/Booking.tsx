@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import BookingForm from "@/components/BookingForm";
@@ -50,7 +49,7 @@ const portStops = [
   },
   {
     name: "Port of Praia, Cape Verde (Arrival)",
-    imageUrl: "https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "/lovable-uploads/1d6430d0-d19c-41a0-bda3-24d8b807d30b.png"
   }
 ];
 
