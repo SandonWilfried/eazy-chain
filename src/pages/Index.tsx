@@ -1,3 +1,4 @@
+
 import { useNavigate } from "react-router-dom";
 import { Ship, Package, Truck, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -100,7 +101,7 @@ const Index = () => {
               We collaborate with industry leaders to provide the best shipping solutions
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <div className="glass-panel p-6 flex justify-center items-center transition-all duration-300 hover:shadow-md">
               <img 
                 src="/lovable-uploads/6d153727-082d-4151-8d87-83b4d2df35fc.png" 
@@ -112,6 +113,13 @@ const Index = () => {
               <img 
                 src="/lovable-uploads/19953a92-d5a2-493f-a1ec-42d9c0c38412.png" 
                 alt="ECOWAS FECCIAO" 
+                className="h-32 w-auto object-contain"
+              />
+            </div>
+            <div className="glass-panel p-6 flex justify-center items-center transition-all duration-300 hover:shadow-md">
+              <img 
+                src="/lovable-uploads/a6451c69-1a90-439e-a6ca-0213250b62c9.png" 
+                alt="TOWT Transport à la Voile" 
                 className="h-32 w-auto object-contain"
               />
             </div>
