@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { format } from "date-fns";
@@ -130,12 +129,16 @@ const formSchema = z.object({
   contactPhone: z.string().min(7, {
     message: "Please enter a valid phone number.",
   }),
+}).refine(data => data.originPort !== data.destinationPort, {
+  message: "Origin and destination ports cannot be the same",
+  path: ["destinationPort"]
 });
 
 const BookingForm = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
+  const [availableDestinationPorts, setAvailableDestinationPorts] = useState(westAfricanPorts);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -146,6 +149,26 @@ const BookingForm = () => {
       weight: 1000,
     },
   });
+
+  // Update available destination ports when origin port changes
+  const originPort = form.watch("originPort");
+  
+  useEffect(() => {
+    if (originPort) {
+      // Filter out the selected origin port from available destinations
+      setAvailableDestinationPorts(
+        westAfricanPorts.filter(port => port !== originPort)
+      );
+      
+      // If the current destination is the same as the new origin, reset destination
+      const currentDestination = form.getValues("destinationPort");
+      if (currentDestination === originPort) {
+        form.setValue("destinationPort", "");
+      }
+    } else {
+      setAvailableDestinationPorts(westAfricanPorts);
+    }
+  }, [originPort, form]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
@@ -203,7 +226,7 @@ const BookingForm = () => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {westAfricanPorts.map((port) => (
+                    {availableDestinationPorts.map((port) => (
                       <SelectItem key={port} value={port}>
                         {port}
                       </SelectItem>
