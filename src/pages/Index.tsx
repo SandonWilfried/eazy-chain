@@ -120,17 +120,17 @@ const Index = () => {
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <div>
+          <div className="max-w-4xl mx-auto">
+            <div className="glass-panel p-8 mb-8">
               <h3 className="text-2xl font-semibold mb-4">Sustainable Shipping</h3>
-              <p className="mb-4">
+              <p className="mb-6">
                 Sailing as the main mode of propulsion allows for drastically less polluting ocean transport.
                 Compared to the average container ship making the same Le Havre – Guadeloupe route, our cargo 
                 sailing ships allow for a massive reduction in greenhouse gas emissions, per tonne transported 
                 and per kilometre travelled:
               </p>
               
-              <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                 <Card className="bg-green-50/50 border-green-100">
                   <CardHeader className="pb-2">
                     <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mb-2">
@@ -139,7 +139,7 @@ const Index = () => {
                     <CardTitle className="text-xl">{'>'} 95% CO₂</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm">Reduction in carbon dioxide emissions</p>
+                    <p className="text-sm">Reduction in carbon dioxide</p>
                   </CardContent>
                 </Card>
                 
@@ -180,33 +180,25 @@ const Index = () => {
                 </Card>
               </div>
               
-              <h4 className="text-xl font-semibold mb-2">Biodiversity Benefits</h4>
-              <ul className="list-disc list-inside mb-6 space-y-2">
-                <li>Reducing the risk of collision (noise)</li>
-                <li>Mitigating ocean acidification</li>
-              </ul>
-              
-              <h4 className="text-xl font-semibold mb-2">ANEMOS Sail Technology</h4>
-              <p className="mb-4">
-                The ANEMOS sail inflated by the wind makes the most of natural propulsion and 
-                provides the best performance. This is the most concrete lever for decarbonizing 
-                maritime transport, offering a decarbonization greater than 90% compared to the 
-                average ship on our transatlantic routes (230m, 2750 TEU).
-              </p>
-            </div>
-            
-            <div>
-              <div className="rounded-xl overflow-hidden shadow-lg mb-6">
-                <img 
-                  src="/lovable-uploads/1b96471e-0948-4119-9423-cd74d0e7002f.png" 
-                  alt="Eazy Chain Sustainable Vessel" 
-                  className="w-full h-auto object-cover"
-                />
+              <div className="mb-8">
+                <h4 className="text-xl font-semibold mb-3">Beyond the climate impact</h4>
+                <p className="mb-3">Using sailing rather than an engine helps to mitigate the impacts on biodiversity:</p>
+                <ul className="list-disc list-inside space-y-2 mb-6 pl-4">
+                  <li>Reducing the risk of collision (noise)</li>
+                  <li>Mitigating ocean acidification</li>
+                </ul>
               </div>
               
-              <h3 className="text-2xl font-semibold mb-4">Carbon Footprint</h3>
+              <div className="mb-8">
+                <h4 className="text-xl font-semibold mb-3">ANEMOS sail inflated by the wind</h4>
+                <p className="mb-2">The sail makes the most of it</p>
+                <p className="mb-4">The sail provides the best performance to exploit it.</p>
+                
+                <p className="mb-3">This is the most concrete lever for decarbonizing maritime transport</p>
+                <p className="mb-6">A decarbonization greater than 90% compared to the average ship on our transatlantic routes (230m, 2750 TEU).</p>
+              </div>
               
-              <div className="flex flex-col space-y-6">
+              <div className="grid md:grid-cols-2 gap-8">
                 <Card>
                   <CardHeader>
                     <CardTitle>TOWT Sailboat</CardTitle>
@@ -218,12 +210,12 @@ const Index = () => {
                       a transatlantic route, according to the emission factors published by ADEME.
                     </p>
                     <h4 className="font-semibold mb-2">By 2025, TOWT guarantees:</h4>
-                    <ul className="list-disc list-inside space-y-2">
+                    <ul className="list-disc list-inside space-y-2 mb-4 pl-4">
                       <li>A monthly departure from Le Havre to New York, each saving around 500t of CO₂</li>
                       <li>A quarterly coffee import, saving around 700t of CO₂ per trip</li>
                       <li>Intra-American routes on the same frequencies</li>
                     </ul>
-                    <p className="mt-4 text-sm">
+                    <p className="text-sm">
                       These frequencies, thanks to 6 additional sisterships under construction, 
                       will gradually be multiplied by 4 over 2026-2027. Several hundred thousand 
                       tons per year of goods switched to low-carbon transport.
