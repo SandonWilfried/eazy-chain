@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import BookingForm from "@/components/BookingForm";
@@ -110,6 +111,35 @@ const Booking = () => {
                 Eazy Chain operates a cargo sailing vessel with a capacity of 1050 pallets. Pricing is per pallet rather than per container.
                 <span className="font-medium"> Our vessels operate round trip voyages between Lomé, Togo and Praia, Cape Verde.</span>
               </p>
+              
+              {/* Add pallet type information */}
+              <div className="bg-primary/10 rounded-lg p-4 mb-6">
+                <h3 className="font-medium text-lg mb-2">Pallet Types Available</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex items-start space-x-3">
+                    <div className="bg-primary/20 p-2 rounded-full">
+                      <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center text-white font-bold">
+                        US
+                      </div>
+                    </div>
+                    <div>
+                      <p className="font-medium">US Pallet</p>
+                      <p className="text-sm text-muted-foreground">1200 x 1000 mm</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <div className="bg-primary/20 p-2 rounded-full">
+                      <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center text-white font-bold">
+                        EU
+                      </div>
+                    </div>
+                    <div>
+                      <p className="font-medium">Euro Pallet</p>
+                      <p className="text-sm text-muted-foreground">1200 x 800 mm</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
               
               <RouteMap />
               

@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -61,6 +62,12 @@ const cargoTypes = [
   "Hazardous",
 ];
 
+// Pallet types
+const palletTypes = [
+  "US Pallet (1200 x 1000 mm)",
+  "Euro Pallet (1200 x 800 mm)",
+];
+
 const cargoDescriptions = [
   "Agricultural Products",
   "Textiles",
@@ -116,6 +123,9 @@ const formSchema = z.object({
   palletCount: z.coerce.number().min(1, {
     message: "At least one pallet is required.",
   }),
+  palletType: z.string({
+    required_error: "Pallet type is required.",
+  }),
   weight: z.coerce.number().min(1, {
     message: "Weight is required.",
   }),
@@ -146,6 +156,7 @@ const BookingForm = () => {
       cargoDescription: "",
       containerCount: 1,
       palletCount: 1,
+      palletType: "Euro Pallet (1200 x 800 mm)",
       weight: 1000,
     },
   });
@@ -333,6 +344,32 @@ const BookingForm = () => {
             )}
           />
         </div>
+
+        {/* Pallet Type Selection */}
+        <FormField
+          control={form.control}
+          name="palletType"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Pallet Type</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select pallet type" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {palletTypes.map((type) => (
+                    <SelectItem key={type} value={type}>
+                      {type}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}
