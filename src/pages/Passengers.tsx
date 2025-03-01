@@ -15,7 +15,7 @@ const availableRooms: RoomProps[] = [
     name: "Premium Cabin 1",
     capacity: 2,
     available: 2,
-    price: 599,
+    price: 100,
     amenities: ["Luxurious bathroom", "King-size bed", "Panoramic view", "Sitting area", "Room service", "Premium amenities", "Free WiFi", "Breakfast included", "Lunch included", "Dinner included"],
     imageUrl: "/lovable-uploads/4f1849ef-25b4-4c4a-99c8-923ed3b3d4ce.png"
   },
@@ -24,7 +24,7 @@ const availableRooms: RoomProps[] = [
     name: "Premium Cabin 2",
     capacity: 2,
     available: 2,
-    price: 599,
+    price: 100,
     amenities: ["Luxurious bathroom", "King-size bed", "Panoramic view", "Sitting area", "Room service", "Premium amenities", "Free WiFi", "Breakfast included", "Lunch included", "Dinner included"],
     imageUrl: "/lovable-uploads/0166031e-471c-41a2-b706-ba4695891108.png"
   },
@@ -33,7 +33,7 @@ const availableRooms: RoomProps[] = [
     name: "Premium Cabin 3",
     capacity: 2,
     available: 2,
-    price: 599,
+    price: 100,
     amenities: ["Luxurious bathroom", "King-size bed", "Panoramic view", "Sitting area", "Room service", "Premium amenities", "Free WiFi", "Breakfast included", "Lunch included", "Dinner included"],
     imageUrl: "/lovable-uploads/4f1849ef-25b4-4c4a-99c8-923ed3b3d4ce.png"
   },
@@ -42,7 +42,7 @@ const availableRooms: RoomProps[] = [
     name: "Premium Cabin 4",
     capacity: 2,
     available: 2,
-    price: 599,
+    price: 100,
     amenities: ["Luxurious bathroom", "King-size bed", "Panoramic view", "Sitting area", "Room service", "Premium amenities", "Free WiFi", "Breakfast included", "Lunch included", "Dinner included"],
     imageUrl: "/lovable-uploads/0166031e-471c-41a2-b706-ba4695891108.png"
   },
@@ -51,7 +51,7 @@ const availableRooms: RoomProps[] = [
     name: "Premium Cabin 5",
     capacity: 2,
     available: 2,
-    price: 599,
+    price: 100,
     amenities: ["Luxurious bathroom", "King-size bed", "Panoramic view", "Sitting area", "Room service", "Premium amenities", "Free WiFi", "Breakfast included", "Lunch included", "Dinner included"],
     imageUrl: "/lovable-uploads/4f1849ef-25b4-4c4a-99c8-923ed3b3d4ce.png"
   },
@@ -60,7 +60,7 @@ const availableRooms: RoomProps[] = [
     name: "Premium Cabin 6",
     capacity: 2,
     available: 2,
-    price: 599,
+    price: 100,
     amenities: ["Luxurious bathroom", "King-size bed", "Panoramic view", "Sitting area", "Room service", "Premium amenities", "Free WiFi", "Breakfast included", "Lunch included", "Dinner included"],
     imageUrl: "/lovable-uploads/0166031e-471c-41a2-b706-ba4695891108.png"
   }

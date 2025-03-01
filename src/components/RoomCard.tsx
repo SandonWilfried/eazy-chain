@@ -67,10 +67,10 @@ const RoomCard = ({ room }: { room: RoomProps }) => {
           <div className="text-right">
             <div className="text-lg font-semibold">
               ${room.price.toLocaleString()}
-              <span className="text-sm text-muted-foreground font-normal"> per person</span>
+              <span className="text-sm text-muted-foreground font-normal"> per night</span>
             </div>
             <div className="text-sm text-muted-foreground">
-              {xofPrice.toLocaleString()} XOF <span className="font-normal">per day</span>
+              {xofPrice.toLocaleString()} XOF <span className="font-normal">per night</span>
             </div>
           </div>
         </CardTitle>
