@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import BookingForm from "@/components/BookingForm";
@@ -54,10 +53,10 @@ const portStops = [
   }
 ];
 
-// Map component to show the route
+// Map component to show the route with reduced height
 const RouteMap = () => {
   return (
-    <div className="relative w-full h-[400px] rounded-lg overflow-hidden mt-4 mb-6">
+    <div className="relative w-full h-[300px] rounded-lg overflow-hidden mt-4 mb-6">
       <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
         <img 
           src="/lovable-uploads/6462364d-51d2-44c2-9ac6-52ede7aeb9e4.png" 
