@@ -188,16 +188,17 @@ const PaymentForm = ({ shipmentId, amount, onPaymentSuccess }: PaymentFormProps)
               />
             </div>
             
-            <div className={!referenceVerified ? "opacity-50" : ""}>
+            <div className={!referenceVerified ? "opacity-50 pointer-events-none" : ""}>
               <FormLabel htmlFor="card" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Card Details
               </FormLabel>
-              <CardElement
-                id="card"
-                options={cardStyle}
-                className="p-3 border rounded-md mt-1"
-                disabled={!referenceVerified}
-              />
+              <div className="p-3 border rounded-md mt-1">
+                <CardElement
+                  id="card"
+                  options={cardStyle}
+                  className="w-full"
+                />
+              </div>
             </div>
           </form>
         </Form>
