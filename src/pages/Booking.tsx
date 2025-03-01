@@ -91,24 +91,6 @@ const Booking = () => {
           </div>
         </section>
         
-        {/* Fleet Section */}
-        <section id="fleet" className="py-16 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-3">Our Fleet</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                Choose from our available vessels for your next shipment
-              </p>
-            </div>
-            
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-              {vessels.map(vessel => (
-                <VesselCard key={vessel.id} vessel={vessel} />
-              ))}
-            </div>
-          </div>
-        </section>
-        
         {/* Booking Form Section */}
         <div className="container mx-auto px-4 py-8">
           <div className="grid lg:grid-cols-3 gap-8">
