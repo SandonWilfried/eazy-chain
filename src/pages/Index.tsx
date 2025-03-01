@@ -1,6 +1,6 @@
 
 import { useNavigate } from "react-router-dom";
-import { Ship, Package, Truck, CreditCard } from "lucide-react";
+import { Ship, Package, Truck, CreditCard, Anchor, Globe, BarChart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import TrackingForm from "@/components/TrackingForm";
@@ -50,6 +50,106 @@ const Index = () => {
           <div className="max-w-2xl mx-auto glass-panel p-6 md:p-8">
             <h2 className="text-2xl font-semibold mb-6 text-center">Track Your Shipment</h2>
             <TrackingForm />
+          </div>
+        </div>
+      </section>
+
+      {/* About Us Section - New Section */}
+      <section id="about-us" className="py-20 bg-gradient-to-b from-accent/20 to-background">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">About Eazy Chain</h2>
+              <p className="text-lg text-muted-foreground">
+                Revolutionizing short-sea shipping in West Africa through innovation and sustainability
+              </p>
+            </div>
+            
+            <div className="glass-panel p-8 mb-8">
+              <h3 className="text-2xl font-semibold mb-4">Our Mission</h3>
+              <p className="mb-6 text-lg">
+                We decided to start Eazy Chain to facilitate short-sea shipping in West Africa. Maritime transport accounts for 90% of global trade, and in Africa, ports are the key to our economic competitiveness. However, our port infrastructure is congested, delays are too long, and costs are exorbitant.
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                    <Anchor className="h-8 w-8 text-primary" />
+                  </div>
+                  <h4 className="text-xl font-medium mb-2">Port Congestion</h4>
+                  <p className="text-muted-foreground">
+                    Logistical delays paralyze trade, increasing costs and reducing competitiveness.
+                  </p>
+                </div>
+                
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                    <Globe className="h-8 w-8 text-primary" />
+                  </div>
+                  <h4 className="text-xl font-medium mb-2">Poor Connectivity</h4>
+                  <p className="text-muted-foreground">
+                    Difficult to transport goods across the West African coast due to lack of efficient connections.
+                  </p>
+                </div>
+                
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                    <BarChart className="h-8 w-8 text-primary" />
+                  </div>
+                  <h4 className="text-xl font-medium mb-2">Low Regional Trade</h4>
+                  <p className="text-muted-foreground">
+                    Only 15% intra-regional trade in West Africa, compared to 68% in Europe and 59% in Asia.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="mt-8">
+                <h3 className="text-2xl font-semibold mb-4">Our Solution</h3>
+                <div className="flex flex-col md:flex-row gap-8 items-center">
+                  <div className="md:w-1/2">
+                    <img 
+                      src="/lovable-uploads/1b96471e-0948-4119-9423-cd74d0e7002f.png" 
+                      alt="Eazy Chain Vessel" 
+                      className="rounded-lg shadow-md w-full h-auto"
+                    />
+                  </div>
+                  <div className="md:w-1/2">
+                    <p className="mb-4">
+                      Eazy Chain offers an innovative solution with the introduction of coastal vessels and a digital logistics management platform. Our 1,100-tonne, fully palletized vessel will connect the port of Lomé to the port of Praia, with successive stops in the ports of Abidjan, San Pedro, Monrovia, Conakry and Dakar.
+                    </p>
+                    <p className="mb-4">
+                      This sailing cargo ship will reduce 5,000 tonnes of CO2 per year and streamline intra-regional trade. In addition, our digital platform offers automated booking, real-time tracking, and secure payments, guaranteeing transparency and efficiency.
+                    </p>
+                    <div className="flex gap-4 mt-6">
+                      <Button onClick={() => navigate("/booking")}>Book Now</Button>
+                      <Button variant="outline" onClick={() => document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })}>
+                        Our Services
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="mt-12">
+              <div className="flex justify-center space-x-4">
+                <img 
+                  src="/lovable-uploads/6d153727-082d-4151-8d87-83b4d2df35fc.png" 
+                  alt="Africa Global Logistics" 
+                  className="h-16 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
+                />
+                <img 
+                  src="/lovable-uploads/19953a92-d5a2-493f-a1ec-42d9c0c38412.png" 
+                  alt="ECOWAS FECCIAO" 
+                  className="h-16 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
+                />
+                <img 
+                  src="/lovable-uploads/a6451c69-1a90-439e-a6ca-0213250b62c9.png" 
+                  alt="TOWT Transport à la Voile" 
+                  className="h-16 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -128,7 +228,7 @@ const Index = () => {
       </section>
 
       {/* Features Section */}
-      <section className="section-container">
+      <section id="features" className="section-container">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold mb-3">Our Services</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">

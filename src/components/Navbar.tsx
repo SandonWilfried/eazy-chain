@@ -30,6 +30,7 @@ const Navbar = () => {
 
   const navLinks = [
     { title: "Home", path: "/" },
+    { title: "About Us", path: "/#about-us" }, // Added About Us link
     { title: "Book", path: "/booking" },
     { title: "Passengers", path: "/passengers" },
     { title: "Track", path: "/tracking" },
@@ -37,6 +38,15 @@ const Navbar = () => {
   ];
 
   const isActive = (path: string) => location.pathname === path;
+
+  // Special case for hash links
+  const isHashActive = (path: string) => {
+    if (path.includes('#') && location.pathname === '/') {
+      const hash = path.split('#')[1];
+      return location.hash === `#${hash}`;
+    }
+    return false;
+  };
 
   return (
     <nav
@@ -61,7 +71,7 @@ const Navbar = () => {
                 key={link.path}
                 to={link.path}
                 className={`text-sm font-medium transition-all duration-300 ${
-                  isActive(link.path)
+                  isActive(link.path) || isHashActive(link.path)
                     ? "text-primary"
                     : "text-foreground/70 hover:text-foreground"
                 }`}
@@ -96,7 +106,7 @@ const Navbar = () => {
                   key={link.path}
                   to={link.path}
                   className={`px-2 py-1 rounded-md text-base font-medium transition-colors ${
-                    isActive(link.path)
+                    isActive(link.path) || isHashActive(link.path)
                       ? "text-primary"
                       : "text-foreground/70 hover:text-foreground"
                   }`}
