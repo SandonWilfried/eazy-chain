@@ -5,36 +5,9 @@ import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import TrackingForm from "@/components/TrackingForm";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import VesselCard from "@/components/VesselCard";
 
 const Index = () => {
   const navigate = useNavigate();
-
-  // Sample vessel data for the fleet section
-  const vessels = [
-    {
-      id: "v1",
-      name: "MS Eazy Voyager",
-      route: "Lomé, Togo ↔ Praia, Cape Verde",
-      departureDate: "2023-12-10",
-      arrivalDate: "2023-12-18",
-      capacity: 300,
-      available: 120,
-      price: 1200,
-      priceXOF: 720000
-    },
-    {
-      id: "v2",
-      name: "MS Eazy Explorer",
-      route: "Lomé, Togo ↔ Praia, Cape Verde",
-      departureDate: "2023-12-22",
-      arrivalDate: "2023-12-30",
-      capacity: 280,
-      available: 35,
-      price: 1300,
-      priceXOF: 780000
-    }
-  ];
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -70,34 +43,6 @@ const Index = () => {
           </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent"></div>
-      </section>
-      
-      {/* Fleet Section */}
-      <section id="fleet" className="section-container bg-accent/30 py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-3">Our Fleet</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Modern vessels equipped with the latest technology for safe and efficient cargo transportation
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {vessels.map(vessel => (
-              <VesselCard key={vessel.id} vessel={vessel} />
-            ))}
-          </div>
-          
-          <div className="text-center mt-8">
-            <Button 
-              onClick={() => navigate("/booking")} 
-              variant="outline"
-              className="bg-background"
-            >
-              View All Available Vessels
-            </Button>
-          </div>
-        </div>
       </section>
       
       {/* Tracking Section */}
