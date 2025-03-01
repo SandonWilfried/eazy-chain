@@ -54,6 +54,44 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Vessel Image Section */}
+      <section className="py-16 bg-gradient-to-b from-background to-accent/20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold mb-3">Our Vessels</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Modern and efficient vessels to transport your cargo safely
+            </p>
+          </div>
+          <div className="rounded-xl overflow-hidden shadow-lg mx-auto max-w-4xl">
+            <img 
+              src="/lovable-uploads/1b96471e-0948-4119-9423-cd74d0e7002f.png" 
+              alt="Eazy Chain Vessel" 
+              className="w-full h-auto object-cover"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Digital Platform Section */}
+      <section className="py-16 bg-gradient-to-b from-accent/20 to-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold mb-3">Our Digital Platform</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Manage your shipments easily with our intuitive mobile application
+            </p>
+          </div>
+          <div className="rounded-xl overflow-hidden shadow-lg mx-auto max-w-sm">
+            <img 
+              src="/lovable-uploads/28028336-6b36-4a7c-8ca1-e2bbca44b05e.png" 
+              alt="Eazy Chain Digital Platform" 
+              className="w-full h-auto object-cover"
+            />
+          </div>
+        </div>
+      </section>
+
       {/* Features Section */}
       <section className="section-container">
         <div className="text-center mb-16">
@@ -133,10 +171,10 @@ const Index = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center mb-6 md:mb-0">
               <Ship className="h-8 w-8 text-primary mr-2" />
-              <span className="font-semibold text-xl">CargoCaravan</span>
+              <span className="font-semibold text-xl">Eazy Chain</span>
             </div>
             <div className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} CargoCaravan. All rights reserved.
+              © {new Date().getFullYear()} Eazy Chain. All rights reserved.
             </div>
           </div>
         </div>

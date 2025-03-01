@@ -50,7 +50,7 @@ const Navbar = () => {
             className="flex items-center space-x-2 text-primary transition-all duration-300 hover:opacity-80"
           >
             <Ship size={28} strokeWidth={1.5} />
-            <span className="font-semibold text-xl">CargoCaravan</span>
+            <span className="font-semibold text-xl">Eazy Chain</span>
           </Link>
 
           {/* Desktop Navigation */}
