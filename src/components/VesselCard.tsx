@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Ship, Calendar, Package, Users, RepeatIcon, BarChart4 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -99,7 +98,7 @@ const VesselCard = ({ vessel }: { vessel: VesselProps }) => {
             <span className="font-medium">{formatDate(vessel.arrivalDate)}</span>
           </div>
           
-          {/* Visual representation of available space */}
+          {/* Visual representation of available space with vessel illustration */}
           <div className="mt-6 pt-2 border-t">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -109,7 +108,51 @@ const VesselCard = ({ vessel }: { vessel: VesselProps }) => {
               <span className="font-medium">{vessel.available} of {vessel.capacity} pallets</span>
             </div>
             
-            {/* Visual representation using boxes */}
+            {/* Vessel cargo illustration */}
+            <div className="relative h-32 bg-blue-50 dark:bg-blue-950/20 rounded-lg overflow-hidden mb-3 border border-blue-100 dark:border-blue-900">
+              {/* Ship outline */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-[95%] h-[85%] relative">
+                  {/* Ship body */}
+                  <div className="absolute bottom-0 w-full h-[70%] bg-gray-200 dark:bg-gray-800 rounded-b-lg rounded-t-xl border border-gray-300 dark:border-gray-700">
+                    {/* Ship bow */}
+                    <div className="absolute top-0 w-full h-[20%] bg-gray-300 dark:bg-gray-700 rounded-t-xl border-b border-gray-400 dark:border-gray-600"></div>
+                    
+                    {/* Cargo space */}
+                    <div className="absolute top-[25%] left-[5%] w-[90%] h-[65%] bg-gray-100 dark:bg-gray-900 rounded-md overflow-hidden border border-gray-300 dark:border-gray-700">
+                      {/* Cargo pallets grid */}
+                      <div className="absolute inset-0 flex flex-wrap p-1 gap-[2px]">
+                        {Array.from({ length: 100 }).map((_, i) => (
+                          <div 
+                            key={i} 
+                            className={`h-[10%] w-[9%] rounded-sm ${
+                              i < Math.round((vessel.available / vessel.capacity) * 100) 
+                                ? "bg-primary/70 animate-pulse" 
+                                : "bg-gray-300 dark:bg-gray-700"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    
+                    {/* Bridge */}
+                    <div className="absolute top-[-15%] right-[10%] w-[25%] h-[30%] bg-gray-400 dark:bg-gray-600 rounded-t-lg border border-gray-500 dark:border-gray-500"></div>
+                  </div>
+                  
+                  {/* Water line */}
+                  <div className="absolute bottom-0 w-full h-[5px] bg-blue-300 dark:bg-blue-700 z-10"></div>
+                </div>
+              </div>
+              
+              {/* Capacity indicator */}
+              <div className="absolute top-1 right-1 z-10">
+                <span className="text-xs font-medium bg-white/80 dark:bg-black/50 px-2 py-1 rounded backdrop-blur-sm">
+                  {Math.round(availabilityPercentage)}% Available
+                </span>
+              </div>
+            </div>
+            
+            {/* Keep the boxes and progress bar */}
             <div className="relative h-16 bg-secondary/50 rounded-lg overflow-hidden mb-2">
               <div className="absolute inset-0 flex flex-wrap p-1 gap-1">
                 {Array.from({ length: 80 }).map((_, i) => (
