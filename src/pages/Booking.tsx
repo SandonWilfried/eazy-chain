@@ -22,15 +22,36 @@ const availableVessels: VesselProps[] = [
   }
 ];
 
-// Port stops information
+// Port stops information with image URLs
 const portStops = [
-  "Port of Lomé, Togo (Departure)",
-  "Port of Abidjan, Côte d'Ivoire",
-  "Port of San Pedro, Côte d'Ivoire",
-  "Port of Monrovia, Liberia",
-  "Port of Conakry, Guinea",
-  "Port of Dakar, Senegal",
-  "Port of Praia, Cape Verde (Arrival)"
+  {
+    name: "Port of Lomé, Togo (Departure)",
+    imageUrl: "https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    name: "Port of Abidjan, Côte d'Ivoire",
+    imageUrl: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    name: "Port of San Pedro, Côte d'Ivoire",
+    imageUrl: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    name: "Port of Monrovia, Liberia",
+    imageUrl: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    name: "Port of Conakry, Guinea",
+    imageUrl: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    name: "Port of Dakar, Senegal",
+    imageUrl: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    name: "Port of Praia, Cape Verde (Arrival)",
+    imageUrl: "https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=800&q=80"
+  }
 ];
 
 // Map component to show the route
@@ -92,15 +113,24 @@ const Booking = () => {
                 </Button>
               </div>
               
-              <h3 className="font-medium text-lg mb-2">Route Information</h3>
-              <ul className="space-y-1 mb-4">
+              <h3 className="font-medium text-lg mb-4">Route Information</h3>
+              <ul className="space-y-6 mb-4">
                 {portStops.map((port, index) => (
-                  <li key={index} className="flex items-center">
+                  <li key={index} className="flex items-start">
                     <div className="mr-3 flex flex-col items-center">
-                      <div className="h-3 w-3 rounded-full bg-primary"></div>
-                      {index < portStops.length - 1 && <div className="h-6 w-0.5 bg-gray-300"></div>}
+                      <div className="h-3 w-3 rounded-full bg-primary mt-2"></div>
+                      {index < portStops.length - 1 && <div className="h-full w-0.5 bg-gray-300"></div>}
                     </div>
-                    <span>{port}</span>
+                    <div className="flex-1">
+                      <div className="rounded-lg overflow-hidden mb-2 h-32 sm:h-40">
+                        <img 
+                          src={port.imageUrl} 
+                          alt={port.name} 
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <p className="font-medium">{port.name}</p>
+                    </div>
                   </li>
                 ))}
               </ul>
