@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Ship } from "lucide-react";
@@ -31,7 +30,6 @@ const Navbar = () => {
   const navLinks = [
     { title: "Home", path: "/" },
     { title: "Book", path: "/booking" },
-    { title: "Other Services", path: "/#services" },
     { title: "Passengers", path: "/passengers" },
     { title: "Track", path: "/tracking" },
     { title: "Dashboard", path: "/dashboard" },

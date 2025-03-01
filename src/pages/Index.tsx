@@ -12,35 +12,6 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      {/* Other Services Section */}
-      <section className="bg-background py-8 border-b">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-semibold mb-6 text-center">Other Services</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Service 1 */}
-            <div className="glass-panel p-5 flex flex-col items-center text-center">
-              <Globe className="h-8 w-8 text-primary mb-3" />
-              <h3 className="font-semibold mb-2">Global Trade Consulting</h3>
-              <p className="text-sm text-muted-foreground">Expert advice on international trade regulations, customs, and compliance.</p>
-            </div>
-            
-            {/* Service 2 */}
-            <div className="glass-panel p-5 flex flex-col items-center text-center">
-              <BarChart className="h-8 w-8 text-primary mb-3" />
-              <h3 className="font-semibold mb-2">Supply Chain Analytics</h3>
-              <p className="text-sm text-muted-foreground">Data-driven insights to optimize your supply chain operations and reduce costs.</p>
-            </div>
-            
-            {/* Service 3 */}
-            <div className="glass-panel p-5 flex flex-col items-center text-center">
-              <Leaf className="h-8 w-8 text-primary mb-3" />
-              <h3 className="font-semibold mb-2">Sustainable Shipping</h3>
-              <p className="text-sm text-muted-foreground">Eco-friendly shipping options to reduce your carbon footprint.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-      
       {/* Hero Section */}
       <section className="page-hero">
         <div className="container mx-auto px-4 pt-24 pb-16 md:pt-32 md:pb-24 relative z-10">
