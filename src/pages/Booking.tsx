@@ -30,7 +30,7 @@ const portStops = [
   },
   {
     name: "Port of Abidjan, Côte d'Ivoire",
-    imageUrl: "/lovable-uploads/c2a686f5-5007-4e3b-8c3f-989d6ab63354.png"
+    imageUrl: "/lovable-uploads/71824e94-558d-479d-804e-e766cffa8885.png"
   },
   {
     name: "Port of San Pedro, Côte d'Ivoire",
