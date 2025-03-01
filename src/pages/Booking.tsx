@@ -38,7 +38,7 @@ const portStops = [
   },
   {
     name: "Port of Monrovia, Liberia",
-    imageUrl: "/lovable-uploads/be73153f-86c5-46bf-98c8-1a016df8bb38.png"
+    imageUrl: "/lovable-uploads/06612564-a5e3-4908-aa05-12ccd63fcd26.png"
   },
   {
     name: "Port of Conakry, Guinea",
