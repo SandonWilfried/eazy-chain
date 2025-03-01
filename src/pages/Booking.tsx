@@ -42,7 +42,7 @@ const portStops = [
   },
   {
     name: "Port of Conakry, Guinea",
-    imageUrl: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "/lovable-uploads/4f1849ef-25b4-4c4a-99c8-923ed3b3d4ce.png"
   },
   {
     name: "Port of Dakar, Senegal",
