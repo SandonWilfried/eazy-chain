@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -59,6 +58,9 @@ const formSchema = z.object({
   containerCount: z.coerce.number().min(1, {
     message: "At least one container is required.",
   }),
+  palletCount: z.coerce.number().min(1, {
+    message: "At least one pallet is required.",
+  }),
   weight: z.coerce.number().min(1, {
     message: "Weight is required.",
   }),
@@ -83,6 +85,7 @@ const BookingForm = () => {
     defaultValues: {
       cargoDescription: "",
       containerCount: 1,
+      palletCount: 1,
       weight: 1000,
     },
   });
@@ -203,10 +206,10 @@ const BookingForm = () => {
           />
           <FormField
             control={form.control}
-            name="containerCount"
+            name="palletCount"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Number of Containers</FormLabel>
+                <FormLabel>Number of Pallets</FormLabel>
                 <FormControl>
                   <Input type="number" min="1" {...field} />
                 </FormControl>
