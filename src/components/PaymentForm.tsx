@@ -9,6 +9,8 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { CreditCard, Phone, Paypal } from "lucide-react";
 
 export interface PaymentFormProps {
   shipmentId: string;
@@ -39,6 +41,11 @@ const formSchema = z.object({
   bookingReference: z.string().min(6, {
     message: "Booking reference must be at least 6 characters.",
   }),
+  paymentMethod: z.enum(["card", "mobile_money", "paypal"]),
+  // Additional fields specific to mobile money
+  phoneNumber: z.string().optional(),
+  // Additional fields specific to PayPal
+  email: z.string().email({ message: "Please enter a valid email address." }).optional(),
 });
 
 const PaymentForm = ({ shipmentId, amount, onPaymentSuccess }: PaymentFormProps) => {
@@ -53,8 +60,13 @@ const PaymentForm = ({ shipmentId, amount, onPaymentSuccess }: PaymentFormProps)
     resolver: zodResolver(formSchema),
     defaultValues: {
       bookingReference: "",
+      paymentMethod: "card",
+      phoneNumber: "",
+      email: "",
     },
   });
+  
+  const selectedPaymentMethod = form.watch("paymentMethod");
   
   const handleVerifyReference = async () => {
     const bookingReference = form.getValues("bookingReference");
@@ -84,12 +96,6 @@ const PaymentForm = ({ shipmentId, amount, onPaymentSuccess }: PaymentFormProps)
   };
   
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    if (!stripe || !elements) {
-      // Stripe.js has not loaded yet. Make sure to disable
-      // form submission until Stripe.js is loaded.
-      return;
-    }
-    
     if (!referenceVerified) {
       toast({
         title: "Verification Required",
@@ -103,36 +109,55 @@ const PaymentForm = ({ shipmentId, amount, onPaymentSuccess }: PaymentFormProps)
     
     // Verify booking reference (in a real app, this would call your API)
     console.log('Processing payment with booking reference:', values.bookingReference);
+    console.log('Selected payment method:', values.paymentMethod);
     
-    const cardElement = elements.getElement(CardElement);
-    
-    if (!cardElement) {
-      toast({
-        title: "Payment Failed",
-        description: "Card element not found. Please refresh and try again.",
-        variant: "destructive"
+    if (values.paymentMethod === "card") {
+      if (!stripe || !elements) {
+        toast({
+          title: "Payment Failed",
+          description: "Stripe has not loaded yet. Please refresh and try again.",
+          variant: "destructive"
+        });
+        setProcessing(false);
+        return;
+      }
+      
+      const cardElement = elements.getElement(CardElement);
+      
+      if (!cardElement) {
+        toast({
+          title: "Payment Failed",
+          description: "Card element not found. Please refresh and try again.",
+          variant: "destructive"
+        });
+        setProcessing(false);
+        return;
+      }
+      
+      const { error, paymentMethod } = await stripe.createPaymentMethod({
+        type: 'card',
+        card: cardElement
       });
-      setProcessing(false);
-      return;
+      
+      if (error) {
+        console.log('[stripe error]', error);
+        toast({
+          title: "Payment Failed",
+          description: error.message || "Please check your card details and try again.",
+          variant: "destructive"
+        });
+        setProcessing(false);
+        return;
+      }
+      
+      console.log('[PaymentMethod]', paymentMethod);
+    } else if (values.paymentMethod === "mobile_money") {
+      // Simulate mobile money payment processing
+      console.log("Processing Mobile Money payment with phone:", values.phoneNumber);
+    } else if (values.paymentMethod === "paypal") {
+      // Simulate PayPal payment processing
+      console.log("Processing PayPal payment with email:", values.email);
     }
-    
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: 'card',
-      card: cardElement
-    });
-    
-    if (error) {
-      console.log('[stripe error]', error);
-      toast({
-        title: "Payment Failed",
-        description: error.message || "Please check your card details and try again.",
-        variant: "destructive"
-      });
-      setProcessing(false);
-      return;
-    }
-    
-    console.log('[PaymentMethod]', paymentMethod);
     
     // Simulate a successful payment for the demo
     // In production, you would call your backend API here
@@ -189,16 +214,109 @@ const PaymentForm = ({ shipmentId, amount, onPaymentSuccess }: PaymentFormProps)
             </div>
             
             <div className={!referenceVerified ? "opacity-50 pointer-events-none" : ""}>
-              <FormLabel htmlFor="card" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Card Details
-              </FormLabel>
-              <div className="p-3 border rounded-md mt-1">
-                <CardElement
-                  id="card"
-                  options={cardStyle}
-                  className="w-full"
-                />
-              </div>
+              <FormField
+                control={form.control}
+                name="paymentMethod"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel>Select Payment Method</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex flex-col space-y-1"
+                      >
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="card" />
+                          </FormControl>
+                          <FormLabel className="font-normal flex items-center gap-2">
+                            <CreditCard size={18} />
+                            Credit/Debit Card
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="mobile_money" />
+                          </FormControl>
+                          <FormLabel className="font-normal flex items-center gap-2">
+                            <Phone size={18} />
+                            Mobile Money
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="paypal" />
+                          </FormControl>
+                          <FormLabel className="font-normal flex items-center gap-2">
+                            <Paypal size={18} />
+                            PayPal
+                          </FormLabel>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              {selectedPaymentMethod === "card" && (
+                <div className="mt-4">
+                  <FormLabel htmlFor="card" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Card Details
+                  </FormLabel>
+                  <div className="p-3 border rounded-md mt-1">
+                    <CardElement
+                      id="card"
+                      options={cardStyle}
+                      className="w-full"
+                    />
+                  </div>
+                </div>
+              )}
+              
+              {selectedPaymentMethod === "mobile_money" && (
+                <div className="mt-4">
+                  <FormField
+                    control={form.control}
+                    name="phoneNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Phone Number</FormLabel>
+                        <FormControl>
+                          <Input 
+                            placeholder="Enter your phone number"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              )}
+              
+              {selectedPaymentMethod === "paypal" && (
+                <div className="mt-4">
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>PayPal Email</FormLabel>
+                        <FormControl>
+                          <Input 
+                            type="email"
+                            placeholder="Enter your PayPal email"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              )}
             </div>
           </form>
         </Form>
@@ -207,7 +325,7 @@ const PaymentForm = ({ shipmentId, amount, onPaymentSuccess }: PaymentFormProps)
       <CardFooter>
         <Button 
           onClick={form.handleSubmit(handleSubmit)}
-          disabled={!stripe || processing || !referenceVerified} 
+          disabled={!referenceVerified || processing || (selectedPaymentMethod === "card" && !stripe)} 
           className="w-full"
         >
           {processing ? "Processing..." : `Pay $${amount.toLocaleString()}`}
