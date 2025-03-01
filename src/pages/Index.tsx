@@ -17,20 +17,6 @@ const Index = () => {
       <section className="page-hero">
         <div className="container mx-auto px-4 pt-24 pb-16 md:pt-32 md:pb-24 relative z-10">
           <div className="max-w-3xl mx-auto text-center animate-fade-in">
-            <div className="flex flex-col items-center justify-center mb-8">
-              <div className="flex items-center space-x-2 text-primary mb-4">
-                <Ship size={40} strokeWidth={1.5} />
-                <span className="font-semibold text-3xl">Eazy Chain</span>
-              </div>
-              <div className="rounded-xl overflow-hidden shadow-lg mx-auto max-w-2xl mb-8">
-                <img 
-                  src="/lovable-uploads/1b96471e-0948-4119-9423-cd74d0e7002f.png" 
-                  alt="Eazy Chain Vessel" 
-                  className="w-full h-auto object-cover"
-                />
-              </div>
-            </div>
-            
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
               Seamless Shipping for Your <span className="text-primary">Business</span>
             </h1>
@@ -121,6 +107,25 @@ const Index = () => {
             <p className="text-muted-foreground">
               Secure and convenient payment processing for your shipping transactions.
             </p>
+          </div>
+        </div>
+      </section>
+      
+      {/* Vessel Image Section */}
+      <section className="py-16 bg-gradient-to-b from-background to-accent/20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold mb-3">Our Vessels</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Modern and efficient vessels to transport your cargo safely
+            </p>
+          </div>
+          <div className="rounded-xl overflow-hidden shadow-lg mx-auto max-w-4xl">
+            <img 
+              src="/lovable-uploads/1b96471e-0948-4119-9423-cd74d0e7002f.png" 
+              alt="Eazy Chain Vessel" 
+              className="w-full h-auto object-cover"
+            />
           </div>
         </div>
       </section>
