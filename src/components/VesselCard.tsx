@@ -109,62 +109,7 @@ const VesselCard = ({ vessel }: { vessel: VesselProps }) => {
             </div>
             
             {/* New realistic vessel cargo visualization using the uploaded image */}
-            <div className="relative h-60 bg-blue-50 dark:bg-blue-950/20 rounded-lg overflow-hidden mb-4 border border-blue-100 dark:border-blue-900">
-              {/* Ship image as base */}
-              <img 
-                src="/lovable-uploads/00117671-409f-47bf-afe2-5dbb9f9e15f2.png" 
-                alt="Cargo vessel from aerial view" 
-                className="w-full h-full object-cover"
-              />
-              
-              {/* Overlay to show available/unavailable cargo sections */}
-              <div className="absolute inset-0 flex flex-col">
-                {/* Top bridge section - don't overlay */}
-                <div className="h-[15%]"></div>
-                
-                {/* Cargo area divided into sections */}
-                <div className="flex-1 grid grid-rows-10 gap-[1px] px-[15%]">
-                  {Array.from({ length: 10 }).map((_, rowIndex) => {
-                    // Calculate if this section should be marked as available
-                    const rowPercentage = (rowIndex + 1) / 10 * 100;
-                    const isAvailable = rowPercentage <= availabilityPercentage;
-                    
-                    return (
-                      <div 
-                        key={rowIndex} 
-                        className={`w-full ${
-                          isAvailable 
-                            ? "bg-green-400/30 border border-green-500/50" 
-                            : "bg-red-400/30 border border-red-500/50"
-                        } backdrop-blur-sm`}
-                      ></div>
-                    );
-                  })}
-                </div>
-                
-                {/* Bottom section - don't overlay */}
-                <div className="h-[10%]"></div>
-              </div>
-              
-              {/* Capacity indicators */}
-              <div className="absolute top-2 right-2 flex flex-col items-end space-y-1 z-10">
-                <div className="px-2 py-1 bg-white/90 dark:bg-black/70 text-xs font-medium rounded border border-gray-200 dark:border-gray-700 backdrop-blur-sm">
-                  {Math.round(availabilityPercentage)}% Available
-                </div>
-              </div>
-              
-              {/* Legend */}
-              <div className="absolute bottom-2 left-2 z-10 flex flex-col items-start gap-1">
-                <div className="flex items-center gap-1 px-1.5 py-0.5 bg-white/80 dark:bg-black/60 rounded backdrop-blur-sm border border-gray-200 dark:border-gray-800">
-                  <div className="w-3 h-3 bg-green-400/80 rounded-sm border border-green-500"></div>
-                  <span className="text-[10px] text-gray-800 dark:text-gray-200">Available Space</span>
-                </div>
-                <div className="flex items-center gap-1 px-1.5 py-0.5 bg-white/80 dark:bg-black/60 rounded backdrop-blur-sm border border-gray-200 dark:border-gray-800">
-                  <div className="w-3 h-3 bg-red-400/80 rounded-sm border border-red-500"></div>
-                  <span className="text-[10px] text-gray-800 dark:text-gray-200">Reserved Space</span>
-                </div>
-              </div>
-            </div>
+            
             
             {/* Keep the boxes and progress bar */}
             <div className="relative h-16 bg-secondary/50 rounded-lg overflow-hidden mb-2">
