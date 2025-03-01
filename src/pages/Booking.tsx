@@ -1,11 +1,10 @@
+
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import BookingForm from "@/components/BookingForm";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MapPin, Ship } from "lucide-react";
-import VesselCard from "@/components/VesselCard";
 
 // Route Map Component
 const RouteMap = () => {
@@ -98,18 +97,8 @@ const Booking = () => {
             <div className="lg:col-span-2">
               <Card>
                 <CardContent className="p-6">
-                  <Tabs defaultValue="cargo">
-                    <TabsList className="grid w-full grid-cols-2 mb-6">
-                      <TabsTrigger value="cargo">Cargo</TabsTrigger>
-                      <TabsTrigger value="container">Container</TabsTrigger>
-                    </TabsList>
-                    <TabsContent value="cargo" className="mt-0">
-                      <BookingForm />
-                    </TabsContent>
-                    <TabsContent value="container" className="mt-0">
-                      <BookingForm isContainer />
-                    </TabsContent>
-                  </Tabs>
+                  <h3 className="text-xl font-semibold mb-4">Book Your Cargo</h3>
+                  <BookingForm />
                 </CardContent>
               </Card>
             </div>
