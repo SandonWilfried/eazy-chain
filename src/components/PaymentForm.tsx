@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { Button } from "@/components/ui/button";
@@ -14,7 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 export interface PaymentFormProps {
   shipmentId: string;
   amount: number;
-  onPaymentSuccess?: () => void; // Add this line to fix the error
+  onPaymentSuccess?: () => void;
 }
 
 const cardStyle = {

@@ -1,11 +1,17 @@
 
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import Navbar from "@/components/Navbar";
 import PaymentForm from "@/components/PaymentForm";
 import BillOfLadingModal from "@/components/BillOfLadingModal";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+
+// Initialize Stripe with your public key
+// Replace with your actual Stripe publishable key when in production
+const stripePromise = loadStripe("pk_test_TYooMQauvdEDq54NiTphI7jx");
 
 const mockShipmentData = {
   id: "CARGO12345678",
@@ -87,11 +93,13 @@ const Payment = () => {
               <div className="animate-fade-in">
                 {shipmentData && (
                   <>
-                    <PaymentForm 
-                      shipmentId={shipmentData.id} 
-                      amount={shipmentData.amount}
-                      onPaymentSuccess={handlePaymentSuccess}
-                    />
+                    <Elements stripe={stripePromise}>
+                      <PaymentForm 
+                        shipmentId={shipmentData.id} 
+                        amount={shipmentData.amount}
+                        onPaymentSuccess={handlePaymentSuccess}
+                      />
+                    </Elements>
                     
                     {/* Bill of Lading Modal */}
                     <BillOfLadingModal
