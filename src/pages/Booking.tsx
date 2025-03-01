@@ -75,6 +75,12 @@ const RouteMap = () => {
 
 const Booking = () => {
   const [activeTab, setActiveTab] = useState("vessels");
+  const [showCustomForm, setShowCustomForm] = useState(false);
+
+  const handleCustomBookingClick = () => {
+    setShowCustomForm(true);
+    setActiveTab("vessels"); // Keep the vessels tab active
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-pattern">
@@ -100,18 +106,29 @@ const Booking = () => {
               
               <RouteMap />
               
-              {/* Moved the Create Custom Booking button to below the map */}
+              {/* Create Custom Booking button */}
               <div className="text-center mt-4 mb-6">
                 <p className="text-muted-foreground mb-3">
                   Need a custom shipping solution? Create a custom booking request.
                 </p>
                 <Button 
-                  onClick={() => setActiveTab("custom")}
+                  onClick={handleCustomBookingClick}
                   className="px-6"
                 >
                   Create Custom Booking
                 </Button>
               </div>
+              
+              {/* Display the custom booking form below the button when requested */}
+              {showCustomForm && (
+                <div className="glass-panel px-4 py-6 md:p-8 mb-8 mt-6 border border-border">
+                  <h2 className="text-2xl font-semibold mb-6">Custom Booking Request</h2>
+                  <p className="text-muted-foreground mb-6">
+                    Please provide details about your shipment and we'll find the best solution to accommodate your needs.
+                  </p>
+                  <BookingForm />
+                </div>
+              )}
               
               <h3 className="font-medium text-lg mb-4">Route Information</h3>
               
@@ -157,8 +174,6 @@ const Booking = () => {
                     <VesselCard key={vessel.id} vessel={vessel} />
                   ))}
                 </div>
-                
-                {/* Removed the duplicate "Create Custom Booking" button that was here */}
               </TabsContent>
               
               <TabsContent value="custom" className="animate-fade-in">
