@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import ShipmentCard, { ShipmentProps } from "@/components/ShipmentCard";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Ship, Package, Calendar, CreditCard, Plus, Filter } from "lucide-react";
+import { Ship, Package, Calendar, CreditCard, Plus, Filter, Search } from "lucide-react";
 import {
   Select,
   SelectContent,

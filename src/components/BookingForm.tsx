@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -46,16 +45,12 @@ const formSchema = z.object({
   cargoType: z.string({
     required_error: "Cargo type is required.",
   }),
-  containerCount: z.string().transform(Number).pipe(
-    z.number().min(1, {
-      message: "At least one container is required.",
-    })
-  ),
-  weight: z.string().transform(Number).pipe(
-    z.number().min(1, {
-      message: "Weight is required.",
-    })
-  ),
+  containerCount: z.coerce.number().min(1, {
+    message: "At least one container is required.",
+  }),
+  weight: z.coerce.number().min(1, {
+    message: "Weight is required.",
+  }),
   cargoDescription: z.string().optional(),
   contactName: z.string().min(2, {
     message: "Contact name is required.",
