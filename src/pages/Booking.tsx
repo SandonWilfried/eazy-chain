@@ -15,7 +15,7 @@ const availableVessels: VesselProps[] = [
     route: "Lomé, Togo → Praia, Cape Verde",
     departureDate: "2023-11-15",
     arrivalDate: "2023-12-10",
-    capacity: 1100,
+    capacity: 1050,
     available: 750,
     price: 150,
     priceXOF: 90000, // Approximate conversion rate 1 USD = 600 XOF
@@ -74,7 +74,7 @@ const Booking = () => {
             <div className="glass-panel p-6 mb-8">
               <h2 className="text-xl font-semibold mb-3">Our Sailing Vessel</h2>
               <p className="mb-4">
-                Eazy Chain operates a cargo sailing vessel with a capacity of 1100 pallets. Pricing is per pallet rather than per container.
+                Eazy Chain operates a cargo sailing vessel with a capacity of 1050 pallets. Pricing is per pallet rather than per container.
               </p>
               
               <RouteMap />
