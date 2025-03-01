@@ -5,19 +5,20 @@ import BookingForm from "@/components/BookingForm";
 import VesselCard, { VesselProps } from "@/components/VesselCard";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Ship } from "lucide-react";
+import { Ship, MapPin } from "lucide-react";
 
-// Updated vessel data with real Eazy Chain vessel
+// Updated vessel data with new information
 const availableVessels: VesselProps[] = [
   {
     id: "v1",
-    name: "Eazy Chain Voyager",
+    name: "Anemos",
     route: "Lomé, Togo → Praia, Cape Verde",
     departureDate: "2023-11-15",
     arrivalDate: "2023-12-10",
     capacity: 1100,
     available: 750,
-    price: 800,
+    price: 150,
+    priceXOF: 90000, // Approximate conversion rate 1 USD = 600 XOF
   }
 ];
 
@@ -31,6 +32,25 @@ const portStops = [
   "Port of Dakar, Senegal",
   "Port of Praia, Cape Verde (Arrival)"
 ];
+
+// Map component to show the route
+const RouteMap = () => {
+  return (
+    <div className="relative w-full h-[400px] rounded-lg overflow-hidden mt-4 mb-6">
+      <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
+        <img 
+          src="/lovable-uploads/6d153727-082d-4151-8d87-83b4d2df35fc.png" 
+          alt="Ship route map from Lomé to Praia" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+        <div className="absolute bottom-4 left-4 bg-white/80 dark:bg-black/50 p-2 rounded text-xs font-medium backdrop-blur-sm">
+          © Eazy Chain Shipping Routes
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const Booking = () => {
   const [activeTab, setActiveTab] = useState("vessels");
@@ -56,6 +76,9 @@ const Booking = () => {
               <p className="mb-4">
                 Eazy Chain operates a cargo sailing vessel with a capacity of 1100 pallets. Pricing is per pallet rather than per container.
               </p>
+              
+              <RouteMap />
+              
               <h3 className="font-medium text-lg mb-2">Route Information</h3>
               <ul className="space-y-1 mb-4">
                 {portStops.map((port, index) => (

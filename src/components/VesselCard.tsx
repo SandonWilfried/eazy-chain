@@ -22,6 +22,7 @@ export interface VesselProps {
   capacity: number;
   available: number;
   price: number;
+  priceXOF?: number;
 }
 
 const VesselCard = ({ vessel }: { vessel: VesselProps }) => {
@@ -108,8 +109,13 @@ const VesselCard = ({ vessel }: { vessel: VesselProps }) => {
         </div>
       </CardContent>
       <CardFooter className="flex justify-between items-center border-t pt-4">
-        <div className="text-lg font-semibold">
+        <div className="text-lg font-semibold flex flex-col">
           ${vessel.price.toLocaleString()}<span className="text-sm text-muted-foreground font-normal"> per pallet</span>
+          {vessel.priceXOF && (
+            <span className="text-sm text-muted-foreground font-normal">
+              ({vessel.priceXOF.toLocaleString()} XOF)
+            </span>
+          )}
         </div>
         <Button onClick={handleBookNow}>Book Now</Button>
       </CardFooter>
