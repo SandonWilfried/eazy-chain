@@ -4,6 +4,11 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { Input } from "@/components/ui/input";
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export interface PaymentFormProps {
   shipmentId: string;
@@ -29,15 +34,27 @@ const cardStyle = {
   }
 };
 
+// Form validation schema
+const formSchema = z.object({
+  bookingReference: z.string().min(6, {
+    message: "Booking reference must be at least 6 characters.",
+  }),
+});
+
 const PaymentForm = ({ shipmentId, amount, onPaymentSuccess }: PaymentFormProps) => {
   const stripe = useStripe();
   const elements = useElements();
   const [processing, setProcessing] = useState(false);
   const { toast } = useToast();
   
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      bookingReference: "",
+    },
+  });
+  
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     if (!stripe || !elements) {
       // Stripe.js has not loaded yet. Make sure to disable
       // form submission until Stripe.js is loaded.
@@ -45,6 +62,12 @@ const PaymentForm = ({ shipmentId, amount, onPaymentSuccess }: PaymentFormProps)
     }
     
     setProcessing(true);
+    
+    // Verify booking reference (in a real app, this would call your API)
+    console.log('Verifying booking reference:', values.bookingReference);
+    
+    // For demo purposes, we're considering any reference valid
+    // In a real app, you would validate this against your backend
     
     const cardElement = elements.getElement(CardElement);
     
@@ -94,27 +117,46 @@ const PaymentForm = ({ shipmentId, amount, onPaymentSuccess }: PaymentFormProps)
     <Card className="w-full">
       <CardHeader>
         <CardTitle>Payment Details</CardTitle>
-        <CardDescription>Enter your card details below to complete your secure payment.</CardDescription>
+        <CardDescription>Enter your booking reference and card details below to complete your secure payment.</CardDescription>
       </CardHeader>
       
       <CardContent>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="card" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Card Details
-            </label>
-            <CardElement
-              id="card"
-              options={cardStyle}
-              className="p-2 border rounded-md mt-2"
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="bookingReference"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Booking Reference</FormLabel>
+                  <FormControl>
+                    <Input 
+                      placeholder="Enter your booking reference" 
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-        </form>
+            
+            <div>
+              <FormLabel htmlFor="card" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Card Details
+              </FormLabel>
+              <CardElement
+                id="card"
+                options={cardStyle}
+                className="p-3 border rounded-md mt-1"
+              />
+            </div>
+          </form>
+        </Form>
       </CardContent>
       
       <CardFooter>
         <Button 
-          onClick={handleSubmit}
+          onClick={form.handleSubmit(handleSubmit)}
           disabled={!stripe || processing} 
           className="w-full"
         >
