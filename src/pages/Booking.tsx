@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import BookingForm from "@/components/BookingForm";
@@ -78,6 +79,19 @@ const Booking = () => {
               
               <RouteMap />
               
+              {/* Moved the Create Custom Booking button to below the map */}
+              <div className="text-center mt-4 mb-6">
+                <p className="text-muted-foreground mb-3">
+                  Need a custom shipping solution? Create a custom booking request.
+                </p>
+                <Button 
+                  onClick={() => setActiveTab("custom")}
+                  className="px-6"
+                >
+                  Create Custom Booking
+                </Button>
+              </div>
+              
               <h3 className="font-medium text-lg mb-2">Route Information</h3>
               <ul className="space-y-1 mb-4">
                 {portStops.map((port, index) => (
@@ -115,17 +129,7 @@ const Booking = () => {
                   ))}
                 </div>
                 
-                <div className="text-center mt-8">
-                  <p className="text-muted-foreground mb-4">
-                    Need a custom shipping solution? Create a custom booking request.
-                  </p>
-                  <Button 
-                    variant="outline" 
-                    onClick={() => setActiveTab("custom")}
-                  >
-                    Create Custom Booking
-                  </Button>
-                </div>
+                {/* Removed the duplicate "Create Custom Booking" button that was here */}
               </TabsContent>
               
               <TabsContent value="custom" className="animate-fade-in">
