@@ -9,6 +9,7 @@ import Booking from "./pages/Booking";
 import Tracking from "./pages/Tracking";
 import Payment from "./pages/Payment";
 import Dashboard from "./pages/Dashboard";
+import Passengers from "./pages/Passengers";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/booking" element={<Booking />} />
+          <Route path="/passengers" element={<Passengers />} />
           <Route path="/tracking" element={<Tracking />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/dashboard" element={<Dashboard />} />
