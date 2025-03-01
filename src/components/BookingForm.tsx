@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -22,7 +23,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -30,6 +31,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 
 const cargoTypes = [
   "General Cargo",
@@ -40,6 +49,32 @@ const cargoTypes = [
   "Vehicles",
   "Project Cargo",
   "Hazardous",
+];
+
+const cargoDescriptions = [
+  "Agricultural Products",
+  "Textiles",
+  "Electronics",
+  "Construction Materials",
+  "Household Goods",
+  "Furniture",
+  "Medical Supplies",
+  "Food Products",
+  "Beverages",
+  "Cosmetics",
+  "Paper Products",
+  "Auto Parts",
+  "Industrial Machinery",
+  "Chemicals (Non-hazardous)",
+  "Plastic Products",
+  "Handicrafts",
+  "Clothing",
+  "Books & Printed Materials",
+  "Sports Equipment",
+  "Musical Instruments",
+  "Office Supplies",
+  "Toys",
+  "Other"
 ];
 
 const formSchema = z.object({
@@ -79,6 +114,7 @@ const formSchema = z.object({
 const BookingForm = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -236,14 +272,56 @@ const BookingForm = () => {
           control={form.control}
           name="cargoDescription"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Cargo Description (Optional)</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Provide details about your cargo"
-                  {...field}
-                />
-              </FormControl>
+            <FormItem className="flex flex-col">
+              <FormLabel>Cargo Description</FormLabel>
+              <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={open}
+                      className={cn(
+                        "w-full justify-between",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {field.value
+                        ? cargoDescriptions.find((description) => description === field.value)
+                        : "Select cargo description"}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0">
+                  <Command>
+                    <CommandInput placeholder="Search cargo description..." />
+                    <CommandEmpty>No description found.</CommandEmpty>
+                    <CommandList>
+                      <CommandGroup>
+                        {cargoDescriptions.map((description) => (
+                          <CommandItem
+                            key={description}
+                            value={description}
+                            onSelect={(value) => {
+                              form.setValue("cargoDescription", value);
+                              setOpen(false);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                field.value === description ? "opacity-100" : "opacity-0"
+                              )}
+                            />
+                            {description}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
               <FormMessage />
             </FormItem>
           )}
