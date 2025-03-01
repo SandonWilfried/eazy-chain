@@ -11,7 +11,7 @@ const availableVessels: VesselProps[] = [
   {
     id: "v1",
     name: "Anemos",
-    route: "Lomé, Togo → Praia, Cape Verde",
+    route: "Lomé, Togo ↔ Praia, Cape Verde",
     departureDate: "2026-01-05",
     arrivalDate: "2026-01-15", // Updated to 2026, 10 days after departure
     capacity: 1050,
@@ -54,7 +54,7 @@ const portStops = [
     sailingTime: "1 day from Conakry"
   },
   {
-    name: "Port of Praia, Cape Verde (Arrival)",
+    name: "Port of Praia, Cape Verde (Return Point)",
     imageUrl: "/lovable-uploads/1d6430d0-d19c-41a0-bda3-24d8b807d30b.png",
     sailingTime: "1 day from Dakar (10 days total)"
   }
@@ -108,6 +108,7 @@ const Booking = () => {
               <h2 className="text-xl font-semibold mb-3">Our Sailing Vessel</h2>
               <p className="mb-4">
                 Eazy Chain operates a cargo sailing vessel with a capacity of 1050 pallets. Pricing is per pallet rather than per container.
+                <span className="font-medium"> Our vessels operate round trip voyages between Lomé, Togo and Praia, Cape Verde.</span>
               </p>
               
               <RouteMap />
@@ -136,7 +137,7 @@ const Booking = () => {
                 </div>
               )}
               
-              <h3 className="font-medium text-lg mb-4">Route Information</h3>
+              <h3 className="font-medium text-lg mb-4">Round Trip Route Information</h3>
               
               {/* Updated port stops to display sailing times */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-4">

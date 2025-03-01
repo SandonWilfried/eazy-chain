@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Ship, Calendar, Package, Users } from "lucide-react";
+import { Ship, Calendar, Package, Users, RepeatIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -65,7 +65,13 @@ const VesselCard = ({ vessel }: { vessel: VesselProps }) => {
               <Ship size={18} className="text-primary" />
               {vessel.name}
             </CardTitle>
-            <CardDescription className="mt-1">{vessel.route}</CardDescription>
+            <CardDescription className="mt-1 flex items-center">
+              <span>{vessel.route}</span>
+              <Badge className="ml-2 bg-primary/10 text-primary border-primary/20 flex items-center gap-1">
+                <RepeatIcon size={12} />
+                Round Trip
+              </Badge>
+            </CardDescription>
           </div>
           <Badge 
             variant={availabilityPercentage > 30 ? "outline" : "destructive"}
@@ -124,3 +130,4 @@ const VesselCard = ({ vessel }: { vessel: VesselProps }) => {
 };
 
 export default VesselCard;
+
