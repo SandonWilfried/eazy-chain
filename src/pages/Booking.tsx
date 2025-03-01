@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import BookingForm from "@/components/BookingForm";
@@ -7,14 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Ship, MapPin } from "lucide-react";
 
-// Updated vessel data with new information
+// Updated vessel data with corrected arrival date
 const availableVessels: VesselProps[] = [
   {
     id: "v1",
     name: "Anemos",
     route: "Lomé, Togo → Praia, Cape Verde",
     departureDate: "2026-01-05",
-    arrivalDate: "2023-12-10",
+    arrivalDate: "2025-01-15", // Updated to 2025, 10 days after departure
     capacity: 1050,
     available: 750,
     price: 150,
@@ -22,35 +21,42 @@ const availableVessels: VesselProps[] = [
   }
 ];
 
-// Port stops information with image URLs
+// Port stops information with image URLs and sailing times
 const portStops = [
   {
     name: "Port of Lomé, Togo (Departure)",
-    imageUrl: "/lovable-uploads/dc49cca7-a192-430c-b5b2-20afa5343515.png"
+    imageUrl: "/lovable-uploads/dc49cca7-a192-430c-b5b2-20afa5343515.png",
+    sailingTime: "Departure point"
   },
   {
     name: "Port of Abidjan, Côte d'Ivoire",
-    imageUrl: "/lovable-uploads/a3a0ca37-4b5c-499a-b77d-1b4930d1b070.png"
+    imageUrl: "/lovable-uploads/a3a0ca37-4b5c-499a-b77d-1b4930d1b070.png",
+    sailingTime: "1 day from Lomé"
   },
   {
     name: "Port of San Pedro, Côte d'Ivoire",
-    imageUrl: "/lovable-uploads/cdea28bb-8c22-4bca-84b9-b371e61f5a0d.png"
+    imageUrl: "/lovable-uploads/cdea28bb-8c22-4bca-84b9-b371e61f5a0d.png",
+    sailingTime: "1 day from Abidjan"
   },
   {
     name: "Port of Monrovia, Liberia",
-    imageUrl: "/lovable-uploads/06612564-a5e3-4908-aa05-12ccd63fcd26.png"
+    imageUrl: "/lovable-uploads/06612564-a5e3-4908-aa05-12ccd63fcd26.png",
+    sailingTime: "1 day from San Pedro"
   },
   {
     name: "Port of Conakry, Guinea",
-    imageUrl: "/lovable-uploads/4f1849ef-25b4-4c4a-99c8-923ed3b3d4ce.png"
+    imageUrl: "/lovable-uploads/4f1849ef-25b4-4c4a-99c8-923ed3b3d4ce.png",
+    sailingTime: "1 day from Monrovia"
   },
   {
     name: "Port of Dakar, Senegal",
-    imageUrl: "/lovable-uploads/0166031e-471c-41a2-b706-ba4695891108.png"
+    imageUrl: "/lovable-uploads/0166031e-471c-41a2-b706-ba4695891108.png",
+    sailingTime: "1 day from Conakry"
   },
   {
     name: "Port of Praia, Cape Verde (Arrival)",
-    imageUrl: "/lovable-uploads/1d6430d0-d19c-41a0-bda3-24d8b807d30b.png"
+    imageUrl: "/lovable-uploads/1d6430d0-d19c-41a0-bda3-24d8b807d30b.png",
+    sailingTime: "1 day from Dakar (10 days total)"
   }
 ];
 
@@ -132,7 +138,7 @@ const Booking = () => {
               
               <h3 className="font-medium text-lg mb-4">Route Information</h3>
               
-              {/* Updated port stops to display in a grid */}
+              {/* Updated port stops to display sailing times */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-4">
                 {portStops.map((port, index) => (
                   <div key={index} className="flex flex-col">
@@ -145,7 +151,10 @@ const Booking = () => {
                     </div>
                     <div className="flex items-center">
                       <div className="h-3 w-3 rounded-full bg-primary mr-2 flex-shrink-0"></div>
-                      <p className="font-medium text-sm">{port.name}</p>
+                      <div>
+                        <p className="font-medium text-sm">{port.name}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{port.sailingTime}</p>
+                      </div>
                     </div>
                   </div>
                 ))}
