@@ -27,6 +27,9 @@ const RoomCard = ({ room }: { room: RoomProps }) => {
   const [isHovered, setIsHovered] = useState(false);
   const { toast } = useToast();
   
+  // Convert USD to XOF (1 USD ≈ 600 XOF)
+  const xofPrice = room.price * 600;
+  
   const handleBookNow = () => {
     toast({
       title: "Room Selected",
@@ -61,10 +64,15 @@ const RoomCard = ({ room }: { room: RoomProps }) => {
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>{room.name}</span>
-          <span className="text-lg font-semibold">
-            ${room.price.toLocaleString()}
-            <span className="text-sm text-muted-foreground font-normal"> per person</span>
-          </span>
+          <div className="text-right">
+            <div className="text-lg font-semibold">
+              ${room.price.toLocaleString()}
+              <span className="text-sm text-muted-foreground font-normal"> per person</span>
+            </div>
+            <div className="text-sm text-muted-foreground">
+              {xofPrice.toLocaleString()} XOF <span className="font-normal">per day</span>
+            </div>
+          </div>
         </CardTitle>
         <CardDescription className="flex items-center gap-1">
           <Users size={16} />
