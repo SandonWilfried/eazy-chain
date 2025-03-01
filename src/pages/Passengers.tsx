@@ -1,50 +1,15 @@
+
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import RoomCard, { RoomProps } from "@/components/RoomCard";
 import PassengerBookingForm from "@/components/PassengerBookingForm";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Ship, Users, ShipWheel, User, Leaf, Anchor } from "lucide-react";
+import { Ship, Users, ShipWheel, User } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
-// Room data with images
+// Room data with images - updated to only include premium cabins
 const availableRooms: RoomProps[] = [
-  {
-    id: "standard-1",
-    name: "Standard Cabin 1",
-    capacity: 2,
-    available: 2,
-    price: 299,
-    amenities: ["Private bathroom", "Air conditioning", "Storage space", "Reading lights"],
-    imageUrl: "/lovable-uploads/dc49cca7-a192-430c-b5b2-20afa5343515.png"
-  },
-  {
-    id: "standard-2",
-    name: "Standard Cabin 2",
-    capacity: 2,
-    available: 2,
-    price: 299,
-    amenities: ["Private bathroom", "Air conditioning", "Storage space", "Reading lights"],
-    imageUrl: "/lovable-uploads/a3a0ca37-4b5c-499a-b77d-1b4930d1b070.png"
-  },
-  {
-    id: "deluxe-1",
-    name: "Deluxe Cabin 1",
-    capacity: 2,
-    available: 2,
-    price: 399,
-    amenities: ["Private bathroom", "Premium bedding", "Ocean view", "Mini refrigerator", "Desk area"],
-    imageUrl: "/lovable-uploads/cdea28bb-8c22-4bca-84b9-b371e61f5a0d.png"
-  },
-  {
-    id: "deluxe-2",
-    name: "Deluxe Cabin 2",
-    capacity: 2,
-    available: 1,
-    price: 399,
-    amenities: ["Private bathroom", "Premium bedding", "Ocean view", "Mini refrigerator", "Desk area"],
-    imageUrl: "/lovable-uploads/06612564-a5e3-4908-aa05-12ccd63fcd26.png"
-  },
   {
     id: "premium-1",
     name: "Premium Cabin 1",
@@ -58,7 +23,43 @@ const availableRooms: RoomProps[] = [
     id: "premium-2",
     name: "Premium Cabin 2",
     capacity: 2,
-    available: 0,
+    available: 2,
+    price: 599,
+    amenities: ["Luxurious bathroom", "King-size bed", "Panoramic view", "Sitting area", "Room service", "Premium amenities"],
+    imageUrl: "/lovable-uploads/0166031e-471c-41a2-b706-ba4695891108.png"
+  },
+  {
+    id: "premium-3",
+    name: "Premium Cabin 3",
+    capacity: 2,
+    available: 2,
+    price: 599,
+    amenities: ["Luxurious bathroom", "King-size bed", "Panoramic view", "Sitting area", "Room service", "Premium amenities"],
+    imageUrl: "/lovable-uploads/4f1849ef-25b4-4c4a-99c8-923ed3b3d4ce.png"
+  },
+  {
+    id: "premium-4",
+    name: "Premium Cabin 4",
+    capacity: 2,
+    available: 2,
+    price: 599,
+    amenities: ["Luxurious bathroom", "King-size bed", "Panoramic view", "Sitting area", "Room service", "Premium amenities"],
+    imageUrl: "/lovable-uploads/0166031e-471c-41a2-b706-ba4695891108.png"
+  },
+  {
+    id: "premium-5",
+    name: "Premium Cabin 5",
+    capacity: 2,
+    available: 2,
+    price: 599,
+    amenities: ["Luxurious bathroom", "King-size bed", "Panoramic view", "Sitting area", "Room service", "Premium amenities"],
+    imageUrl: "/lovable-uploads/4f1849ef-25b4-4c4a-99c8-923ed3b3d4ce.png"
+  },
+  {
+    id: "premium-6",
+    name: "Premium Cabin 6",
+    capacity: 2,
+    available: 2,
     price: 599,
     amenities: ["Luxurious bathroom", "King-size bed", "Panoramic view", "Sitting area", "Room service", "Premium amenities"],
     imageUrl: "/lovable-uploads/0166031e-471c-41a2-b706-ba4695891108.png"
