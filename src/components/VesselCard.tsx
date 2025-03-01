@@ -95,7 +95,7 @@ const VesselCard = ({ vessel }: { vessel: VesselProps }) => {
               <Package size={16} />
               <span>Available Space</span>
             </div>
-            <span className="font-medium">{vessel.available} of {vessel.capacity} TEU</span>
+            <span className="font-medium">{vessel.available} of {vessel.capacity} pallets</span>
           </div>
           <div className="mt-2">
             <div className="w-full bg-secondary rounded-full h-2 overflow-hidden">
@@ -109,7 +109,7 @@ const VesselCard = ({ vessel }: { vessel: VesselProps }) => {
       </CardContent>
       <CardFooter className="flex justify-between items-center border-t pt-4">
         <div className="text-lg font-semibold">
-          ${vessel.price.toLocaleString()}<span className="text-sm text-muted-foreground font-normal"> per TEU</span>
+          ${vessel.price.toLocaleString()}<span className="text-sm text-muted-foreground font-normal"> per pallet</span>
         </div>
         <Button onClick={handleBookNow}>Book Now</Button>
       </CardFooter>

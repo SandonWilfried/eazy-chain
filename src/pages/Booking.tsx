@@ -7,48 +7,29 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Ship } from "lucide-react";
 
-// Mock data for vessels
+// Updated vessel data with real Eazy Chain vessel
 const availableVessels: VesselProps[] = [
   {
     id: "v1",
-    name: "Nordic Navigator",
-    route: "Shanghai → Rotterdam",
+    name: "Eazy Chain Voyager",
+    route: "Lomé, Togo → Praia, Cape Verde",
     departureDate: "2023-11-15",
-    arrivalDate: "2023-12-05",
-    capacity: 100,
-    available: 65,
-    price: 2300,
-  },
-  {
-    id: "v2",
-    name: "Pacific Pathfinder",
-    route: "Hong Kong → Los Angeles",
-    departureDate: "2023-11-20",
     arrivalDate: "2023-12-10",
-    capacity: 120,
-    available: 30,
-    price: 2700,
-  },
-  {
-    id: "v3",
-    name: "Atlantic Adventurer",
-    route: "New York → Hamburg",
-    departureDate: "2023-11-25",
-    arrivalDate: "2023-12-10",
-    capacity: 80,
-    available: 10,
-    price: 2500,
-  },
-  {
-    id: "v4",
-    name: "Baltic Voyager",
-    route: "St. Petersburg → Helsinki",
-    departureDate: "2023-11-18",
-    arrivalDate: "2023-11-25",
-    capacity: 50,
-    available: 35,
-    price: 1800,
-  },
+    capacity: 1100,
+    available: 750,
+    price: 800,
+  }
+];
+
+// Port stops information
+const portStops = [
+  "Port of Lomé, Togo (Departure)",
+  "Port of Abidjan, Côte d'Ivoire",
+  "Port of San Pedro, Côte d'Ivoire",
+  "Port of Monrovia, Liberia",
+  "Port of Conakry, Guinea",
+  "Port of Dakar, Senegal",
+  "Port of Praia, Cape Verde (Arrival)"
 ];
 
 const Booking = () => {
@@ -65,9 +46,28 @@ const Booking = () => {
               <div>
                 <h1 className="text-3xl font-bold mb-2">Book Your Shipment</h1>
                 <p className="text-muted-foreground">
-                  Choose from available vessels or create a custom booking request
+                  Reserve space on our cargo sailing vessel or create a custom booking request
                 </p>
               </div>
+            </div>
+            
+            <div className="glass-panel p-6 mb-8">
+              <h2 className="text-xl font-semibold mb-3">Our Sailing Vessel</h2>
+              <p className="mb-4">
+                Eazy Chain operates a cargo sailing vessel with a capacity of 1100 pallets. Pricing is per pallet rather than per container.
+              </p>
+              <h3 className="font-medium text-lg mb-2">Route Information</h3>
+              <ul className="space-y-1 mb-4">
+                {portStops.map((port, index) => (
+                  <li key={index} className="flex items-center">
+                    <div className="mr-3 flex flex-col items-center">
+                      <div className="h-3 w-3 rounded-full bg-primary"></div>
+                      {index < portStops.length - 1 && <div className="h-6 w-0.5 bg-gray-300"></div>}
+                    </div>
+                    <span>{port}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
             
             <Tabs 
@@ -87,7 +87,7 @@ const Booking = () => {
               </TabsList>
               
               <TabsContent value="vessels" className="space-y-6 animate-fade-in">
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid md:grid-cols-1 gap-6">
                   {availableVessels.map((vessel) => (
                     <VesselCard key={vessel.id} vessel={vessel} />
                   ))}
@@ -95,7 +95,7 @@ const Booking = () => {
                 
                 <div className="text-center mt-8">
                   <p className="text-muted-foreground mb-4">
-                    Don't see a suitable vessel? Create a custom booking request.
+                    Need a custom shipping solution? Create a custom booking request.
                   </p>
                   <Button 
                     variant="outline" 
@@ -110,7 +110,7 @@ const Booking = () => {
                 <div className="glass-panel px-4 py-6 md:p-8 mb-8">
                   <h2 className="text-2xl font-semibold mb-6">Custom Booking Request</h2>
                   <p className="text-muted-foreground mb-6">
-                    Please provide details about your shipment and we'll find the best vessel to accommodate your needs.
+                    Please provide details about your shipment and we'll find the best solution to accommodate your needs.
                   </p>
                   <BookingForm />
                 </div>
@@ -123,7 +123,7 @@ const Booking = () => {
       {/* Footer */}
       <footer className="bg-background border-t py-8">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} CargoCaravan. All rights reserved.
+          © {new Date().getFullYear()} Eazy Chain. All rights reserved.
         </div>
       </footer>
     </div>
