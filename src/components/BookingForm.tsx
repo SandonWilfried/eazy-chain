@@ -40,6 +40,17 @@ import {
   CommandList,
 } from "@/components/ui/command";
 
+// List of West African ports as specified
+const westAfricanPorts = [
+  "Port of Lomé, Togo",
+  "Port of Abidjan, Côte d'Ivoire", 
+  "Port of San Pedro, Côte d'Ivoire",
+  "Port of Monrovia, Liberia",
+  "Port of Conakry, Guinea",
+  "Port of Dakar, Senegal",
+  "Port of Praia, Cape Verde"
+];
+
 const cargoTypes = [
   "General Cargo",
   "Container",
@@ -161,9 +172,20 @@ const BookingForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Origin Port</FormLabel>
-                <FormControl>
-                  <Input placeholder="e.g. Shanghai, China" {...field} />
-                </FormControl>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select origin port" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {westAfricanPorts.map((port) => (
+                      <SelectItem key={port} value={port}>
+                        {port}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
@@ -174,9 +196,20 @@ const BookingForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Destination Port</FormLabel>
-                <FormControl>
-                  <Input placeholder="e.g. Rotterdam, Netherlands" {...field} />
-                </FormControl>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select destination port" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {westAfricanPorts.map((port) => (
+                      <SelectItem key={port} value={port}>
+                        {port}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
