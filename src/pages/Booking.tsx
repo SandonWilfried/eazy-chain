@@ -13,7 +13,7 @@ const availableVessels: VesselProps[] = [
     name: "Anemos",
     route: "Lomé, Togo → Praia, Cape Verde",
     departureDate: "2026-01-05",
-    arrivalDate: "2025-01-15", // Updated to 2025, 10 days after departure
+    arrivalDate: "2026-01-15", // Updated to 2026, 10 days after departure
     capacity: 1050,
     available: 750,
     price: 150,
