@@ -1,9 +1,9 @@
-
 import { useNavigate } from "react-router-dom";
-import { Ship, Package, Truck, CreditCard, Anchor, Globe, BarChart } from "lucide-react";
+import { Ship, Package, Truck, CreditCard, Anchor, Globe, BarChart, Leaf, Wind, Droplets, ZapOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import TrackingForm from "@/components/TrackingForm";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -106,6 +106,145 @@ const Index = () => {
             <p className="text-muted-foreground">
               Secure and convenient payment processing for your shipping transactions.
             </p>
+          </div>
+        </div>
+      </section>
+      
+      {/* About Us Section */}
+      <section id="about" className="py-16 bg-accent/10">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold mb-3">About Us</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Committed to sustainable and eco-friendly maritime transport
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            <div>
+              <h3 className="text-2xl font-semibold mb-4">Sustainable Shipping</h3>
+              <p className="mb-4">
+                Sailing as the main mode of propulsion allows for drastically less polluting ocean transport.
+                Compared to the average container ship making the same Le Havre – Guadeloupe route, our cargo 
+                sailing ships allow for a massive reduction in greenhouse gas emissions, per tonne transported 
+                and per kilometre travelled:
+              </p>
+              
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                <Card className="bg-green-50/50 border-green-100">
+                  <CardHeader className="pb-2">
+                    <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mb-2">
+                      <Leaf className="h-6 w-6 text-green-600" />
+                    </div>
+                    <CardTitle className="text-xl">{'>'} 95% CO₂</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm">Reduction in carbon dioxide emissions</p>
+                  </CardContent>
+                </Card>
+                
+                <Card className="bg-blue-50/50 border-blue-100">
+                  <CardHeader className="pb-2">
+                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mb-2">
+                      <Wind className="h-6 w-6 text-blue-600" />
+                    </div>
+                    <CardTitle className="text-xl">98%</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm">Reduction in sulphur oxides</p>
+                  </CardContent>
+                </Card>
+                
+                <Card className="bg-purple-50/50 border-purple-100">
+                  <CardHeader className="pb-2">
+                    <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mb-2">
+                      <ZapOff className="h-6 w-6 text-purple-600" />
+                    </div>
+                    <CardTitle className="text-xl">92%</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm">Reduction in nitrogen oxides</p>
+                  </CardContent>
+                </Card>
+                
+                <Card className="bg-amber-50/50 border-amber-100">
+                  <CardHeader className="pb-2">
+                    <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center mb-2">
+                      <Droplets className="h-6 w-6 text-amber-600" />
+                    </div>
+                    <CardTitle className="text-xl">100%</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm">Reduction in methane emissions</p>
+                  </CardContent>
+                </Card>
+              </div>
+              
+              <h4 className="text-xl font-semibold mb-2">Biodiversity Benefits</h4>
+              <ul className="list-disc list-inside mb-6 space-y-2">
+                <li>Reducing the risk of collision (noise)</li>
+                <li>Mitigating ocean acidification</li>
+              </ul>
+              
+              <h4 className="text-xl font-semibold mb-2">ANEMOS Sail Technology</h4>
+              <p className="mb-4">
+                The ANEMOS sail inflated by the wind makes the most of natural propulsion and 
+                provides the best performance. This is the most concrete lever for decarbonizing 
+                maritime transport, offering a decarbonization greater than 90% compared to the 
+                average ship on our transatlantic routes (230m, 2750 TEU).
+              </p>
+            </div>
+            
+            <div>
+              <div className="rounded-xl overflow-hidden shadow-lg mb-6">
+                <img 
+                  src="/lovable-uploads/1b96471e-0948-4119-9423-cd74d0e7002f.png" 
+                  alt="Eazy Chain Sustainable Vessel" 
+                  className="w-full h-auto object-cover"
+                />
+              </div>
+              
+              <h3 className="text-2xl font-semibold mb-4">Carbon Footprint</h3>
+              
+              <div className="flex flex-col space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>TOWT Sailboat</CardTitle>
+                    <CardDescription>Carbon footprint of the cargo sailboat</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="mb-4">
+                      <span className="font-bold text-green-600">Less than 2g CO₂/km/T</span> transported for 
+                      a transatlantic route, according to the emission factors published by ADEME.
+                    </p>
+                    <h4 className="font-semibold mb-2">By 2025, TOWT guarantees:</h4>
+                    <ul className="list-disc list-inside space-y-2">
+                      <li>A monthly departure from Le Havre to New York, each saving around 500t of CO₂</li>
+                      <li>A quarterly coffee import, saving around 700t of CO₂ per trip</li>
+                      <li>Intra-American routes on the same frequencies</li>
+                    </ul>
+                    <p className="mt-4 text-sm">
+                      These frequencies, thanks to 6 additional sisterships under construction, 
+                      will gradually be multiplied by 4 over 2026-2027. Several hundred thousand 
+                      tons per year of goods switched to low-carbon transport.
+                    </p>
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Container Ship</CardTitle>
+                    <CardDescription>Carbon footprint of a container ship</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p>
+                      A container ship produces <span className="font-bold text-red-600">20.2g/km/T</span> transported 
+                      according to ADEME for a ship between 1150 and 3500 TEU.
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
           </div>
         </div>
       </section>
