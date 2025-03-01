@@ -1,8 +1,9 @@
 
 import { useState } from "react";
-import { Ship, Calendar, Package, Users, RepeatIcon } from "lucide-react";
+import { Ship, Calendar, Package, Users, RepeatIcon, BarChart4 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import {
   Card,
   CardContent,
@@ -97,20 +98,42 @@ const VesselCard = ({ vessel }: { vessel: VesselProps }) => {
             </div>
             <span className="font-medium">{formatDate(vessel.arrivalDate)}</span>
           </div>
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Package size={16} />
-              <span>Available Space</span>
+          
+          {/* Visual representation of available space */}
+          <div className="mt-6 pt-2 border-t">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <BarChart4 size={16} />
+                <span>Available Space</span>
+              </div>
+              <span className="font-medium">{vessel.available} of {vessel.capacity} pallets</span>
             </div>
-            <span className="font-medium">{vessel.available} of {vessel.capacity} pallets</span>
-          </div>
-          <div className="mt-2">
-            <div className="w-full bg-secondary rounded-full h-2 overflow-hidden">
-              <div 
-                className="bg-primary h-full rounded-full" 
-                style={{ width: `${(vessel.available / vessel.capacity) * 100}%` }}
-              />
+            
+            {/* Visual representation using boxes */}
+            <div className="relative h-16 bg-secondary/50 rounded-lg overflow-hidden mb-2">
+              <div className="absolute inset-0 flex flex-wrap p-1 gap-1">
+                {Array.from({ length: 80 }).map((_, i) => (
+                  <div 
+                    key={i} 
+                    className={`h-2 w-2 rounded-sm ${
+                      i < Math.round((vessel.available / vessel.capacity) * 80) 
+                        ? "bg-primary/70" 
+                        : "bg-gray-200 dark:bg-gray-700"
+                    }`}
+                  />
+                ))}
+              </div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-xs font-medium bg-white/80 dark:bg-black/50 px-2 py-1 rounded backdrop-blur-sm">
+                  {Math.round(availabilityPercentage)}% Available
+                </span>
+              </div>
             </div>
+            
+            <Progress 
+              value={availabilityPercentage} 
+              className="h-2"
+            />
           </div>
         </div>
       </CardContent>
@@ -130,4 +153,3 @@ const VesselCard = ({ vessel }: { vessel: VesselProps }) => {
 };
 
 export default VesselCard;
-
