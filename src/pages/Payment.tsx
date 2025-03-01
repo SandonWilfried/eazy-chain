@@ -1,20 +1,30 @@
 
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import PaymentForm from "@/components/PaymentForm";
+import BillOfLadingModal from "@/components/BillOfLadingModal";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 const mockShipmentData = {
   id: "CARGO12345678",
   amount: 4600,
+  origin: "Shanghai Port, China",
+  destination: "Rotterdam Port, Netherlands",
+  containerCount: 2,
 };
 
 const Payment = () => {
-  const [shipmentData, setShipmentData] = useState<{ id: string; amount: number } | null>(null);
+  const [shipmentData, setShipmentData] = useState<{
+    id: string;
+    amount: number;
+    origin: string;
+    destination: string;
+    containerCount: number;
+  } | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showBillOfLading, setShowBillOfLading] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -29,6 +39,9 @@ const Payment = () => {
         setShipmentData({
           id: shipmentId,
           amount: mockShipmentData.amount,
+          origin: mockShipmentData.origin,
+          destination: mockShipmentData.destination,
+          containerCount: mockShipmentData.containerCount,
         });
         setLoading(false);
       }, 1000);
@@ -37,6 +50,11 @@ const Payment = () => {
       setShipmentData(mockShipmentData);
     }
   }, [location.search]);
+
+  const handlePaymentSuccess = () => {
+    // Show bill of lading modal after successful payment
+    setShowBillOfLading(true);
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-pattern">
@@ -68,10 +86,23 @@ const Payment = () => {
             ) : (
               <div className="animate-fade-in">
                 {shipmentData && (
-                  <PaymentForm 
-                    shipmentId={shipmentData.id} 
-                    amount={shipmentData.amount} 
-                  />
+                  <>
+                    <PaymentForm 
+                      shipmentId={shipmentData.id} 
+                      amount={shipmentData.amount}
+                      onPaymentSuccess={handlePaymentSuccess}
+                    />
+                    
+                    {/* Bill of Lading Modal */}
+                    <BillOfLadingModal
+                      open={showBillOfLading}
+                      onOpenChange={setShowBillOfLading}
+                      shipmentId={shipmentData.id}
+                      origin={shipmentData.origin}
+                      destination={shipmentData.destination}
+                      containerCount={shipmentData.containerCount}
+                    />
+                  </>
                 )}
               </div>
             )}
