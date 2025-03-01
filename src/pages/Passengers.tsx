@@ -84,6 +84,34 @@ const vesselFeatures = [
   }
 ];
 
+// Additional room images to showcase
+const additionalRoomImages = [
+  {
+    id: 1,
+    title: "Panoramic Ocean View",
+    description: "Wake up to breathtaking ocean views from your cabin window",
+    imageUrl: "/lovable-uploads/71824e94-558d-479d-804e-e766cffa8885.png"
+  },
+  {
+    id: 2,
+    title: "Luxurious Bathroom",
+    description: "Enjoy our premium bathroom facilities during your journey",
+    imageUrl: "/lovable-uploads/6d153727-082d-4151-8d87-83b4d2df35fc.png"
+  },
+  {
+    id: 3,
+    title: "Dining Experience",
+    description: "Savor delicious meals in our comfortable dining areas",
+    imageUrl: "/lovable-uploads/c2a686f5-5007-4e3b-8c3f-989d6ab63354.png"
+  },
+  {
+    id: 4,
+    title: "Relaxation Space",
+    description: "Unwind in our thoughtfully designed relaxation areas",
+    imageUrl: "/lovable-uploads/a3a0ca37-4b5c-499a-b77d-1b4930d1b070.png"
+  }
+];
+
 const Passengers = () => {
   const [activeTab, setActiveTab] = useState("rooms");
   const [showCustomForm, setShowCustomForm] = useState(false);
@@ -163,6 +191,30 @@ const Passengers = () => {
                   {availableRooms.map((room) => (
                     <RoomCard key={room.id} room={room} />
                   ))}
+                </div>
+                
+                {/* Room Image Gallery Section */}
+                <div className="mt-12 mb-8">
+                  <h2 className="text-2xl font-semibold mb-6 text-center">More Cabin Views</h2>
+                  <p className="text-muted-foreground text-center mb-8">Explore more images of our premium cabin accommodations</p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {additionalRoomImages.map((image) => (
+                      <Card key={image.id} className="overflow-hidden">
+                        <div className="aspect-w-16 aspect-h-9 relative h-64">
+                          <img 
+                            src={image.imageUrl} 
+                            alt={image.title} 
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <CardContent className="p-4">
+                          <h3 className="font-medium text-lg mb-1">{image.title}</h3>
+                          <p className="text-muted-foreground text-sm">{image.description}</p>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
                 </div>
               </TabsContent>
               
