@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import BookingForm from "@/components/BookingForm";
@@ -113,26 +114,25 @@ const Booking = () => {
               </div>
               
               <h3 className="font-medium text-lg mb-4">Route Information</h3>
-              <ul className="space-y-6 mb-4">
+              
+              {/* Updated port stops to display in a grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-4">
                 {portStops.map((port, index) => (
-                  <li key={index} className="flex items-start">
-                    <div className="mr-3 flex flex-col items-center">
-                      <div className="h-3 w-3 rounded-full bg-primary mt-2"></div>
-                      {index < portStops.length - 1 && <div className="h-full w-0.5 bg-gray-300"></div>}
+                  <div key={index} className="flex flex-col">
+                    <div className="rounded-lg overflow-hidden mb-2 h-40">
+                      <img 
+                        src={port.imageUrl} 
+                        alt={port.name} 
+                        className="w-full h-full object-cover"
+                      />
                     </div>
-                    <div className="flex-1">
-                      <div className="rounded-lg overflow-hidden mb-2 h-32 sm:h-40">
-                        <img 
-                          src={port.imageUrl} 
-                          alt={port.name} 
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <p className="font-medium">{port.name}</p>
+                    <div className="flex items-center">
+                      <div className="h-3 w-3 rounded-full bg-primary mr-2 flex-shrink-0"></div>
+                      <p className="font-medium text-sm">{port.name}</p>
                     </div>
-                  </li>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
             
             <Tabs 
