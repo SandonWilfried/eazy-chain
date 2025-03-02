@@ -95,7 +95,7 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
       // Get base rate per kg based on service type
       const baseRatePerKg = watchServiceType === "normal" ? 10500 : 15000;
       
-      // Apply half price for packages between 0.1 and 0.5 kg
+      // Apply half price for packages between 0.1 and 0.5 kg (but not including 0.5)
       let finalRate = baseRatePerKg;
       let discountApplied = false;
       
@@ -477,7 +477,7 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
             </Button>
             <Button 
               type="submit"
-              disabled={watchOriginCountry === "china" && !showBookingButton && quotation}
+              disabled={(watchOriginCountry === "china" && !showBookingButton && quotation !== null)}
             >
               Submit Request
             </Button>
