@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Elements } from "@stripe/react-stripe-js";
@@ -84,19 +83,19 @@ const Payment = () => {
                 Complete your payment details to finalize your shipping transaction
               </p>
               
-              {/* Add payment amount summary */}
+              {/* Payment amount summary - changed from purple to red */}
               {shipmentData && (
-                <div className="mt-4 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
+                <div className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
                   <div className="flex justify-between items-center">
                     <div>
-                      <p className="text-sm text-purple-700 dark:text-purple-300">Shipment Total</p>
-                      <p className="text-2xl font-bold text-purple-800 dark:text-purple-200">
+                      <p className="text-sm text-red-700 dark:text-red-300">Shipment Total</p>
+                      <p className="text-2xl font-bold text-red-800 dark:text-red-200">
                         ${shipmentData.amount.toLocaleString()}
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm text-purple-700 dark:text-purple-300">Shipment ID</p>
-                      <p className="font-medium text-purple-800 dark:text-purple-200">{shipmentData.id}</p>
+                      <p className="text-sm text-red-700 dark:text-red-300">Shipment ID</p>
+                      <p className="font-medium text-red-800 dark:text-red-200">{shipmentData.id}</p>
                     </div>
                   </div>
                 </div>
