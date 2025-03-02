@@ -123,8 +123,8 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
         }
         finalRate = watchServiceType === "normal" ? 10500 : 15000;
       } else if (watchWeight >= 1) {
-        // For weights 1kg and above, calculate using the ceiling multiplier
-        // e.g., 1-2kg is 2x, 2-3kg is 3x, etc.
+        // For weights 1kg and above, use ceiling multiplier of the weight
+        // e.g., 1-1.9kg is 1x rate, 2-2.9kg is 2x rate, etc.
         multiplier = Math.ceil(watchWeight);
         finalRate = baseRatePerKg;
         totalAmount = baseRatePerKg * multiplier;
