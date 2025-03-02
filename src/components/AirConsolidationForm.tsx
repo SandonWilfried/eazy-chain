@@ -74,26 +74,31 @@ const calculateNormalPrice = (weight: number): number => {
     weight = 0.1;
   }
   
-  // Calculate which price bracket the weight falls into
-  // We need to find which 0.5kg bracket it belongs to
-  // For example: 
-  // 0.1-0.5 kg = 5250 XOF
-  // 0.6-1.0 kg = 10500 XOF
-  // 1.1-1.5 kg = 15750 XOF, etc.
+  // New calculation logic as per requirements:
+  // - Between 0.1 and 0.5 kg: invoice on 0.5 kg
+  // - Between 0.6 and 0.9 kg: invoice on 1.0 kg
+  // - Follow same logic up to 500 kg
   
-  // Calculate how many 0.5kg brackets we need (ceiling to next 0.5kg)
-  // For weights exactly on a boundary (like 0.5, 1.0, 1.5), we use that bracket
-  // For weights like 0.6, 1.1, 2.3, we round up to the next 0.5kg
+  // First, determine what full kg value we should round to
+  let billableWeight: number;
   
-  let bracketCount: number;
+  // Extract the decimal part of the weight
+  const decimalPart = weight % 1;
+  const wholeKgPart = Math.floor(weight);
   
-  if (weight % 0.5 === 0) {
-    // Weight is exactly on a 0.5kg boundary
-    bracketCount = weight / 0.5;
+  if (decimalPart === 0) {
+    // Exact kg value (1.0, 2.0, etc.)
+    billableWeight = weight;
+  } else if (decimalPart <= 0.5) {
+    // For values between X.1 and X.5, bill at X.5
+    billableWeight = wholeKgPart + 0.5;
   } else {
-    // Round up to next 0.5kg
-    bracketCount = Math.ceil(weight / 0.5);
+    // For values between X.6 and X.9, bill at (X+1).0
+    billableWeight = wholeKgPart + 1.0;
   }
+  
+  // Calculate how many 0.5kg brackets we need
+  const bracketCount = billableWeight / 0.5;
   
   // Price is 5250 XOF per 0.5kg bracket
   return bracketCount * 5250;
@@ -136,11 +141,24 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
   const watchOriginCountry = form.watch("originCountry");
   const watchServiceType = form.watch("serviceType");
 
-  // Calculate price when weight, origin country, or service type changes
+  // Update this section where the weight is displayed to show correct billable weight
   useEffect(() => {
     if (watchWeight && watchWeight > 0 && watchOriginCountry === "china") {
       let totalAmount = 0;
       let expressMultiplier = 1.43; // ~43% higher for express (15000/10500)
+      
+      // Calculate billable weight for display
+      let billableWeight: number;
+      const decimalPart = watchWeight % 1;
+      const wholeKgPart = Math.floor(watchWeight);
+      
+      if (decimalPart === 0) {
+        billableWeight = watchWeight;
+      } else if (decimalPart <= 0.5) {
+        billableWeight = wholeKgPart + 0.5;
+      } else {
+        billableWeight = wholeKgPart + 1.0;
+      }
       
       if (watchServiceType === "normal") {
         // Calculate normal freight price based on the pricing table
@@ -506,7 +524,24 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
               <div className="space-y-2">
                 <p><span className="font-medium">Service:</span> {watchServiceType === "normal" ? "Normal Freight" : "Express"}</p>
                 <p><span className="font-medium">Rate:</span> {watchServiceType === "normal" ? "5,250" : "7,500"} XOF per 0.5 kg increment</p>
-                <p><span className="font-medium">Weight:</span> {watchWeight} kg (rounded up to {Math.ceil(watchWeight * 2) / 2} kg for billing)</p>
+                <p><span className="font-medium">Weight:</span> {watchWeight} kg</p>
+                <p><span className="font-medium">Billable Weight:</span> {
+                  (() => {
+                    const decimalPart = watchWeight % 1;
+                    const wholeKgPart = Math.floor(watchWeight);
+                    let billableWeight;
+                    
+                    if (decimalPart === 0) {
+                      billableWeight = watchWeight;
+                    } else if (decimalPart <= 0.5) {
+                      billableWeight = wholeKgPart + 0.5;
+                    } else {
+                      billableWeight = wholeKgPart + 1.0;
+                    }
+                    
+                    return billableWeight;
+                  })()
+                } kg</p>
                 <p className="text-lg font-bold">
                   Total: {quotation.amount.toLocaleString()} {quotation.currency}
                 </p>
