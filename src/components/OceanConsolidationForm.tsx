@@ -12,6 +12,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -22,7 +23,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Info } from "lucide-react";
+import { Info, Upload } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 
 const formSchema = z.object({
   originCountry: z.string({
@@ -57,6 +66,12 @@ const formSchema = z.object({
     message: "Please enter a valid phone number",
   }),
   additionalInstructions: z.string().optional(),
+  identityDocument: z.instanceof(File).optional().refine(file => {
+    if (!file) return false;
+    return true;
+  }, {
+    message: "Identity document is required"
+  }),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -90,6 +105,8 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
     remainingPayment: number;
     currency: string;
   } | null>(null);
+  const [identityDocumentUploaded, setIdentityDocumentUploaded] = useState<boolean>(false);
+  const [identityDocumentFile, setIdentityDocumentFile] = useState<File | null>(null);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -144,19 +161,50 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
       });
       
       setShowBookingButton(false); // Reset when values change
+      setIdentityDocumentUploaded(false); // Reset when values change
     } else {
       setQuotation(null);
       setPaymentDetails(null);
       setShowBookingButton(false);
+      setIdentityDocumentUploaded(false);
     }
   }, [watchCargoVolume, watchOriginCountry]);
 
   const acceptQuotation = () => {
     setShowBookingButton(true);
-    toast.success("Quotation accepted!");
+    toast.success("Quotation accepted! Please upload your identity document.");
+  };
+
+  const handleIdentityDocumentUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("File size exceeds 5MB limit. Please upload a smaller file.");
+        return;
+      }
+      
+      // Validate file type (PDF, JPG, PNG)
+      const validTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+      if (!validTypes.includes(file.type)) {
+        toast.error("Invalid file type. Please upload a PDF, JPG, or PNG file.");
+        return;
+      }
+      
+      setIdentityDocumentFile(file);
+      form.setValue("identityDocument", file);
+      setIdentityDocumentUploaded(true);
+      toast.success("Identity document uploaded successfully!");
+    }
   };
 
   const requestBookingReference = () => {
+    if (!identityDocumentFile) {
+      toast.error("Please upload your identity document first.");
+      return;
+    }
+    
     setIsSubmitting(true);
     
     // Simulate API call
@@ -171,6 +219,11 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
   const onSubmit = (data: FormValues) => {
     if (watchOriginCountry === "China" && !showBookingButton && quotation) {
       toast.error("Please accept the quotation first before submitting");
+      return;
+    }
+    
+    if (showBookingButton && !identityDocumentUploaded) {
+      toast.error("Please upload your identity document before submitting");
       return;
     }
     
@@ -378,14 +431,64 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
                       Accept Quotation
                     </Button>
                   ) : (
-                    <Button 
-                      type="button" 
-                      onClick={requestBookingReference}
-                      className="mt-2"
-                      variant="secondary"
-                    >
-                      Request Booking Reference
-                    </Button>
+                    <div className="space-y-4 mt-4">
+                      {!identityDocumentUploaded ? (
+                        <Card>
+                          <CardHeader>
+                            <CardTitle className="text-base">Upload Identity Document</CardTitle>
+                            <CardDescription>
+                              Please upload a copy of your national ID card or passport
+                            </CardDescription>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="grid w-full items-center gap-4">
+                              <div className="flex flex-col space-y-1.5">
+                                <Label htmlFor="identity-document">
+                                  Identity Document <span className="text-destructive">*</span>
+                                </Label>
+                                <div className="flex items-center gap-2">
+                                  <Input
+                                    id="identity-document"
+                                    type="file"
+                                    accept=".pdf,.jpg,.jpeg,.png"
+                                    onChange={handleIdentityDocumentUpload}
+                                  />
+                                </div>
+                                <p className="text-xs text-muted-foreground">
+                                  Accepted formats: PDF, JPG, PNG (max 5MB)
+                                </p>
+                                {form.formState.errors.identityDocument && (
+                                  <p className="text-sm font-medium text-destructive">
+                                    {form.formState.errors.identityDocument.message}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ) : (
+                        <div className="flex flex-col space-y-2">
+                          <div className="flex items-center space-x-2">
+                            <div className="h-8 w-8 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center">
+                              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-green-600 dark:text-green-400">
+                                <path d="M11.4669 3.72684C11.7558 3.91574 11.8369 4.30308 11.648 4.59198L7.39799 11.092C7.29783 11.2452 7.13556 11.3467 6.95402 11.3699C6.77247 11.3931 6.58989 11.3355 6.45446 11.2124L3.70446 8.71241C3.44905 8.48022 3.43023 8.08494 3.66242 7.82953C3.89461 7.57412 4.28989 7.55529 4.5453 7.78749L6.75292 9.79441L10.6018 3.90792C10.7907 3.61902 11.178 3.53795 11.4669 3.72684Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path>
+                              </svg>
+                            </div>
+                            <p className="text-sm text-green-600 dark:text-green-400">
+                              Document uploaded successfully: {identityDocumentFile?.name}
+                            </p>
+                          </div>
+                          <Button 
+                            type="button" 
+                            onClick={requestBookingReference}
+                            variant="secondary"
+                            className="mt-2"
+                          >
+                            Request Booking Reference
+                          </Button>
+                        </div>
+                      )}
+                    </div>
                   )}
                 </div>
               </div>
@@ -456,7 +559,9 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
             <Button 
               type="submit" 
               className="w-full" 
-              disabled={isSubmitting || (watchOriginCountry === "China" && !showBookingButton && quotation)}
+              disabled={isSubmitting || 
+                       (watchOriginCountry === "China" && !showBookingButton && quotation !== null) ||
+                       (showBookingButton && !identityDocumentUploaded)}
             >
               {isSubmitting ? "Submitting..." : "Submit Ocean Consolidation Request"}
             </Button>
