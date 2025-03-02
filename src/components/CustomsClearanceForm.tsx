@@ -21,6 +21,13 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@/components/ui/radio-group";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const formSchema = z.object({
   fullName: z.string().min(2, {
@@ -41,6 +48,7 @@ const formSchema = z.object({
   shipmentDetails: z.string().min(10, {
     message: "Please provide more details about your shipment.",
   }),
+  truckType: z.string().optional(),
 });
 
 type FileType = "billOfLading" | "airwayBill" | "commercialInvoice" | "packingList" | "exportDocuments" | "otherDocuments";
@@ -73,6 +81,7 @@ const CustomsClearanceForm = ({ onClose }: { onClose: () => void }) => {
       companyName: "",
       transportMode: "ocean",
       shipmentDetails: "",
+      truckType: "",
     },
   });
 
@@ -84,7 +93,7 @@ const CustomsClearanceForm = ({ onClose }: { onClose: () => void }) => {
       case "air":
         return ["airwayBill", "commercialInvoice"];
       case "road":
-        return ["commercialInvoice", "packingList"];
+        return ["commercialInvoice"]; // Removed packingList as required for road
       default: // ocean
         return ["billOfLading", "commercialInvoice", "packingList"];
     }
@@ -274,6 +283,39 @@ const CustomsClearanceForm = ({ onClose }: { onClose: () => void }) => {
           )}
         />
         
+        {/* Truck Type selection - only shown for road transport */}
+        {transportMode === "road" && (
+          <FormField
+            control={form.control}
+            name="truckType"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Truck Type / Pallet Configuration</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select truck type or pallet configuration" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="box_truck">Box Truck</SelectItem>
+                    <SelectItem value="flatbed">Flatbed Truck</SelectItem>
+                    <SelectItem value="refrigerated">Refrigerated Truck</SelectItem>
+                    <SelectItem value="tanker">Tanker Truck</SelectItem>
+                    <SelectItem value="standard_pallet">Standard Pallet (1000×1200mm)</SelectItem>
+                    <SelectItem value="euro_pallet">Euro Pallet (800×1200mm)</SelectItem>
+                    <SelectItem value="custom">Custom Configuration</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription>
+                  Choose the type of truck or pallet configuration required for your shipment
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+        
         <FormField
           control={form.control}
           name="shipmentDetails"
@@ -443,23 +485,19 @@ const CustomsClearanceForm = ({ onClose }: { onClose: () => void }) => {
                   </div>
                 </div>
                 
-                {/* Packing List for Road */}
+                {/* Packing List for Road - Now optional */}
                 <div>
                   <FormLabel className="mb-2 block">
-                    Packing List <span className="text-destructive">*</span>
+                    Packing List
                   </FormLabel>
+                  <FormDescription className="mt-0 mb-2">Optional but helpful for customs processing.</FormDescription>
                   <div className="flex flex-col gap-2">
                     <Input
                       type="file"
                       onChange={(e) => handleFileUpload(e, "packingList")}
-                      className={`cursor-pointer ${documentErrors.packingList ? "border-destructive" : ""}`}
+                      className="cursor-pointer"
                       accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                     />
-                    {documentErrors.packingList && (
-                      <p className="text-sm font-medium text-destructive">
-                        Packing List is required
-                      </p>
-                    )}
                     {files.filter(f => f.type === "packingList").map((file) => (
                       <div key={file.id} className="flex items-center justify-between bg-secondary/20 p-2 rounded">
                         <span className="text-sm truncate max-w-[300px]">{file.file.name}</span>
