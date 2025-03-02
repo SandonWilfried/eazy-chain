@@ -92,33 +92,43 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
   // Calculate price when weight, origin country, or service type changes
   useEffect(() => {
     if (watchWeight && watchWeight > 0 && watchOriginCountry === "china") {
-      // Get base rate per kg based on service type
-      const baseRatePerKg = watchServiceType === "normal" ? 10500 : 15000;
+      // Set the exact rates as provided
+      const normalBaseRate = 10500; // Normal freight standard rate
+      const expressBaseRate = 15000; // Express freight standard rate
       
-      // Calculate price based on weight ranges
+      // Get base rate per kg based on service type
+      const baseRatePerKg = watchServiceType === "normal" ? normalBaseRate : expressBaseRate;
+      
+      // Calculate price based on weight ranges with exact values
       let finalRate = baseRatePerKg;
       let discountApplied = false;
       let multiplier = 1;
+      let totalAmount = 0;
       
       if (watchWeight >= 0.1 && watchWeight < 0.5) {
-        // Half price for 0.1 to 0.5 kg (excluding 0.5)
-        finalRate = baseRatePerKg / 2;
+        // Specific price for 0.1 to 0.5 kg range
+        if (watchServiceType === "normal") {
+          totalAmount = 5250; // Exact price for normal freight
+        } else {
+          totalAmount = 7500; // Exact price for express freight
+        }
+        finalRate = watchServiceType === "normal" ? 5250 : 7500;
         discountApplied = true;
       } else if (watchWeight >= 0.5 && watchWeight < 1) {
-        // Full price for 0.5 to 1 kg (excluding 1)
-        finalRate = baseRatePerKg;
-        multiplier = 1;
+        // Specific price for 0.5 to 1 kg range
+        if (watchServiceType === "normal") {
+          totalAmount = 10500; // Normal freight price
+        } else {
+          totalAmount = 15000; // Express freight price
+        }
+        finalRate = watchServiceType === "normal" ? 10500 : 15000;
       } else if (watchWeight >= 1) {
-        // For weights 1kg and above, calculate the appropriate multiplier
+        // For weights 1kg and above, calculate using the ceiling multiplier
         // e.g., 1-2kg is 2x, 2-3kg is 3x, etc.
         multiplier = Math.ceil(watchWeight);
         finalRate = baseRatePerKg;
+        totalAmount = baseRatePerKg * multiplier;
       }
-      
-      // Calculate total amount
-      const totalAmount = watchWeight < 1 
-        ? finalRate * watchWeight 
-        : baseRatePerKg * multiplier;
       
       setQuotation({
         amount: totalAmount,
@@ -436,10 +446,10 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
               <h4 className="font-medium mb-2">Shipping Quotation</h4>
               <div className="space-y-2">
                 <p><span className="font-medium">Service:</span> {watchServiceType === "normal" ? "Normal Freight" : "Express"}</p>
-                <p><span className="font-medium">Rate:</span> {quotation.perKg.toLocaleString()} XOF per kg</p>
+                <p><span className="font-medium">Rate:</span> {quotation.perKg.toLocaleString()} XOF{watchWeight && watchWeight < 1 ? " (fixed rate)" : " per kg"}</p>
                 {quotation.discountApplied && (
                   <p className="text-green-600 dark:text-green-400 text-sm font-medium">
-                    Small package discount (50%) applied!
+                    Small package discount applied for shipments under 0.5 kg!
                   </p>
                 )}
                 <p><span className="font-medium">Weight:</span> {watchWeight} kg</p>
