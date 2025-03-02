@@ -95,17 +95,27 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
       // Get base rate per kg based on service type
       const baseRatePerKg = watchServiceType === "normal" ? 10500 : 15000;
       
-      // Apply half price for packages between 0.1 and 0.5 kg (but not including 0.5)
+      // Calculate price based on weight ranges
       let finalRate = baseRatePerKg;
       let discountApplied = false;
+      let multiplier = 1;
       
       if (watchWeight >= 0.1 && watchWeight < 0.5) {
+        // Half price for 0.1 to 0.5 kg (excluding 0.5)
         finalRate = baseRatePerKg / 2;
         discountApplied = true;
+      } else if (watchWeight >= 0.5 && watchWeight < 1) {
+        // Full price for 0.5 to 1 kg (excluding 1)
+        multiplier = 1;
+      } else if (watchWeight >= 1) {
+        // For weights 1kg and above, calculate the appropriate multiplier
+        // e.g., 1-2kg is 2x, 2-3kg is 3x, etc.
+        multiplier = Math.ceil(watchWeight);
+        finalRate = baseRatePerKg * multiplier;
       }
       
       // Calculate total amount
-      const totalAmount = finalRate * watchWeight;
+      const totalAmount = watchWeight < 1 ? finalRate * watchWeight : baseRatePerKg * multiplier;
       
       setQuotation({
         amount: totalAmount,
