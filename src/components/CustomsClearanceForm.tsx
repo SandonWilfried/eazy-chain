@@ -1,8 +1,9 @@
+
 import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Upload, X, AlertCircle } from "lucide-react";
+import { Upload, X, AlertCircle, Ship, Plane, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -17,6 +18,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  RadioGroup,
+  RadioGroupItem,
+} from "@/components/ui/radio-group";
 
 const formSchema = z.object({
   fullName: z.string().min(2, {
@@ -30,6 +35,9 @@ const formSchema = z.object({
   }),
   companyName: z.string().min(2, {
     message: "Company name must be at least 2 characters.",
+  }),
+  transportMode: z.enum(["ocean", "air", "road"], {
+    required_error: "Please select a transportation mode.",
   }),
   shipmentDetails: z.string().min(10, {
     message: "Please provide more details about your shipment.",
@@ -65,6 +73,7 @@ const CustomsClearanceForm = ({ onClose }: { onClose: () => void }) => {
       email: "",
       phone: "",
       companyName: "",
+      transportMode: "ocean",
       shipmentDetails: "",
     },
   });
@@ -206,6 +215,52 @@ const CustomsClearanceForm = ({ onClose }: { onClose: () => void }) => {
             )}
           />
         </div>
+        
+        <FormField
+          control={form.control}
+          name="transportMode"
+          render={({ field }) => (
+            <FormItem className="space-y-3">
+              <FormLabel>Transportation Mode</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  className="flex flex-col space-y-1 sm:flex-row sm:space-y-0 sm:space-x-6"
+                >
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="ocean" />
+                    </FormControl>
+                    <FormLabel className="flex items-center gap-1.5 font-normal cursor-pointer">
+                      <Ship className="h-4 w-4" />
+                      Ocean
+                    </FormLabel>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="air" />
+                    </FormControl>
+                    <FormLabel className="flex items-center gap-1.5 font-normal cursor-pointer">
+                      <Plane className="h-4 w-4" />
+                      Air
+                    </FormLabel>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="road" />
+                    </FormControl>
+                    <FormLabel className="flex items-center gap-1.5 font-normal cursor-pointer">
+                      <Truck className="h-4 w-4" />
+                      Road
+                    </FormLabel>
+                  </FormItem>
+                </RadioGroup>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         
         <FormField
           control={form.control}
