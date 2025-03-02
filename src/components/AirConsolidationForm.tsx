@@ -38,9 +38,7 @@ const formSchema = z.object({
   fullName: z.string().min(2, {
     message: "Full name must be at least 2 characters.",
   }),
-  email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
+  email: z.string().optional(),
   phone: z.string().min(5, {
     message: "Please enter a valid phone number.",
   }),
@@ -370,7 +368,7 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email <span className="text-destructive">*</span></FormLabel>
+                      <FormLabel>Email</FormLabel>
                       <FormControl>
                         <Input type="email" placeholder="your@email.com" {...field} />
                       </FormControl>
