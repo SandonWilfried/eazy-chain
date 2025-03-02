@@ -6,10 +6,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import CustomsClearanceForm from "@/components/CustomsClearanceForm";
 import AirConsolidationForm from "@/components/AirConsolidationForm";
+import OceanConsolidationForm from "@/components/OceanConsolidationForm";
 
 const Services = () => {
   const [customsDialogOpen, setCustomsDialogOpen] = useState(false);
   const [airConsolidationDialogOpen, setAirConsolidationDialogOpen] = useState(false);
+  const [oceanConsolidationDialogOpen, setOceanConsolidationDialogOpen] = useState(false);
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -146,7 +148,7 @@ const Services = () => {
               </CardContent>
             </Card>
             
-            {/* Air Consolidation - Updated to open dialog */}
+            {/* Air Consolidation */}
             <Card 
               className="transition-all duration-300 hover:shadow-md cursor-pointer"
               onClick={() => setAirConsolidationDialogOpen(true)}
@@ -164,8 +166,11 @@ const Services = () => {
               </CardContent>
             </Card>
             
-            {/* Ocean Consolidation */}
-            <Card className="transition-all duration-300 hover:shadow-md">
+            {/* Ocean Consolidation - Updated to open dialog */}
+            <Card 
+              className="transition-all duration-300 hover:shadow-md cursor-pointer"
+              onClick={() => setOceanConsolidationDialogOpen(true)}
+            >
               <CardHeader className="text-center">
                 <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
                   <Ship className="h-8 w-8 text-primary" />
@@ -244,6 +249,16 @@ const Services = () => {
             <DialogTitle className="text-2xl">Air Consolidation Service Request</DialogTitle>
           </DialogHeader>
           <AirConsolidationForm onClose={() => setAirConsolidationDialogOpen(false)} />
+        </DialogContent>
+      </Dialog>
+      
+      {/* Ocean Consolidation Dialog */}
+      <Dialog open={oceanConsolidationDialogOpen} onOpenChange={setOceanConsolidationDialogOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl">Ocean Consolidation Service Request</DialogTitle>
+          </DialogHeader>
+          <OceanConsolidationForm onClose={() => setOceanConsolidationDialogOpen(false)} />
         </DialogContent>
       </Dialog>
       
