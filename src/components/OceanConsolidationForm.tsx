@@ -22,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { InfoCircle } from "lucide-react";
 
 const formSchema = z.object({
   originCountry: z.string({
@@ -84,15 +85,20 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
     volume: number;
   } | null>(null);
   const [showBookingButton, setShowBookingButton] = useState(false);
+  const [paymentDetails, setPaymentDetails] = useState<{
+    initialPayment: number;
+    remainingPayment: number;
+    currency: string;
+  } | null>(null);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       cargoWeight: 1,
       cargoVolume: 1,
-      cargoLength: 100,  // Default 100 cm instead of 1 m
-      cargoWidth: 100,   // Default 100 cm instead of 1 m
-      cargoHeight: 100,  // Default 100 cm instead of 1 m
+      cargoLength: 100,  // Default 100 cm
+      cargoWidth: 100,   // Default 100 cm
+      cargoHeight: 100,  // Default 100 cm
       cargoType: "",
       additionalInstructions: "",
     },
@@ -129,9 +135,18 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
         volume: watchCargoVolume
       });
       
+      // Calculate payment details (50% now, 50% later)
+      const initialPayment = totalAmount / 2;
+      setPaymentDetails({
+        initialPayment: initialPayment,
+        remainingPayment: totalAmount - initialPayment,
+        currency: "XOF"
+      });
+      
       setShowBookingButton(false); // Reset when values change
     } else {
       setQuotation(null);
+      setPaymentDetails(null);
       setShowBookingButton(false);
     }
   }, [watchCargoVolume, watchOriginCountry]);
@@ -149,7 +164,7 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
       setIsSubmitting(false);
       setBookingReference(`OCN-${Math.floor(Math.random() * 1000000)}`);
       toast.success("Ocean consolidation request submitted successfully!");
-      console.log("Form data:", form.getValues(), "Quotation:", quotation);
+      console.log("Form data:", form.getValues(), "Quotation:", quotation, "Payment details:", paymentDetails);
     }, 1500);
   };
 
@@ -182,6 +197,15 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
             <div className="text-2xl font-bold p-3 bg-background border rounded-md inline-block">
               {bookingReference}
             </div>
+            {paymentDetails && (
+              <div className="mt-4 p-4 bg-muted rounded-md text-left">
+                <h4 className="font-medium mb-2">Payment Terms:</h4>
+                <p>Initial payment (50%): <strong>{Math.round(paymentDetails.initialPayment).toLocaleString()} {paymentDetails.currency}</strong></p>
+                <p className="mt-1">Please complete the initial payment to proceed with shipping.</p>
+                <p className="mt-3">Remaining payment (50%): <strong>{Math.round(paymentDetails.remainingPayment).toLocaleString()} {paymentDetails.currency}</strong></p>
+                <p className="mt-1 text-sm text-muted-foreground">This amount will be due when you pick up your goods.</p>
+              </div>
+            )}
             <p className="mt-4 text-sm text-muted-foreground">
               Please save this reference number for tracking your shipment.
             </p>
@@ -329,6 +353,21 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
                   <p className="text-lg font-bold">
                     Total: {Math.round(quotation.amount).toLocaleString()} {quotation.currency}
                   </p>
+                  
+                  {/* Payment terms information */}
+                  {paymentDetails && (
+                    <div className="mt-2 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-md text-sm">
+                      <div className="flex gap-2 items-center text-blue-700 dark:text-blue-300 font-medium mb-1">
+                        <InfoCircle size={16} />
+                        <span>Payment Terms</span>
+                      </div>
+                      <p>Initial payment (50%): <strong>{Math.round(paymentDetails.initialPayment).toLocaleString()} {paymentDetails.currency}</strong></p>
+                      <p>Remaining payment (50%): <strong>{Math.round(paymentDetails.remainingPayment).toLocaleString()} {paymentDetails.currency}</strong></p>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        You'll need to pay 50% upfront to confirm your booking. The remaining 50% will be due when you pick up your goods.
+                      </p>
+                    </div>
+                  )}
                   
                   {!showBookingButton ? (
                     <Button 
