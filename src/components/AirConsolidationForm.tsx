@@ -104,6 +104,40 @@ const calculateNormalPrice = (weight: number): number => {
   return bracketCount * 5250;
 };
 
+// Calculate express price using the same weight calculation logic
+const calculateExpressPrice = (weight: number): number => {
+  // Ensure weight is at least 0.1 kg
+  if (weight < 0.1) {
+    weight = 0.1;
+  }
+  
+  // Apply the same calculation logic as normal freight
+  // - Between 0.1 and 0.5 kg: invoice on 0.5 kg
+  // - Between 0.6 and 0.9 kg: invoice on 1.0 kg
+  
+  // Determine billable weight
+  let billableWeight: number;
+  const decimalPart = weight % 1;
+  const wholeKgPart = Math.floor(weight);
+  
+  if (decimalPart === 0) {
+    // Exact kg value (1.0, 2.0, etc.)
+    billableWeight = weight;
+  } else if (decimalPart <= 0.5) {
+    // For values between X.1 and X.5, bill at X.5
+    billableWeight = wholeKgPart + 0.5;
+  } else {
+    // For values between X.6 and X.9, bill at (X+1).0
+    billableWeight = wholeKgPart + 1.0;
+  }
+  
+  // Calculate how many 0.5kg brackets we need
+  const bracketCount = billableWeight / 0.5;
+  
+  // Express price is 7500 XOF per 0.5kg bracket
+  return bracketCount * 7500;
+};
+
 const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
   const [showBookingButton, setShowBookingButton] = useState(false);
   const [bookingReference, setBookingReference] = useState<string | null>(null);
@@ -145,7 +179,6 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
   useEffect(() => {
     if (watchWeight && watchWeight > 0 && watchOriginCountry === "china") {
       let totalAmount = 0;
-      let expressMultiplier = 1.43; // ~43% higher for express (15000/10500)
       
       // Calculate billable weight for display
       let billableWeight: number;
@@ -161,11 +194,11 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
       }
       
       if (watchServiceType === "normal") {
-        // Calculate normal freight price based on the pricing table
+        // Calculate normal freight price
         totalAmount = calculateNormalPrice(watchWeight);
       } else {
-        // Express freight is approximately 43% more expensive
-        totalAmount = calculateNormalPrice(watchWeight) * expressMultiplier;
+        // Calculate express freight using the same calculation logic
+        totalAmount = calculateExpressPrice(watchWeight);
       }
       
       // Round to nearest whole number
@@ -561,6 +594,7 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
                   </div>
                 )}
                 
+                {/* accept quotation button or identity document upload */}
                 {!showBookingButton ? (
                   <Button 
                     type="button" 
@@ -633,6 +667,7 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
             </div>
           )}
           
+          {/* action buttons */}
           <div className="flex justify-end gap-4 pt-4">
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel
