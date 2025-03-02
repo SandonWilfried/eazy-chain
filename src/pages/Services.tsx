@@ -1,10 +1,14 @@
-
+import { useState } from "react";
 import { Globe, BarChart, Leaf, Wind, Droplets, ZapOff, Ship, Package, Plane, Truck } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import CustomsClearanceForm from "@/components/CustomsClearanceForm";
 
 const Services = () => {
+  const [customsDialogOpen, setCustomsDialogOpen] = useState(false);
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -123,7 +127,10 @@ const Services = () => {
           <h2 className="text-2xl font-bold mb-8 text-center">International Shipping Services</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Customs Clearance */}
-            <Card className="transition-all duration-300 hover:shadow-md">
+            <Card 
+              className="transition-all duration-300 hover:shadow-md cursor-pointer"
+              onClick={() => setCustomsDialogOpen(true)}
+            >
               <CardHeader className="text-center">
                 <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
                   <Package className="h-8 w-8 text-primary" />
@@ -214,6 +221,16 @@ const Services = () => {
           </div>
         </div>
       </section>
+      
+      {/* Customs Clearance Dialog */}
+      <Dialog open={customsDialogOpen} onOpenChange={setCustomsDialogOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl">Customs Clearance Request</DialogTitle>
+          </DialogHeader>
+          <CustomsClearanceForm onClose={() => setCustomsDialogOpen(false)} />
+        </DialogContent>
+      </Dialog>
       
       {/* CTA Section */}
       <section className="bg-primary text-primary-foreground py-16">
