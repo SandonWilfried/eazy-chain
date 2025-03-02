@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -70,16 +69,34 @@ type AirConsolidationFormProps = {
 
 // Pricing table for the normal freight service
 const calculateNormalPrice = (weight: number): number => {
-  // Round up to nearest 0.5 kg
-  const roundedWeight = Math.ceil(weight * 2) / 2;
+  // Ensure weight is at least 0.1 kg
+  if (weight < 0.1) {
+    weight = 0.1;
+  }
   
-  // Calculate based on 0.5 kg increments
-  const baseRate = 5250; // Price per 0.5 kg
-  const increment = 0.5; // kg
+  // Calculate which price bracket the weight falls into
+  // We need to find which 0.5kg bracket it belongs to
+  // For example: 
+  // 0.1-0.5 kg = 5250 XOF
+  // 0.6-1.0 kg = 10500 XOF
+  // 1.1-1.5 kg = 15750 XOF, etc.
   
-  // Calculate price
-  const multiplier = Math.ceil(roundedWeight / increment);
-  return baseRate * multiplier;
+  // Calculate how many 0.5kg brackets we need (ceiling to next 0.5kg)
+  // For weights exactly on a boundary (like 0.5, 1.0, 1.5), we use that bracket
+  // For weights like 0.6, 1.1, 2.3, we round up to the next 0.5kg
+  
+  let bracketCount: number;
+  
+  if (weight % 0.5 === 0) {
+    // Weight is exactly on a 0.5kg boundary
+    bracketCount = weight / 0.5;
+  } else {
+    // Round up to next 0.5kg
+    bracketCount = Math.ceil(weight / 0.5);
+  }
+  
+  // Price is 5250 XOF per 0.5kg bracket
+  return bracketCount * 5250;
 };
 
 const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
