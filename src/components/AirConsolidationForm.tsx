@@ -106,16 +106,19 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
         discountApplied = true;
       } else if (watchWeight >= 0.5 && watchWeight < 1) {
         // Full price for 0.5 to 1 kg (excluding 1)
+        finalRate = baseRatePerKg;
         multiplier = 1;
       } else if (watchWeight >= 1) {
         // For weights 1kg and above, calculate the appropriate multiplier
         // e.g., 1-2kg is 2x, 2-3kg is 3x, etc.
         multiplier = Math.ceil(watchWeight);
-        finalRate = baseRatePerKg * multiplier;
+        finalRate = baseRatePerKg;
       }
       
       // Calculate total amount
-      const totalAmount = watchWeight < 1 ? finalRate * watchWeight : baseRatePerKg * multiplier;
+      const totalAmount = watchWeight < 1 
+        ? finalRate * watchWeight 
+        : baseRatePerKg * multiplier;
       
       setQuotation({
         amount: totalAmount,
