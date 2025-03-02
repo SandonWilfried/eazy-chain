@@ -36,15 +36,15 @@ const formSchema = z.object({
     .optional(),
   cargoLength: z.coerce
     .number()
-    .min(0.1, { message: "Length must be at least 0.1 meters" })
+    .min(1, { message: "Length must be at least 1 cm" })
     .optional(),
   cargoWidth: z.coerce
     .number()
-    .min(0.1, { message: "Width must be at least 0.1 meters" })
+    .min(1, { message: "Width must be at least 1 cm" })
     .optional(),
   cargoHeight: z.coerce
     .number()
-    .min(0.1, { message: "Height must be at least 0.1 meters" })
+    .min(1, { message: "Height must be at least 1 cm" })
     .optional(),
   cargoType: z.string({
     required_error: "Please select a cargo type",
@@ -86,9 +86,9 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
     defaultValues: {
       cargoWeight: 1,
       cargoVolume: 1,
-      cargoLength: 1,
-      cargoWidth: 1,
-      cargoHeight: 1,
+      cargoLength: 100,  // Default 100 cm instead of 1 m
+      cargoWidth: 100,   // Default 100 cm instead of 1 m
+      cargoHeight: 100,  // Default 100 cm instead of 1 m
       cargoType: "",
       additionalInstructions: "",
     },
@@ -217,9 +217,9 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
                 name="cargoLength"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Length (meters) - Optional</FormLabel>
+                    <FormLabel>Length (cm) - Optional</FormLabel>
                     <FormControl>
-                      <Input type="number" min="0.1" step="0.1" {...field} />
+                      <Input type="number" min="1" step="1" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -231,9 +231,9 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
                 name="cargoWidth"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Width (meters) - Optional</FormLabel>
+                    <FormLabel>Width (cm) - Optional</FormLabel>
                     <FormControl>
-                      <Input type="number" min="0.1" step="0.1" {...field} />
+                      <Input type="number" min="1" step="1" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -245,9 +245,9 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
                 name="cargoHeight"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Height (meters) - Optional</FormLabel>
+                    <FormLabel>Height (cm) - Optional</FormLabel>
                     <FormControl>
-                      <Input type="number" min="0.1" step="0.1" {...field} />
+                      <Input type="number" min="1" step="1" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
