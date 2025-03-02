@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Upload, X } from "lucide-react";
+import { Upload, X, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const formSchema = z.object({
   fullName: z.string().min(2, {
@@ -43,9 +44,18 @@ type FileItem = {
   type: FileType;
 };
 
+const requiredDocumentTypes: FileType[] = ["billOfLading", "commercialInvoice", "packingList"];
+
 const CustomsClearanceForm = ({ onClose }: { onClose: () => void }) => {
   const [files, setFiles] = useState<FileItem[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [documentErrors, setDocumentErrors] = useState<Record<FileType, boolean>>({
+    billOfLading: false,
+    commercialInvoice: false,
+    packingList: false,
+    exportDocuments: false,
+    otherDocuments: false,
+  });
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -58,6 +68,24 @@ const CustomsClearanceForm = ({ onClose }: { onClose: () => void }) => {
       shipmentDetails: "",
     },
   });
+
+  // Update document errors whenever files change
+  useEffect(() => {
+    let newErrors = { ...documentErrors };
+    
+    // Reset all required document error states
+    requiredDocumentTypes.forEach(type => {
+      newErrors[type] = false;
+    });
+    
+    // Check which required documents are missing
+    requiredDocumentTypes.forEach(type => {
+      const hasDocument = files.some(file => file.type === type);
+      newErrors[type] = !hasDocument;
+    });
+    
+    setDocumentErrors(newErrors);
+  }, [files]);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>, type: FileType) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -74,7 +102,31 @@ const CustomsClearanceForm = ({ onClose }: { onClose: () => void }) => {
     setFiles(prev => prev.filter(file => file.id !== id));
   };
 
+  const validateRequiredDocuments = (): boolean => {
+    let newErrors = { ...documentErrors };
+    let valid = true;
+    
+    requiredDocumentTypes.forEach(type => {
+      const hasDocument = files.some(file => file.type === type);
+      newErrors[type] = !hasDocument;
+      if (!hasDocument) valid = false;
+    });
+    
+    setDocumentErrors(newErrors);
+    return valid;
+  };
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    // Validate required documents before submission
+    if (!validateRequiredDocuments()) {
+      toast({
+        title: "Missing Required Documents",
+        description: "Please upload all required documents marked with (*)",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setIsSubmitting(true);
     
     // Simulate API call
@@ -91,6 +143,8 @@ const CustomsClearanceForm = ({ onClose }: { onClose: () => void }) => {
     setIsSubmitting(false);
     onClose();
   };
+
+  const hasAnyDocumentErrors = requiredDocumentTypes.some(type => documentErrors[type]);
 
   return (
     <Form {...form}>
@@ -172,22 +226,38 @@ const CustomsClearanceForm = ({ onClose }: { onClose: () => void }) => {
         />
         
         <div className="space-y-4">
-          <h3 className="text-lg font-medium">Required Documents</h3>
+          <h3 className="text-2xl font-medium">Required Documents</h3>
           <p className="text-sm text-muted-foreground">Please upload the following documents to process your customs clearance request.</p>
+          
+          {hasAnyDocumentErrors && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                Please upload all required documents marked with (*) before submitting.
+              </AlertDescription>
+            </Alert>
+          )}
           
           <div className="space-y-4">
             {/* Bill of Lading */}
             <div>
-              <FormLabel className="mb-2 block">Bill of Lading</FormLabel>
+              <FormLabel className="mb-2 block">
+                Bill of Lading <span className="text-destructive">*</span>
+              </FormLabel>
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2">
                   <Input
                     type="file"
                     onChange={(e) => handleFileUpload(e, "billOfLading")}
-                    className="cursor-pointer"
+                    className={`cursor-pointer ${documentErrors.billOfLading ? "border-destructive" : ""}`}
                     accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                   />
                 </div>
+                {documentErrors.billOfLading && (
+                  <p className="text-sm font-medium text-destructive">
+                    Bill of Lading is required
+                  </p>
+                )}
                 {files.filter(f => f.type === "billOfLading").map((file) => (
                   <div key={file.id} className="flex items-center justify-between bg-secondary/20 p-2 rounded">
                     <span className="text-sm truncate max-w-[300px]">{file.file.name}</span>
@@ -206,14 +276,21 @@ const CustomsClearanceForm = ({ onClose }: { onClose: () => void }) => {
             
             {/* Commercial Invoice */}
             <div>
-              <FormLabel className="mb-2 block">Commercial Invoice</FormLabel>
+              <FormLabel className="mb-2 block">
+                Commercial Invoice <span className="text-destructive">*</span>
+              </FormLabel>
               <div className="flex flex-col gap-2">
                 <Input
                   type="file"
                   onChange={(e) => handleFileUpload(e, "commercialInvoice")}
-                  className="cursor-pointer"
+                  className={`cursor-pointer ${documentErrors.commercialInvoice ? "border-destructive" : ""}`}
                   accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                 />
+                {documentErrors.commercialInvoice && (
+                  <p className="text-sm font-medium text-destructive">
+                    Commercial Invoice is required
+                  </p>
+                )}
                 {files.filter(f => f.type === "commercialInvoice").map((file) => (
                   <div key={file.id} className="flex items-center justify-between bg-secondary/20 p-2 rounded">
                     <span className="text-sm truncate max-w-[300px]">{file.file.name}</span>
@@ -232,14 +309,21 @@ const CustomsClearanceForm = ({ onClose }: { onClose: () => void }) => {
             
             {/* Packing List */}
             <div>
-              <FormLabel className="mb-2 block">Packing List</FormLabel>
+              <FormLabel className="mb-2 block">
+                Packing List <span className="text-destructive">*</span>
+              </FormLabel>
               <div className="flex flex-col gap-2">
                 <Input
                   type="file"
                   onChange={(e) => handleFileUpload(e, "packingList")}
-                  className="cursor-pointer"
+                  className={`cursor-pointer ${documentErrors.packingList ? "border-destructive" : ""}`}
                   accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                 />
+                {documentErrors.packingList && (
+                  <p className="text-sm font-medium text-destructive">
+                    Packing List is required
+                  </p>
+                )}
                 {files.filter(f => f.type === "packingList").map((file) => (
                   <div key={file.id} className="flex items-center justify-between bg-secondary/20 p-2 rounded">
                     <span className="text-sm truncate max-w-[300px]">{file.file.name}</span>
@@ -256,7 +340,7 @@ const CustomsClearanceForm = ({ onClose }: { onClose: () => void }) => {
               </div>
             </div>
             
-            {/* Export Documents */}
+            {/* Export Documents - Not required */}
             <div>
               <FormLabel className="mb-2 block">Export Documents</FormLabel>
               <div className="flex flex-col gap-2">
@@ -282,7 +366,7 @@ const CustomsClearanceForm = ({ onClose }: { onClose: () => void }) => {
               </div>
             </div>
             
-            {/* Other Documents */}
+            {/* Other Documents - Not required */}
             <div>
               <FormLabel className="mb-2 block">Other Documents</FormLabel>
               <FormDescription className="mt-0 mb-2">Any additional documents that might be helpful for customs clearance.</FormDescription>
