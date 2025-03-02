@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { toast } from "sonner";
-import { Plane, InfoCircle } from "lucide-react";
+import { Plane, Info } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -61,6 +61,7 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
     amount: number;
     currency: string;
     perKg: number;
+    discountApplied?: boolean;
   } | null>(null);
   const [paymentDetails, setPaymentDetails] = useState<{
     initialPayment: number;
@@ -91,13 +92,26 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
   // Calculate price when weight, origin country, or service type changes
   useEffect(() => {
     if (watchWeight && watchWeight > 0 && watchOriginCountry === "china") {
-      const perKg = watchServiceType === "normal" ? 10500 : 15000;
-      const totalAmount = perKg * watchWeight;
+      // Get base rate per kg based on service type
+      const baseRatePerKg = watchServiceType === "normal" ? 10500 : 15000;
+      
+      // Apply half price for packages between 0.1 and 0.5 kg
+      let finalRate = baseRatePerKg;
+      let discountApplied = false;
+      
+      if (watchWeight >= 0.1 && watchWeight < 0.5) {
+        finalRate = baseRatePerKg / 2;
+        discountApplied = true;
+      }
+      
+      // Calculate total amount
+      const totalAmount = finalRate * watchWeight;
       
       setQuotation({
         amount: totalAmount,
         currency: "XOF",
-        perKg: perKg
+        perKg: finalRate,
+        discountApplied
       });
       
       // Calculate payment details (50% now, 50% later)
@@ -410,6 +424,11 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
               <div className="space-y-2">
                 <p><span className="font-medium">Service:</span> {watchServiceType === "normal" ? "Normal Freight" : "Express"}</p>
                 <p><span className="font-medium">Rate:</span> {quotation.perKg.toLocaleString()} XOF per kg</p>
+                {quotation.discountApplied && (
+                  <p className="text-green-600 dark:text-green-400 text-sm font-medium">
+                    Small package discount (50%) applied!
+                  </p>
+                )}
                 <p><span className="font-medium">Weight:</span> {watchWeight} kg</p>
                 <p className="text-lg font-bold">
                   Total: {quotation.amount.toLocaleString()} {quotation.currency}
@@ -419,7 +438,7 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
                 {paymentDetails && (
                   <div className="mt-2 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-md text-sm">
                     <div className="flex gap-2 items-center text-blue-700 dark:text-blue-300 font-medium mb-1">
-                      <InfoCircle size={16} />
+                      <Info size={16} />
                       <span>Payment Terms</span>
                     </div>
                     <p>Initial payment (50%): <strong>{Math.round(paymentDetails.initialPayment).toLocaleString()} {paymentDetails.currency}</strong></p>

@@ -22,7 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { InfoCircle } from "lucide-react";
+import { Info } from "lucide-react";
 
 const formSchema = z.object({
   originCountry: z.string({
@@ -358,7 +358,7 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
                   {paymentDetails && (
                     <div className="mt-2 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-md text-sm">
                       <div className="flex gap-2 items-center text-blue-700 dark:text-blue-300 font-medium mb-1">
-                        <InfoCircle size={16} />
+                        <Info size={16} />
                         <span>Payment Terms</span>
                       </div>
                       <p>Initial payment (50%): <strong>{Math.round(paymentDetails.initialPayment).toLocaleString()} {paymentDetails.currency}</strong></p>
