@@ -34,6 +34,18 @@ const formSchema = z.object({
     .number()
     .min(0.1, { message: "Volume must be at least 0.1 cubic meters" })
     .optional(),
+  cargoLength: z.coerce
+    .number()
+    .min(0.1, { message: "Length must be at least 0.1 meters" })
+    .optional(),
+  cargoWidth: z.coerce
+    .number()
+    .min(0.1, { message: "Width must be at least 0.1 meters" })
+    .optional(),
+  cargoHeight: z.coerce
+    .number()
+    .min(0.1, { message: "Height must be at least 0.1 meters" })
+    .optional(),
   cargoType: z.string({
     required_error: "Please select a cargo type",
   }),
@@ -74,6 +86,9 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
     defaultValues: {
       cargoWeight: 1,
       cargoVolume: 1,
+      cargoLength: 1,
+      cargoWidth: 1,
+      cargoHeight: 1,
       cargoType: "",
       additionalInstructions: "",
     },
@@ -187,6 +202,50 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Cargo Volume (cubic meters) - Optional</FormLabel>
+                    <FormControl>
+                      <Input type="number" min="0.1" step="0.1" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <FormField
+                control={form.control}
+                name="cargoLength"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Length (meters) - Optional</FormLabel>
+                    <FormControl>
+                      <Input type="number" min="0.1" step="0.1" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="cargoWidth"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Width (meters) - Optional</FormLabel>
+                    <FormControl>
+                      <Input type="number" min="0.1" step="0.1" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="cargoHeight"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Height (meters) - Optional</FormLabel>
                     <FormControl>
                       <Input type="number" min="0.1" step="0.1" {...field} />
                     </FormControl>
