@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Globe, BarChart, Leaf, Wind, Droplets, ZapOff, Ship, Package, Plane, Truck } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -27,7 +28,114 @@ const Services = () => {
         </div>
       </section>
       
-      {/* Services Grid */}
+      {/* International Shipping Services - Moved above Maritime Solutions */}
+      <section className="py-16 bg-gray-50 dark:bg-gray-900/20">
+        <div className="container mx-auto px-4">
+          <h2 className="text-2xl font-bold mb-8 text-center">International Shipping Services</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Customs Clearance */}
+            <Card 
+              className="transition-all duration-300 hover:shadow-md cursor-pointer"
+              onClick={() => setCustomsDialogOpen(true)}
+            >
+              <CardHeader className="text-center">
+                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                  <Package className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle>Customs Clearance Request</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-center">
+                  Streamlined customs clearance services to expedite your shipments through border controls and regulatory checkpoints.
+                </CardDescription>
+              </CardContent>
+            </Card>
+            
+            {/* Air Consolidation */}
+            <Card 
+              className="transition-all duration-300 hover:shadow-md cursor-pointer"
+              onClick={() => setAirConsolidationDialogOpen(true)}
+            >
+              <CardHeader className="text-center">
+                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                  <Plane className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle>Air Consolidation Service</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-center">
+                  Consolidation services by air from China, Turkey, France, and Germany to Togo, optimizing shipping costs and transit times.
+                </CardDescription>
+              </CardContent>
+            </Card>
+            
+            {/* Ocean Consolidation */}
+            <Card 
+              className="transition-all duration-300 hover:shadow-md cursor-pointer"
+              onClick={() => setOceanConsolidationDialogOpen(true)}
+            >
+              <CardHeader className="text-center">
+                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                  <Ship className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle>Ocean Consolidation Service</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-center">
+                  Ocean freight consolidation from China, Turkey, France, and Germany to Togo, ideal for cost-effective shipments.
+                </CardDescription>
+              </CardContent>
+            </Card>
+            
+            {/* China to Togo */}
+            <Card className="transition-all duration-300 hover:shadow-md">
+              <CardHeader className="text-center">
+                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                  <Truck className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle>China to Togo Shipping</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-center">
+                  Specialized shipping solutions from China to Togo with end-to-end logistics support and tracking capabilities.
+                </CardDescription>
+              </CardContent>
+            </Card>
+            
+            {/* Turkey to Togo */}
+            <Card className="transition-all duration-300 hover:shadow-md">
+              <CardHeader className="text-center">
+                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                  <Ship className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle>Turkey to Togo Shipping</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-center">
+                  Reliable shipping services from Turkey to Togo with customs handling and competitive transit times.
+                </CardDescription>
+              </CardContent>
+            </Card>
+            
+            {/* Europe to Togo */}
+            <Card className="transition-all duration-300 hover:shadow-md">
+              <CardHeader className="text-center">
+                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                  <Globe className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle>Europe to Togo Shipping</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-center">
+                  Comprehensive shipping solutions from France and Germany to Togo, featuring flexible scheduling and cargo options.
+                </CardDescription>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+      
+      {/* Services Grid - Maritime Solutions */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl font-bold mb-8 text-center">Maritime Solutions</h2>
@@ -118,113 +226,6 @@ const Services = () => {
               <CardContent>
                 <CardDescription className="text-center">
                   Expert advice on reducing energy consumption and emissions for your vessel operations.
-                </CardDescription>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-      
-      {/* International Shipping Services */}
-      <section className="py-16 bg-gray-50 dark:bg-gray-900/20">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold mb-8 text-center">International Shipping Services</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Customs Clearance */}
-            <Card 
-              className="transition-all duration-300 hover:shadow-md cursor-pointer"
-              onClick={() => setCustomsDialogOpen(true)}
-            >
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                  <Package className="h-8 w-8 text-primary" />
-                </div>
-                <CardTitle>Customs Clearance Request</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  Streamlined customs clearance services to expedite your shipments through border controls and regulatory checkpoints.
-                </CardDescription>
-              </CardContent>
-            </Card>
-            
-            {/* Air Consolidation */}
-            <Card 
-              className="transition-all duration-300 hover:shadow-md cursor-pointer"
-              onClick={() => setAirConsolidationDialogOpen(true)}
-            >
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                  <Plane className="h-8 w-8 text-primary" />
-                </div>
-                <CardTitle>Air Consolidation Service</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  Consolidation services by air from China, Turkey, France, and Germany to Togo, optimizing shipping costs and transit times.
-                </CardDescription>
-              </CardContent>
-            </Card>
-            
-            {/* Ocean Consolidation - Updated to open dialog */}
-            <Card 
-              className="transition-all duration-300 hover:shadow-md cursor-pointer"
-              onClick={() => setOceanConsolidationDialogOpen(true)}
-            >
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                  <Ship className="h-8 w-8 text-primary" />
-                </div>
-                <CardTitle>Ocean Consolidation Service</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  Ocean freight consolidation from China, Turkey, France, and Germany to Togo, ideal for cost-effective shipments.
-                </CardDescription>
-              </CardContent>
-            </Card>
-            
-            {/* China to Togo */}
-            <Card className="transition-all duration-300 hover:shadow-md">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                  <Truck className="h-8 w-8 text-primary" />
-                </div>
-                <CardTitle>China to Togo Shipping</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  Specialized shipping solutions from China to Togo with end-to-end logistics support and tracking capabilities.
-                </CardDescription>
-              </CardContent>
-            </Card>
-            
-            {/* Turkey to Togo */}
-            <Card className="transition-all duration-300 hover:shadow-md">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                  <Ship className="h-8 w-8 text-primary" />
-                </div>
-                <CardTitle>Turkey to Togo Shipping</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  Reliable shipping services from Turkey to Togo with customs handling and competitive transit times.
-                </CardDescription>
-              </CardContent>
-            </Card>
-            
-            {/* Europe to Togo */}
-            <Card className="transition-all duration-300 hover:shadow-md">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                  <Globe className="h-8 w-8 text-primary" />
-                </div>
-                <CardTitle>Europe to Togo Shipping</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  Comprehensive shipping solutions from France and Germany to Togo, featuring flexible scheduling and cargo options.
                 </CardDescription>
               </CardContent>
             </Card>
