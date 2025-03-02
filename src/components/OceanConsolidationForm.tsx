@@ -1,4 +1,5 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -76,6 +77,13 @@ const cargoTypes = [
 const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [bookingReference, setBookingReference] = useState<string | null>(null);
+  const [quotation, setQuotation] = useState<{
+    amount: number;
+    currency: string;
+    pricePerCubicMeter: number;
+    volume: number;
+  } | null>(null);
+  const [showBookingButton, setShowBookingButton] = useState(false);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -90,7 +98,67 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
     },
   });
 
+  const watchOriginCountry = form.watch("originCountry");
+  const watchCargoLength = form.watch("cargoLength");
+  const watchCargoWidth = form.watch("cargoWidth");
+  const watchCargoHeight = form.watch("cargoHeight");
+  const watchCargoVolume = form.watch("cargoVolume");
+
+  // Calculate volume based on dimensions
+  useEffect(() => {
+    if (watchCargoLength && watchCargoWidth && watchCargoHeight) {
+      // Convert cm to m and calculate volume
+      const volumeInCubicMeters = (watchCargoLength * watchCargoWidth * watchCargoHeight) / 1000000;
+      
+      if (!watchCargoVolume || Math.abs(watchCargoVolume - volumeInCubicMeters) > 0.01) {
+        form.setValue("cargoVolume", parseFloat(volumeInCubicMeters.toFixed(2)));
+      }
+    }
+  }, [watchCargoLength, watchCargoWidth, watchCargoHeight, form, watchCargoVolume]);
+
+  // Calculate price for China when volume or origin country changes
+  useEffect(() => {
+    if (watchOriginCountry === "China" && watchCargoVolume && watchCargoVolume > 0) {
+      const pricePerCubicMeter = watchCargoVolume > 1 ? 245000 : 250000;
+      const totalAmount = pricePerCubicMeter * watchCargoVolume;
+      
+      setQuotation({
+        amount: totalAmount,
+        currency: "XOF",
+        pricePerCubicMeter: pricePerCubicMeter,
+        volume: watchCargoVolume
+      });
+      
+      setShowBookingButton(false); // Reset when values change
+    } else {
+      setQuotation(null);
+      setShowBookingButton(false);
+    }
+  }, [watchCargoVolume, watchOriginCountry]);
+
+  const acceptQuotation = () => {
+    setShowBookingButton(true);
+    toast.success("Quotation accepted!");
+  };
+
+  const requestBookingReference = () => {
+    setIsSubmitting(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setBookingReference(`OCN-${Math.floor(Math.random() * 1000000)}`);
+      toast.success("Ocean consolidation request submitted successfully!");
+      console.log("Form data:", form.getValues(), "Quotation:", quotation);
+    }, 1500);
+  };
+
   const onSubmit = (data: FormValues) => {
+    if (watchOriginCountry === "China" && !showBookingButton && quotation) {
+      toast.error("Please accept the quotation first before submitting");
+      return;
+    }
+    
     setIsSubmitting(true);
     
     // Simulate API call
@@ -197,9 +265,9 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
                 name="cargoVolume"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Cargo Volume (cubic meters) - Optional</FormLabel>
+                    <FormLabel>Cargo Volume (cubic meters)</FormLabel>
                     <FormControl>
-                      <Input type="number" min="0.1" step="0.1" {...field} />
+                      <Input type="number" min="0.1" step="0.1" readOnly {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -250,6 +318,39 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
                 )}
               />
             </div>
+
+            {/* Quotation Section for China */}
+            {quotation && watchOriginCountry === "China" && (
+              <div className="bg-muted p-4 rounded-md">
+                <h4 className="font-medium mb-2">Shipping Quotation</h4>
+                <div className="space-y-2">
+                  <p><span className="font-medium">Volume:</span> {quotation.volume.toFixed(2)} cubic meters</p>
+                  <p><span className="font-medium">Rate:</span> {quotation.pricePerCubicMeter.toLocaleString()} XOF per cubic meter</p>
+                  <p className="text-lg font-bold">
+                    Total: {Math.round(quotation.amount).toLocaleString()} {quotation.currency}
+                  </p>
+                  
+                  {!showBookingButton ? (
+                    <Button 
+                      type="button" 
+                      onClick={acceptQuotation}
+                      className="mt-2"
+                    >
+                      Accept Quotation
+                    </Button>
+                  ) : (
+                    <Button 
+                      type="button" 
+                      onClick={requestBookingReference}
+                      className="mt-2"
+                      variant="secondary"
+                    >
+                      Request Booking Reference
+                    </Button>
+                  )}
+                </div>
+              </div>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <FormField
@@ -313,7 +414,11 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
               )}
             />
 
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
+            <Button 
+              type="submit" 
+              className="w-full" 
+              disabled={isSubmitting || (watchOriginCountry === "China" && !showBookingButton && quotation)}
+            >
               {isSubmitting ? "Submitting..." : "Submit Ocean Consolidation Request"}
             </Button>
           </form>
