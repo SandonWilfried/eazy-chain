@@ -10,6 +10,7 @@ import Tracking from "./pages/Tracking";
 import Payment from "./pages/Payment";
 import Dashboard from "./pages/Dashboard";
 import Passengers from "./pages/Passengers";
+import Services from "./pages/Services";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/tracking" element={<Tracking />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/services" element={<Services />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
