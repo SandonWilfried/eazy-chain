@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Elements } from "@stripe/react-stripe-js";
@@ -22,7 +21,7 @@ const mockShipmentData = {
 };
 
 const Payment = () => {
-  const [shipmentData, setShipmentData] = useState<{
+  const [shipmentData, setShipmentData<{
     id: string;
     amount: number;
     origin: string;
@@ -83,6 +82,24 @@ const Payment = () => {
               <p className="text-muted-foreground">
                 Complete your payment details to finalize your shipping transaction
               </p>
+              
+              {/* Add payment amount summary */}
+              {shipmentData && (
+                <div className="mt-4 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="text-sm text-purple-700 dark:text-purple-300">Shipment Total</p>
+                      <p className="text-2xl font-bold text-purple-800 dark:text-purple-200">
+                        ${shipmentData.amount.toLocaleString()}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm text-purple-700 dark:text-purple-300">Shipment ID</p>
+                      <p className="font-medium text-purple-800 dark:text-purple-200">{shipmentData.id}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
             
             {loading ? (

@@ -598,14 +598,20 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
                   Total: {quotation.amount.toLocaleString()} {quotation.currency}
                 </p>
                 
-                {/* Payment terms information */}
+                {/* Payment terms information with updated styling */}
                 {paymentDetails && (
                   <div className="mt-2 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-md text-sm">
                     <div className="flex gap-2 items-center text-blue-700 dark:text-blue-300 font-medium mb-1">
                       <Info size={16} />
                       <span>Payment Terms</span>
                     </div>
-                    <p>Initial payment (50%): <strong>{Math.round(paymentDetails.initialPayment).toLocaleString()} {paymentDetails.currency}</strong></p>
+                    <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-md border-l-4 border-purple-500 dark:border-purple-400 mb-2">
+                      <p className="font-medium text-purple-700 dark:text-purple-300">Initial payment (50%):</p>
+                      <p className="text-lg font-bold text-purple-800 dark:text-purple-200">{Math.round(paymentDetails.initialPayment).toLocaleString()} {paymentDetails.currency}</p>
+                      <p className="text-xs text-purple-600 dark:text-purple-300 mt-1 italic">
+                        <span className="font-semibold">Required upfront</span> to confirm your booking
+                      </p>
+                    </div>
                     <p>Remaining payment (50%): <strong>{Math.round(paymentDetails.remainingPayment).toLocaleString()} {paymentDetails.currency}</strong></p>
                     <p className="mt-1 text-xs text-muted-foreground">
                       You'll need to pay 50% upfront to confirm your booking. The remaining 50% will be due when you pick up your goods.
@@ -613,7 +619,6 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
                   </div>
                 )}
                 
-                {/* accept quotation button or identity document upload */}
                 {!showBookingButton ? (
                   <Button 
                     type="button" 
@@ -659,27 +664,27 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
                         </CardContent>
                       </Card>
                     ) : !initialPaymentConfirmed ? (
-                      <Card>
-                        <CardHeader>
-                          <CardTitle className="text-base">Confirm Initial Payment</CardTitle>
+                      <Card className="border-purple-200 dark:border-purple-800">
+                        <CardHeader className="bg-purple-50 dark:bg-purple-900/20 border-b border-purple-100 dark:border-purple-800/30">
+                          <CardTitle className="text-base text-purple-800 dark:text-purple-200">Confirm Initial Payment</CardTitle>
                           <CardDescription>
                             Please confirm that you will make the initial payment
                           </CardDescription>
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className="pt-4">
                           <div className="space-y-4">
-                            <div className="p-3 bg-amber-50 dark:bg-amber-900/20 rounded-md">
-                              <p className="text-sm font-medium text-amber-800 dark:text-amber-200">
+                            <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-md border-l-4 border-purple-500">
+                              <p className="text-sm font-medium text-purple-800 dark:text-purple-200">
                                 Initial Payment Required: {Math.round(paymentDetails?.initialPayment || 0).toLocaleString()} {paymentDetails?.currency || 'XOF'}
                               </p>
-                              <p className="text-xs text-amber-700 dark:text-amber-300 mt-1">
+                              <p className="text-xs text-purple-700 dark:text-purple-300 mt-1">
                                 This payment is required to proceed with your booking.
                               </p>
                             </div>
                             <Button 
                               type="button" 
                               onClick={confirmInitialPayment}
-                              className="w-full"
+                              className="w-full bg-purple-600 hover:bg-purple-700 text-white"
                             >
                               Confirm Initial Payment
                             </Button>
@@ -699,12 +704,12 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
                           </p>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <div className="h-8 w-8 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center">
-                            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-green-600 dark:text-green-400">
+                          <div className="h-8 w-8 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center">
+                            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-purple-600 dark:text-purple-400">
                               <path d="M11.4669 3.72684C11.7558 3.91574 11.8369 4.30308 11.648 4.59198L7.39799 11.092C7.29783 11.2452 7.13556 11.3467 6.95402 11.3699C6.77247 11.3931 6.58989 11.3355 6.45446 11.2124L3.70446 8.71241C3.44905 8.48022 3.43023 8.08494 3.66242 7.82953C3.89461 7.57412 4.28989 7.55529 4.5453 7.78749L6.75292 9.79441L10.6018 3.90792C10.7907 3.61902 11.178 3.53795 11.4669 3.72684Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path>
                             </svg>
                           </div>
-                          <p className="text-sm text-green-600 dark:text-green-400">
+                          <p className="text-sm text-purple-600 dark:text-purple-400">
                             Initial payment confirmed!
                           </p>
                         </div>

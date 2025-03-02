@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { Button } from "@/components/ui/button";
@@ -332,7 +331,16 @@ const PaymentForm = ({ shipmentId, amount, onPaymentSuccess }: PaymentFormProps)
           disabled={!referenceVerified || processing || (selectedPaymentMethod === "card" && !stripe)} 
           className="w-full"
         >
-          {processing ? "Processing..." : `Pay $${amount.toLocaleString()}`}
+          {processing ? (
+            "Processing..."
+          ) : (
+            <div className="flex items-center justify-center">
+              <span>Pay </span>
+              <span className="inline-block bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-200 px-3 py-1 ml-2 rounded-md font-bold">
+                ${amount.toLocaleString()}
+              </span>
+            </div>
+          )}
         </Button>
       </CardFooter>
     </Card>
