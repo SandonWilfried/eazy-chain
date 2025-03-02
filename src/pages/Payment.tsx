@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Elements } from "@stripe/react-stripe-js";
@@ -21,7 +22,7 @@ const mockShipmentData = {
 };
 
 const Payment = () => {
-  const [shipmentData, setShipmentData<{
+  const [shipmentData, setShipmentData] = useState<{
     id: string;
     amount: number;
     origin: string;
