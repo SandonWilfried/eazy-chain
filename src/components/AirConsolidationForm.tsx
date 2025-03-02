@@ -54,6 +54,19 @@ type AirConsolidationFormProps = {
   onClose: () => void;
 };
 
+// Pricing table for the normal freight service
+const calculateNormalPrice = (weight: number): number => {
+  // Round up to nearest 0.5 kg
+  const roundedWeight = Math.ceil(weight * 2) / 2;
+  
+  // Base rate per 0.5 kg
+  const ratePerHalfKg = 5250;
+  
+  // Calculate price based on 0.5 kg increments
+  const multiplier = roundedWeight / 0.5;
+  return ratePerHalfKg * multiplier;
+};
+
 const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
   const [showBookingButton, setShowBookingButton] = useState(false);
   const [bookingReference, setBookingReference] = useState<string | null>(null);
@@ -92,49 +105,24 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
   // Calculate price when weight, origin country, or service type changes
   useEffect(() => {
     if (watchWeight && watchWeight > 0 && watchOriginCountry === "china") {
-      // Set the exact rates as provided
-      const normalBaseRate = 10500; // Normal freight standard rate
-      const expressBaseRate = 15000; // Express freight standard rate
-      
-      // Get base rate per kg based on service type
-      const baseRatePerKg = watchServiceType === "normal" ? normalBaseRate : expressBaseRate;
-      
-      // Calculate price based on weight ranges with exact values
-      let finalRate = baseRatePerKg;
-      let discountApplied = false;
-      let multiplier = 1;
       let totalAmount = 0;
+      let expressMultiplier = 1.43; // ~43% higher for express (15000/10500)
       
-      if (watchWeight >= 0.1 && watchWeight < 0.5) {
-        // Specific price for 0.1 to 0.5 kg range
-        if (watchServiceType === "normal") {
-          totalAmount = 5250; // Exact price for normal freight
-        } else {
-          totalAmount = 7500; // Exact price for express freight
-        }
-        finalRate = watchServiceType === "normal" ? 5250 : 7500;
-        discountApplied = true;
-      } else if (watchWeight >= 0.5 && watchWeight < 1) {
-        // Specific price for 0.5 to 1 kg range
-        if (watchServiceType === "normal") {
-          totalAmount = 10500; // Normal freight price
-        } else {
-          totalAmount = 15000; // Express freight price
-        }
-        finalRate = watchServiceType === "normal" ? 10500 : 15000;
-      } else if (watchWeight >= 1) {
-        // For weights 1kg and above, use ceiling multiplier of the weight
-        // e.g., 1-1.9kg is 1x rate, 2-2.9kg is 2x rate, etc.
-        multiplier = Math.ceil(watchWeight);
-        finalRate = baseRatePerKg;
-        totalAmount = baseRatePerKg * multiplier;
+      if (watchServiceType === "normal") {
+        // Calculate normal freight price based on the pricing table
+        totalAmount = calculateNormalPrice(watchWeight);
+      } else {
+        // Express freight is approximately 43% more expensive
+        totalAmount = calculateNormalPrice(watchWeight) * expressMultiplier;
       }
+      
+      // Round to nearest whole number
+      totalAmount = Math.round(totalAmount);
       
       setQuotation({
         amount: totalAmount,
         currency: "XOF",
-        perKg: finalRate,
-        discountApplied
+        perKg: watchServiceType === "normal" ? 10500 : 15000,
       });
       
       // Calculate payment details (50% now, 50% later)
@@ -364,13 +352,13 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="normal" id="normal" />
                             <FormLabel htmlFor="normal" className="font-normal cursor-pointer">
-                              Normal Freight (10,500 XOF per kg)
+                              Normal Freight (5,250 XOF per 0.5 kg)
                             </FormLabel>
                           </div>
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="express" id="express" />
                             <FormLabel htmlFor="express" className="font-normal cursor-pointer">
-                              Express (15,000 XOF per kg)
+                              Express (~7,500 XOF per 0.5 kg)
                             </FormLabel>
                           </div>
                         </RadioGroup>
@@ -446,13 +434,8 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
               <h4 className="font-medium mb-2">Shipping Quotation</h4>
               <div className="space-y-2">
                 <p><span className="font-medium">Service:</span> {watchServiceType === "normal" ? "Normal Freight" : "Express"}</p>
-                <p><span className="font-medium">Rate:</span> {quotation.perKg.toLocaleString()} XOF{watchWeight && watchWeight < 1 ? " (fixed rate)" : " per kg"}</p>
-                {quotation.discountApplied && (
-                  <p className="text-green-600 dark:text-green-400 text-sm font-medium">
-                    Small package discount applied for shipments under 0.5 kg!
-                  </p>
-                )}
-                <p><span className="font-medium">Weight:</span> {watchWeight} kg</p>
+                <p><span className="font-medium">Rate:</span> {watchServiceType === "normal" ? "5,250" : "7,500"} XOF per 0.5 kg increment</p>
+                <p><span className="font-medium">Weight:</span> {watchWeight} kg (rounded up to {Math.ceil(watchWeight * 2) / 2} kg for billing)</p>
                 <p className="text-lg font-bold">
                   Total: {quotation.amount.toLocaleString()} {quotation.currency}
                 </p>
