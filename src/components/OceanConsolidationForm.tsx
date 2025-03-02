@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -36,16 +35,13 @@ const formSchema = z.object({
     .optional(),
   cargoLength: z.coerce
     .number()
-    .min(1, { message: "Length must be at least 1 cm" })
-    .optional(),
+    .min(1, { message: "Length must be at least 1 cm" }),
   cargoWidth: z.coerce
     .number()
-    .min(1, { message: "Width must be at least 1 cm" })
-    .optional(),
+    .min(1, { message: "Width must be at least 1 cm" }),
   cargoHeight: z.coerce
     .number()
-    .min(1, { message: "Height must be at least 1 cm" })
-    .optional(),
+    .min(1, { message: "Height must be at least 1 cm" }),
   cargoType: z.string({
     required_error: "Please select a cargo type",
   }),
@@ -217,7 +213,7 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
                 name="cargoLength"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Length (cm) - Optional</FormLabel>
+                    <FormLabel>Length (cm) <span className="text-destructive">*</span></FormLabel>
                     <FormControl>
                       <Input type="number" min="1" step="1" {...field} />
                     </FormControl>
@@ -231,7 +227,7 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
                 name="cargoWidth"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Width (cm) - Optional</FormLabel>
+                    <FormLabel>Width (cm) <span className="text-destructive">*</span></FormLabel>
                     <FormControl>
                       <Input type="number" min="1" step="1" {...field} />
                     </FormControl>
@@ -245,7 +241,7 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
                 name="cargoHeight"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Height (cm) - Optional</FormLabel>
+                    <FormLabel>Height (cm) <span className="text-destructive">*</span></FormLabel>
                     <FormControl>
                       <Input type="number" min="1" step="1" {...field} />
                     </FormControl>
