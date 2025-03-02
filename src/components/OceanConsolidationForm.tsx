@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -107,6 +106,7 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
   } | null>(null);
   const [identityDocumentUploaded, setIdentityDocumentUploaded] = useState<boolean>(false);
   const [identityDocumentFile, setIdentityDocumentFile] = useState<File | null>(null);
+  const [initialPaymentConfirmed, setInitialPaymentConfirmed] = useState<boolean>(false);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -199,9 +199,24 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
     }
   };
 
+  const confirmInitialPayment = () => {
+    if (!identityDocumentUploaded) {
+      toast.error("Please upload your identity document first.");
+      return;
+    }
+    
+    setInitialPaymentConfirmed(true);
+    toast.success("Initial payment confirmed!");
+  };
+
   const requestBookingReference = () => {
     if (!identityDocumentFile) {
       toast.error("Please upload your identity document first.");
+      return;
+    }
+    
+    if (!initialPaymentConfirmed) {
+      toast.error("Please confirm initial payment first.");
       return;
     }
     
@@ -224,6 +239,11 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
     
     if (showBookingButton && !identityDocumentUploaded) {
       toast.error("Please upload your identity document before submitting");
+      return;
+    }
+    
+    if (showBookingButton && !initialPaymentConfirmed) {
+      toast.error("Please confirm initial payment before submitting");
       return;
     }
     
@@ -396,7 +416,6 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
               />
             </div>
 
-            {/* Quotation Section for China */}
             {quotation && watchOriginCountry === "China" && (
               <div className="bg-muted p-4 rounded-md">
                 <h4 className="font-medium mb-2">Shipping Quotation</h4>
@@ -407,7 +426,6 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
                     Total: {Math.round(quotation.amount).toLocaleString()} {quotation.currency}
                   </p>
                   
-                  {/* Payment terms information */}
                   {paymentDetails && (
                     <div className="mt-2 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-md text-sm">
                       <div className="flex gap-2 items-center text-blue-700 dark:text-blue-300 font-medium mb-1">
@@ -466,6 +484,34 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
                             </div>
                           </CardContent>
                         </Card>
+                      ) : !initialPaymentConfirmed ? (
+                        <Card>
+                          <CardHeader>
+                            <CardTitle className="text-base">Confirm Initial Payment</CardTitle>
+                            <CardDescription>
+                              Please confirm that you will make the initial payment
+                            </CardDescription>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="space-y-4">
+                              <div className="p-3 bg-amber-50 dark:bg-amber-900/20 rounded-md">
+                                <p className="text-sm font-medium text-amber-800 dark:text-amber-200">
+                                  Initial Payment Required: {Math.round(paymentDetails?.initialPayment || 0).toLocaleString()} {paymentDetails?.currency || 'XOF'}
+                                </p>
+                                <p className="text-xs text-amber-700 dark:text-amber-300 mt-1">
+                                  This payment is required to proceed with your booking.
+                                </p>
+                              </div>
+                              <Button 
+                                type="button" 
+                                onClick={confirmInitialPayment}
+                                className="w-full"
+                              >
+                                Confirm Initial Payment
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
                       ) : (
                         <div className="flex flex-col space-y-2">
                           <div className="flex items-center space-x-2">
@@ -476,6 +522,16 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
                             </div>
                             <p className="text-sm text-green-600 dark:text-green-400">
                               Document uploaded successfully: {identityDocumentFile?.name}
+                            </p>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <div className="h-8 w-8 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center">
+                              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-green-600 dark:text-green-400">
+                                <path d="M11.4669 3.72684C11.7558 3.91574 11.8369 4.30308 11.648 4.59198L7.39799 11.092C7.29783 11.2452 7.13556 11.3467 6.95402 11.3699C6.77247 11.3931 6.58989 11.3355 6.45446 11.2124L3.70446 8.71241C3.44905 8.48022 3.43023 8.08494 3.66242 7.82953C3.89461 7.57412 4.28989 7.55529 4.5453 7.78749L6.75292 9.79441L10.6018 3.90792C10.7907 3.61902 11.178 3.53795 11.4669 3.72684Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path>
+                              </svg>
+                            </div>
+                            <p className="text-sm text-green-600 dark:text-green-400">
+                              Initial payment confirmed!
                             </p>
                           </div>
                           <Button 
@@ -561,7 +617,8 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
               className="w-full" 
               disabled={isSubmitting || 
                        (watchOriginCountry === "China" && !showBookingButton && quotation !== null) ||
-                       (showBookingButton && !identityDocumentUploaded)}
+                       (showBookingButton && !identityDocumentUploaded) ||
+                       (showBookingButton && !initialPaymentConfirmed)}
             >
               {isSubmitting ? "Submitting..." : "Submit Ocean Consolidation Request"}
             </Button>

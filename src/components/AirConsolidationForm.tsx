@@ -111,7 +111,6 @@ const calculateExpressPrice = (weight: number): number => {
   
   // Apply the same calculation logic as normal freight
   // - Between 0.1 and 0.5 kg: invoice on 0.5 kg
-  // - Between 0.6 and 0.9 kg: invoice on 1.0 kg
   
   // Determine billable weight
   let billableWeight: number;
@@ -152,6 +151,7 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
   } | null>(null);
   const [identityDocumentUploaded, setIdentityDocumentUploaded] = useState<boolean>(false);
   const [identityDocumentFile, setIdentityDocumentFile] = useState<File | null>(null);
+  const [initialPaymentConfirmed, setInitialPaymentConfirmed] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -262,9 +262,24 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
     }
   };
 
+  const confirmInitialPayment = () => {
+    if (!identityDocumentUploaded) {
+      toast.error("Please upload your identity document first.");
+      return;
+    }
+    
+    setInitialPaymentConfirmed(true);
+    toast.success("Initial payment confirmed!");
+  };
+
   const requestBookingReference = () => {
     if (!identityDocumentFile) {
       toast.error("Please upload your identity document first.");
+      return;
+    }
+    
+    if (!initialPaymentConfirmed) {
+      toast.error("Please confirm initial payment first.");
       return;
     }
     
@@ -277,7 +292,8 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
       ...values,
       quotation,
       paymentDetails,
-      identityDocument: identityDocumentFile.name
+      identityDocument: identityDocumentFile.name,
+      initialPaymentConfirmed: true
     });
     
     toast.success(`Booking reference generated: ${bookingRef}`, {
@@ -295,6 +311,11 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
     
     if (showBookingButton && !identityDocumentUploaded) {
       toast.error("Please upload your identity document before submitting");
+      return;
+    }
+    
+    if (showBookingButton && !initialPaymentConfirmed) {
+      toast.error("Please confirm initial payment before submitting");
       return;
     }
     
@@ -637,6 +658,34 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
                           </div>
                         </CardContent>
                       </Card>
+                    ) : !initialPaymentConfirmed ? (
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="text-base">Confirm Initial Payment</CardTitle>
+                          <CardDescription>
+                            Please confirm that you will make the initial payment
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-4">
+                            <div className="p-3 bg-amber-50 dark:bg-amber-900/20 rounded-md">
+                              <p className="text-sm font-medium text-amber-800 dark:text-amber-200">
+                                Initial Payment Required: {Math.round(paymentDetails?.initialPayment || 0).toLocaleString()} {paymentDetails?.currency || 'XOF'}
+                              </p>
+                              <p className="text-xs text-amber-700 dark:text-amber-300 mt-1">
+                                This payment is required to proceed with your booking.
+                              </p>
+                            </div>
+                            <Button 
+                              type="button" 
+                              onClick={confirmInitialPayment}
+                              className="w-full"
+                            >
+                              Confirm Initial Payment
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
                     ) : (
                       <div className="flex flex-col space-y-2">
                         <div className="flex items-center space-x-2">
@@ -647,6 +696,16 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
                           </div>
                           <p className="text-sm text-green-600 dark:text-green-400">
                             Document uploaded successfully: {identityDocumentFile?.name}
+                          </p>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <div className="h-8 w-8 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center">
+                            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-green-600 dark:text-green-400">
+                              <path d="M11.4669 3.72684C11.7558 3.91574 11.8369 4.30308 11.648 4.59198L7.39799 11.092C7.29783 11.2452 7.13556 11.3467 6.95402 11.3699C6.77247 11.3931 6.58989 11.3355 6.45446 11.2124L3.70446 8.71241C3.44905 8.48022 3.43023 8.08494 3.66242 7.82953C3.89461 7.57412 4.28989 7.55529 4.5453 7.78749L6.75292 9.79441L10.6018 3.90792C10.7907 3.61902 11.178 3.53795 11.4669 3.72684Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path>
+                            </svg>
+                          </div>
+                          <p className="text-sm text-green-600 dark:text-green-400">
+                            Initial payment confirmed!
                           </p>
                         </div>
                         <Button 
@@ -673,7 +732,8 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
             <Button 
               type="submit"
               disabled={(watchOriginCountry === "china" && !showBookingButton && quotation !== null) || 
-                        (showBookingButton && !identityDocumentUploaded)}
+                        (showBookingButton && !identityDocumentUploaded) ||
+                        (showBookingButton && !initialPaymentConfirmed)}
             >
               Submit Request
             </Button>
