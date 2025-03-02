@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -25,6 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const formSchema = z.object({
   fullName: z.string().min(2, {
@@ -46,6 +47,7 @@ const formSchema = z.object({
   }),
   dimensions: z.string().optional(),
   specialInstructions: z.string().optional(),
+  serviceType: z.enum(["normal", "express"]).optional().default("normal"),
 });
 
 type AirConsolidationFormProps = {
@@ -53,6 +55,13 @@ type AirConsolidationFormProps = {
 };
 
 const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
+  const [showBookingButton, setShowBookingButton] = useState(false);
+  const [quotation, setQuotation] = useState<{
+    amount: number;
+    currency: string;
+    perKg: number;
+  } | null>(null);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -65,8 +74,31 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
       weight: undefined,
       dimensions: "",
       specialInstructions: "",
+      serviceType: "normal",
     },
   });
+
+  const watchWeight = form.watch("weight");
+  const watchOriginCountry = form.watch("originCountry");
+  const watchServiceType = form.watch("serviceType");
+
+  // Calculate price when weight, origin country, or service type changes
+  useEffect(() => {
+    if (watchWeight && watchWeight > 0 && watchOriginCountry === "china") {
+      const perKg = watchServiceType === "normal" ? 10500 : 15000;
+      const totalAmount = perKg * watchWeight;
+      
+      setQuotation({
+        amount: totalAmount,
+        currency: "XOF",
+        perKg: perKg
+      });
+      
+      setShowBookingButton(false); // Reset when values change
+    } else {
+      setQuotation(null);
+    }
+  }, [watchWeight, watchOriginCountry, watchServiceType]);
 
   const originCountries = [
     { value: "china", label: "China" },
@@ -74,6 +106,26 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
     { value: "france", label: "France" },
     { value: "germany", label: "Germany" },
   ];
+
+  const acceptQuotation = () => {
+    setShowBookingButton(true);
+    toast.success("Quotation accepted!");
+  };
+
+  const requestBookingReference = () => {
+    const values = form.getValues();
+    console.log("Booking reference requested for:", {
+      ...values,
+      quotation
+    });
+    
+    // Generate a random booking reference
+    const bookingRef = `ACS-${Math.floor(Math.random() * 1000000).toString().padStart(6, '0')}`;
+    
+    toast.success(`Booking reference generated: ${bookingRef}`, {
+      description: "Please save this reference for tracking your shipment.",
+    });
+  };
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log("Air Consolidation Form Submitted:", values);
@@ -208,6 +260,39 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
               )}
             />
             
+            {watchOriginCountry === "china" && (
+              <FormField
+                control={form.control}
+                name="serviceType"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel>Service Type <span className="text-destructive">*</span></FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex flex-col space-y-1"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="normal" id="normal" />
+                          <FormLabel htmlFor="normal" className="font-normal cursor-pointer">
+                            Normal Freight (10,500 XOF per kg)
+                          </FormLabel>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="express" id="express" />
+                          <FormLabel htmlFor="express" className="font-normal cursor-pointer">
+                            Express (15,000 XOF per kg)
+                          </FormLabel>
+                        </div>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
@@ -266,6 +351,40 @@ const AirConsolidationForm = ({ onClose }: AirConsolidationFormProps) => {
             />
           </div>
         </div>
+        
+        {/* Quotation Section */}
+        {quotation && watchOriginCountry === "china" && (
+          <div className="bg-muted p-4 rounded-md">
+            <h4 className="font-medium mb-2">Shipping Quotation</h4>
+            <div className="space-y-2">
+              <p><span className="font-medium">Service:</span> {watchServiceType === "normal" ? "Normal Freight" : "Express"}</p>
+              <p><span className="font-medium">Rate:</span> {quotation.perKg.toLocaleString()} XOF per kg</p>
+              <p><span className="font-medium">Weight:</span> {watchWeight} kg</p>
+              <p className="text-lg font-bold">
+                Total: {quotation.amount.toLocaleString()} {quotation.currency}
+              </p>
+              
+              {!showBookingButton ? (
+                <Button 
+                  type="button" 
+                  onClick={acceptQuotation}
+                  className="mt-2"
+                >
+                  Accept Quotation
+                </Button>
+              ) : (
+                <Button 
+                  type="button" 
+                  onClick={requestBookingReference}
+                  className="mt-2"
+                  variant="secondary"
+                >
+                  Request Booking Reference
+                </Button>
+              )}
+            </div>
+          </div>
+        )}
         
         <div className="flex justify-end gap-4 pt-4">
           <Button type="button" variant="outline" onClick={onClose}>
