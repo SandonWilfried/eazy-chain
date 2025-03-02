@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Upload, X, AlertCircle, Ship, Plane, Truck } from "lucide-react";
+import { Upload, X, AlertCircle, Ship, Plane, Truck, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -44,7 +44,7 @@ const formSchema = z.object({
   }),
 });
 
-type FileType = "billOfLading" | "commercialInvoice" | "packingList" | "exportDocuments" | "otherDocuments";
+type FileType = "billOfLading" | "airwayBill" | "commercialInvoice" | "packingList" | "exportDocuments" | "otherDocuments";
 
 type FileItem = {
   id: string;
@@ -52,13 +52,12 @@ type FileItem = {
   type: FileType;
 };
 
-const requiredDocumentTypes: FileType[] = ["billOfLading", "commercialInvoice", "packingList"];
-
 const CustomsClearanceForm = ({ onClose }: { onClose: () => void }) => {
   const [files, setFiles] = useState<FileItem[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [documentErrors, setDocumentErrors] = useState<Record<FileType, boolean>>({
     billOfLading: false,
+    airwayBill: false,
     commercialInvoice: false,
     packingList: false,
     exportDocuments: false,
@@ -78,7 +77,14 @@ const CustomsClearanceForm = ({ onClose }: { onClose: () => void }) => {
     },
   });
 
-  // Update document errors whenever files change
+  const transportMode = form.watch("transportMode");
+
+  // Determine required documents based on transport mode
+  const requiredDocumentTypes: FileType[] = transportMode === "air" 
+    ? ["airwayBill", "commercialInvoice"] 
+    : ["billOfLading", "commercialInvoice", "packingList"];
+
+  // Update document errors whenever files change or transport mode changes
   useEffect(() => {
     let newErrors = { ...documentErrors };
     
@@ -94,7 +100,7 @@ const CustomsClearanceForm = ({ onClose }: { onClose: () => void }) => {
     });
     
     setDocumentErrors(newErrors);
-  }, [files]);
+  }, [files, transportMode, requiredDocumentTypes]);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>, type: FileType) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -294,106 +300,184 @@ const CustomsClearanceForm = ({ onClose }: { onClose: () => void }) => {
           )}
           
           <div className="space-y-4">
-            {/* Bill of Lading */}
-            <div>
-              <FormLabel className="mb-2 block">
-                Bill of Lading <span className="text-destructive">*</span>
-              </FormLabel>
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <Input
-                    type="file"
-                    onChange={(e) => handleFileUpload(e, "billOfLading")}
-                    className={`cursor-pointer ${documentErrors.billOfLading ? "border-destructive" : ""}`}
-                    accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                  />
+            {/* Air transportation documents */}
+            {transportMode === "air" && (
+              <>
+                {/* Airway Bill */}
+                <div>
+                  <FormLabel className="mb-2 block">
+                    Airway Bill <span className="text-destructive">*</span>
+                  </FormLabel>
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-2">
+                      <Input
+                        type="file"
+                        onChange={(e) => handleFileUpload(e, "airwayBill")}
+                        className={`cursor-pointer ${documentErrors.airwayBill ? "border-destructive" : ""}`}
+                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                      />
+                    </div>
+                    {documentErrors.airwayBill && (
+                      <p className="text-sm font-medium text-destructive">
+                        Airway Bill is required
+                      </p>
+                    )}
+                    {files.filter(f => f.type === "airwayBill").map((file) => (
+                      <div key={file.id} className="flex items-center justify-between bg-secondary/20 p-2 rounded">
+                        <span className="text-sm truncate max-w-[300px]">{file.file.name}</span>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeFile(file.id)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                {documentErrors.billOfLading && (
-                  <p className="text-sm font-medium text-destructive">
-                    Bill of Lading is required
-                  </p>
-                )}
-                {files.filter(f => f.type === "billOfLading").map((file) => (
-                  <div key={file.id} className="flex items-center justify-between bg-secondary/20 p-2 rounded">
-                    <span className="text-sm truncate max-w-[300px]">{file.file.name}</span>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => removeFile(file.id)}
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
+
+                {/* Commercial Invoice for Air */}
+                <div>
+                  <FormLabel className="mb-2 block">
+                    Commercial Invoice <span className="text-destructive">*</span>
+                  </FormLabel>
+                  <div className="flex flex-col gap-2">
+                    <Input
+                      type="file"
+                      onChange={(e) => handleFileUpload(e, "commercialInvoice")}
+                      className={`cursor-pointer ${documentErrors.commercialInvoice ? "border-destructive" : ""}`}
+                      accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                    />
+                    {documentErrors.commercialInvoice && (
+                      <p className="text-sm font-medium text-destructive">
+                        Commercial Invoice is required
+                      </p>
+                    )}
+                    {files.filter(f => f.type === "commercialInvoice").map((file) => (
+                      <div key={file.id} className="flex items-center justify-between bg-secondary/20 p-2 rounded">
+                        <span className="text-sm truncate max-w-[300px]">{file.file.name}</span>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeFile(file.id)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
-            
-            {/* Commercial Invoice */}
-            <div>
-              <FormLabel className="mb-2 block">
-                Commercial Invoice <span className="text-destructive">*</span>
-              </FormLabel>
-              <div className="flex flex-col gap-2">
-                <Input
-                  type="file"
-                  onChange={(e) => handleFileUpload(e, "commercialInvoice")}
-                  className={`cursor-pointer ${documentErrors.commercialInvoice ? "border-destructive" : ""}`}
-                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                />
-                {documentErrors.commercialInvoice && (
-                  <p className="text-sm font-medium text-destructive">
-                    Commercial Invoice is required
-                  </p>
-                )}
-                {files.filter(f => f.type === "commercialInvoice").map((file) => (
-                  <div key={file.id} className="flex items-center justify-between bg-secondary/20 p-2 rounded">
-                    <span className="text-sm truncate max-w-[300px]">{file.file.name}</span>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => removeFile(file.id)}
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
+                </div>
+              </>
+            )}
+
+            {/* Ocean/Road transportation documents */}
+            {transportMode !== "air" && (
+              <>
+                {/* Bill of Lading */}
+                <div>
+                  <FormLabel className="mb-2 block">
+                    Bill of Lading <span className="text-destructive">*</span>
+                  </FormLabel>
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-2">
+                      <Input
+                        type="file"
+                        onChange={(e) => handleFileUpload(e, "billOfLading")}
+                        className={`cursor-pointer ${documentErrors.billOfLading ? "border-destructive" : ""}`}
+                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                      />
+                    </div>
+                    {documentErrors.billOfLading && (
+                      <p className="text-sm font-medium text-destructive">
+                        Bill of Lading is required
+                      </p>
+                    )}
+                    {files.filter(f => f.type === "billOfLading").map((file) => (
+                      <div key={file.id} className="flex items-center justify-between bg-secondary/20 p-2 rounded">
+                        <span className="text-sm truncate max-w-[300px]">{file.file.name}</span>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeFile(file.id)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
-            
-            {/* Packing List */}
-            <div>
-              <FormLabel className="mb-2 block">
-                Packing List <span className="text-destructive">*</span>
-              </FormLabel>
-              <div className="flex flex-col gap-2">
-                <Input
-                  type="file"
-                  onChange={(e) => handleFileUpload(e, "packingList")}
-                  className={`cursor-pointer ${documentErrors.packingList ? "border-destructive" : ""}`}
-                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                />
-                {documentErrors.packingList && (
-                  <p className="text-sm font-medium text-destructive">
-                    Packing List is required
-                  </p>
-                )}
-                {files.filter(f => f.type === "packingList").map((file) => (
-                  <div key={file.id} className="flex items-center justify-between bg-secondary/20 p-2 rounded">
-                    <span className="text-sm truncate max-w-[300px]">{file.file.name}</span>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => removeFile(file.id)}
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
+                </div>
+                
+                {/* Commercial Invoice for Ocean/Road */}
+                <div>
+                  <FormLabel className="mb-2 block">
+                    Commercial Invoice <span className="text-destructive">*</span>
+                  </FormLabel>
+                  <div className="flex flex-col gap-2">
+                    <Input
+                      type="file"
+                      onChange={(e) => handleFileUpload(e, "commercialInvoice")}
+                      className={`cursor-pointer ${documentErrors.commercialInvoice ? "border-destructive" : ""}`}
+                      accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                    />
+                    {documentErrors.commercialInvoice && (
+                      <p className="text-sm font-medium text-destructive">
+                        Commercial Invoice is required
+                      </p>
+                    )}
+                    {files.filter(f => f.type === "commercialInvoice").map((file) => (
+                      <div key={file.id} className="flex items-center justify-between bg-secondary/20 p-2 rounded">
+                        <span className="text-sm truncate max-w-[300px]">{file.file.name}</span>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeFile(file.id)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
+                </div>
+                
+                {/* Packing List */}
+                <div>
+                  <FormLabel className="mb-2 block">
+                    Packing List <span className="text-destructive">*</span>
+                  </FormLabel>
+                  <div className="flex flex-col gap-2">
+                    <Input
+                      type="file"
+                      onChange={(e) => handleFileUpload(e, "packingList")}
+                      className={`cursor-pointer ${documentErrors.packingList ? "border-destructive" : ""}`}
+                      accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                    />
+                    {documentErrors.packingList && (
+                      <p className="text-sm font-medium text-destructive">
+                        Packing List is required
+                      </p>
+                    )}
+                    {files.filter(f => f.type === "packingList").map((file) => (
+                      <div key={file.id} className="flex items-center justify-between bg-secondary/20 p-2 rounded">
+                        <span className="text-sm truncate max-w-[300px]">{file.file.name}</span>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeFile(file.id)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
             
             {/* Export Documents - Not required */}
             <div>
