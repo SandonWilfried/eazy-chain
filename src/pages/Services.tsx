@@ -5,9 +5,11 @@ import Navbar from "@/components/Navbar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import CustomsClearanceForm from "@/components/CustomsClearanceForm";
+import AirConsolidationForm from "@/components/AirConsolidationForm";
 
 const Services = () => {
   const [customsDialogOpen, setCustomsDialogOpen] = useState(false);
+  const [airConsolidationDialogOpen, setAirConsolidationDialogOpen] = useState(false);
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -144,8 +146,11 @@ const Services = () => {
               </CardContent>
             </Card>
             
-            {/* Air Consolidation */}
-            <Card className="transition-all duration-300 hover:shadow-md">
+            {/* Air Consolidation - Updated to open dialog */}
+            <Card 
+              className="transition-all duration-300 hover:shadow-md cursor-pointer"
+              onClick={() => setAirConsolidationDialogOpen(true)}
+            >
               <CardHeader className="text-center">
                 <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
                   <Plane className="h-8 w-8 text-primary" />
@@ -229,6 +234,16 @@ const Services = () => {
             <DialogTitle className="text-2xl">Customs Clearance Request</DialogTitle>
           </DialogHeader>
           <CustomsClearanceForm onClose={() => setCustomsDialogOpen(false)} />
+        </DialogContent>
+      </Dialog>
+      
+      {/* Air Consolidation Dialog */}
+      <Dialog open={airConsolidationDialogOpen} onOpenChange={setAirConsolidationDialogOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl">Air Consolidation Service Request</DialogTitle>
+          </DialogHeader>
+          <AirConsolidationForm onClose={() => setAirConsolidationDialogOpen(false)} />
         </DialogContent>
       </Dialog>
       
