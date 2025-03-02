@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -80,9 +79,16 @@ const CustomsClearanceForm = ({ onClose }: { onClose: () => void }) => {
   const transportMode = form.watch("transportMode");
 
   // Determine required documents based on transport mode
-  const requiredDocumentTypes: FileType[] = transportMode === "air" 
-    ? ["airwayBill", "commercialInvoice"] 
-    : ["billOfLading", "commercialInvoice", "packingList"];
+  const requiredDocumentTypes: FileType[] = (() => {
+    switch(transportMode) {
+      case "air":
+        return ["airwayBill", "commercialInvoice"];
+      case "road":
+        return ["commercialInvoice", "packingList"];
+      default: // ocean
+        return ["billOfLading", "commercialInvoice", "packingList"];
+    }
+  })();
 
   // Update document errors whenever files change or transport mode changes
   useEffect(() => {
@@ -370,11 +376,138 @@ const CustomsClearanceForm = ({ onClose }: { onClose: () => void }) => {
                     ))}
                   </div>
                 </div>
+                
+                {/* Other Documents - Not required for Air */}
+                <div>
+                  <FormLabel className="mb-2 block">Other Documents</FormLabel>
+                  <FormDescription className="mt-0 mb-2">Any additional documents that might be helpful for customs clearance.</FormDescription>
+                  <div className="flex flex-col gap-2">
+                    <Input
+                      type="file"
+                      multiple
+                      onChange={(e) => handleFileUpload(e, "otherDocuments")}
+                      className="cursor-pointer"
+                      accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                    />
+                    {files.filter(f => f.type === "otherDocuments").map((file) => (
+                      <div key={file.id} className="flex items-center justify-between bg-secondary/20 p-2 rounded">
+                        <span className="text-sm truncate max-w-[300px]">{file.file.name}</span>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeFile(file.id)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </>
             )}
 
-            {/* Ocean/Road transportation documents */}
-            {transportMode !== "air" && (
+            {/* Road transportation documents */}
+            {transportMode === "road" && (
+              <>                
+                {/* Commercial Invoice for Road */}
+                <div>
+                  <FormLabel className="mb-2 block">
+                    Commercial Invoice <span className="text-destructive">*</span>
+                  </FormLabel>
+                  <div className="flex flex-col gap-2">
+                    <Input
+                      type="file"
+                      onChange={(e) => handleFileUpload(e, "commercialInvoice")}
+                      className={`cursor-pointer ${documentErrors.commercialInvoice ? "border-destructive" : ""}`}
+                      accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                    />
+                    {documentErrors.commercialInvoice && (
+                      <p className="text-sm font-medium text-destructive">
+                        Commercial Invoice is required
+                      </p>
+                    )}
+                    {files.filter(f => f.type === "commercialInvoice").map((file) => (
+                      <div key={file.id} className="flex items-center justify-between bg-secondary/20 p-2 rounded">
+                        <span className="text-sm truncate max-w-[300px]">{file.file.name}</span>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeFile(file.id)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Packing List for Road */}
+                <div>
+                  <FormLabel className="mb-2 block">
+                    Packing List <span className="text-destructive">*</span>
+                  </FormLabel>
+                  <div className="flex flex-col gap-2">
+                    <Input
+                      type="file"
+                      onChange={(e) => handleFileUpload(e, "packingList")}
+                      className={`cursor-pointer ${documentErrors.packingList ? "border-destructive" : ""}`}
+                      accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                    />
+                    {documentErrors.packingList && (
+                      <p className="text-sm font-medium text-destructive">
+                        Packing List is required
+                      </p>
+                    )}
+                    {files.filter(f => f.type === "packingList").map((file) => (
+                      <div key={file.id} className="flex items-center justify-between bg-secondary/20 p-2 rounded">
+                        <span className="text-sm truncate max-w-[300px]">{file.file.name}</span>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeFile(file.id)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Other Documents - Not required for Road */}
+                <div>
+                  <FormLabel className="mb-2 block">Other Documents</FormLabel>
+                  <FormDescription className="mt-0 mb-2">Any additional documents that might be helpful for customs clearance.</FormDescription>
+                  <div className="flex flex-col gap-2">
+                    <Input
+                      type="file"
+                      multiple
+                      onChange={(e) => handleFileUpload(e, "otherDocuments")}
+                      className="cursor-pointer"
+                      accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                    />
+                    {files.filter(f => f.type === "otherDocuments").map((file) => (
+                      <div key={file.id} className="flex items-center justify-between bg-secondary/20 p-2 rounded">
+                        <span className="text-sm truncate max-w-[300px]">{file.file.name}</span>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeFile(file.id)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Ocean transportation documents */}
+            {transportMode === "ocean" && (
               <>
                 {/* Bill of Lading */}
                 <div>
@@ -411,7 +544,7 @@ const CustomsClearanceForm = ({ onClose }: { onClose: () => void }) => {
                   </div>
                 </div>
                 
-                {/* Commercial Invoice for Ocean/Road */}
+                {/* Commercial Invoice for Ocean */}
                 <div>
                   <FormLabel className="mb-2 block">
                     Commercial Invoice <span className="text-destructive">*</span>
@@ -444,7 +577,7 @@ const CustomsClearanceForm = ({ onClose }: { onClose: () => void }) => {
                   </div>
                 </div>
                 
-                {/* Packing List */}
+                {/* Packing List for Ocean */}
                 <div>
                   <FormLabel className="mb-2 block">
                     Packing List <span className="text-destructive">*</span>
@@ -476,62 +609,62 @@ const CustomsClearanceForm = ({ onClose }: { onClose: () => void }) => {
                     ))}
                   </div>
                 </div>
+                
+                {/* Export Documents - Not required for Ocean */}
+                <div>
+                  <FormLabel className="mb-2 block">Export Documents</FormLabel>
+                  <div className="flex flex-col gap-2">
+                    <Input
+                      type="file"
+                      onChange={(e) => handleFileUpload(e, "exportDocuments")}
+                      className="cursor-pointer"
+                      accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                    />
+                    {files.filter(f => f.type === "exportDocuments").map((file) => (
+                      <div key={file.id} className="flex items-center justify-between bg-secondary/20 p-2 rounded">
+                        <span className="text-sm truncate max-w-[300px]">{file.file.name}</span>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeFile(file.id)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Other Documents - Not required for Ocean */}
+                <div>
+                  <FormLabel className="mb-2 block">Other Documents</FormLabel>
+                  <FormDescription className="mt-0 mb-2">Any additional documents that might be helpful for customs clearance.</FormDescription>
+                  <div className="flex flex-col gap-2">
+                    <Input
+                      type="file"
+                      multiple
+                      onChange={(e) => handleFileUpload(e, "otherDocuments")}
+                      className="cursor-pointer"
+                      accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                    />
+                    {files.filter(f => f.type === "otherDocuments").map((file) => (
+                      <div key={file.id} className="flex items-center justify-between bg-secondary/20 p-2 rounded">
+                        <span className="text-sm truncate max-w-[300px]">{file.file.name}</span>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeFile(file.id)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </>
             )}
-            
-            {/* Export Documents - Not required */}
-            <div>
-              <FormLabel className="mb-2 block">Export Documents</FormLabel>
-              <div className="flex flex-col gap-2">
-                <Input
-                  type="file"
-                  onChange={(e) => handleFileUpload(e, "exportDocuments")}
-                  className="cursor-pointer"
-                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                />
-                {files.filter(f => f.type === "exportDocuments").map((file) => (
-                  <div key={file.id} className="flex items-center justify-between bg-secondary/20 p-2 rounded">
-                    <span className="text-sm truncate max-w-[300px]">{file.file.name}</span>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => removeFile(file.id)}
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            {/* Other Documents - Not required */}
-            <div>
-              <FormLabel className="mb-2 block">Other Documents</FormLabel>
-              <FormDescription className="mt-0 mb-2">Any additional documents that might be helpful for customs clearance.</FormDescription>
-              <div className="flex flex-col gap-2">
-                <Input
-                  type="file"
-                  multiple
-                  onChange={(e) => handleFileUpload(e, "otherDocuments")}
-                  className="cursor-pointer"
-                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                />
-                {files.filter(f => f.type === "otherDocuments").map((file) => (
-                  <div key={file.id} className="flex items-center justify-between bg-secondary/20 p-2 rounded">
-                    <span className="text-sm truncate max-w-[300px]">{file.file.name}</span>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => removeFile(file.id)}
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
         
