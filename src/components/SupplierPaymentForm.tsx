@@ -1,10 +1,9 @@
-
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "react-router-dom";
-import { Camera, CreditCard, Upload, Send, Check, Loader2 } from "lucide-react";
+import { Camera, CreditCard, Upload, Send, Check, Loader2, Building, Globe } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 
 import {
@@ -26,6 +25,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const formSchema = z.object({
   // Step 1: Supplier Information
@@ -41,6 +41,7 @@ const formSchema = z.object({
   paymentCurrency: z.string().min(1, { message: "Currency is required" }),
   paymentPurpose: z.string().min(5, { message: "Payment purpose is required" }),
   paymentNotes: z.string().optional(),
+  paymentMethod: z.enum(["bank_transfer", "alipay", "paypal", "card"]).default("bank_transfer"),
   
   // Step 3: Verification is handled via separate state
 });
@@ -70,8 +71,12 @@ const SupplierPaymentForm = ({ onClose }: { onClose: () => void }) => {
       paymentCurrency: "",
       paymentPurpose: "",
       paymentNotes: "",
+      paymentMethod: "bank_transfer",
     },
   });
+
+  // Watch payment method to show relevant fields
+  const paymentMethod = form.watch("paymentMethod");
 
   const nextStep = () => {
     if (currentStep === 1) {
@@ -209,6 +214,7 @@ const SupplierPaymentForm = ({ onClose }: { onClose: () => void }) => {
     console.log("Form submitted:", data);
     console.log("ID Document:", idDocument);
     console.log("Selfie Image:", selfieImage);
+    console.log("Payment Method:", data.paymentMethod);
     
     await generatePaymentReference();
   };
@@ -374,6 +380,114 @@ const SupplierPaymentForm = ({ onClose }: { onClose: () => void }) => {
                 )}
               />
             </div>
+            
+            <FormField
+              control={form.control}
+              name="paymentMethod"
+              render={({ field }) => (
+                <FormItem className="mt-4">
+                  <FormLabel>Payment Method</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2"
+                    >
+                      <FormItem className="flex items-center space-x-3 space-y-0 border rounded-md p-3">
+                        <FormControl>
+                          <RadioGroupItem value="bank_transfer" />
+                        </FormControl>
+                        <FormLabel className="font-normal flex items-center gap-2">
+                          <Building className="h-4 w-4" />
+                          Bank Transfer
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0 border rounded-md p-3">
+                        <FormControl>
+                          <RadioGroupItem value="alipay" />
+                        </FormControl>
+                        <FormLabel className="font-normal flex items-center gap-2">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 9.5V14C22 14 15.5 15.5 12.5 17C9.5 18.5 7 20.5 7 22H17C20.5 22 22 19.5 22 17V9.5Z" stroke="currentColor" strokeWidth="1.5" />
+                            <path d="M2 8.5C2 5 4.5 2 8.5 2H15C19 2 22 5 22 9" stroke="currentColor" strokeWidth="1.5" />
+                            <path d="M2 14V8.5C2 11.5 4 14 7.5 14H22" stroke="currentColor" strokeWidth="1.5" />
+                          </svg>
+                          Alipay
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0 border rounded-md p-3">
+                        <FormControl>
+                          <RadioGroupItem value="paypal" />
+                        </FormControl>
+                        <FormLabel className="font-normal flex items-center gap-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M7 11l4.06-6.5C12.48 2.34 14.5 1.5 16.5 1.5c2.53 0 4.35 1.5 4.89 3.87.43 2-.84 4.24-2.13 5.13H17"/>
+                            <path d="M13.5 9.5L8.21 15.9c-1.42 1.71-3.44 2.55-5.44 2.55-2.53 0-4.35-1.5-4.89-3.87-.43-2 .84-4.24 2.13-5.13H3"/>
+                            <path d="M4.5 13.5L10 8"/>
+                          </svg>
+                          PayPal
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0 border rounded-md p-3">
+                        <FormControl>
+                          <RadioGroupItem value="card" />
+                        </FormControl>
+                        <FormLabel className="font-normal flex items-center gap-2">
+                          <CreditCard className="h-4 w-4" />
+                          Credit Card
+                        </FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
+            {/* Method-specific additional information */}
+            {paymentMethod === "alipay" && (
+              <div className="mt-4 p-4 border rounded-md bg-primary/5">
+                <h3 className="font-medium mb-2">Alipay Information</h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  After generating a payment reference, you'll be redirected to complete the payment using Alipay.
+                </p>
+                <FormField
+                  control={form.control}
+                  name="supplierEmail"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Alipay Account Email/Phone</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter Alipay account email or phone" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
+            
+            {paymentMethod === "paypal" && (
+              <div className="mt-4 p-4 border rounded-md bg-primary/5">
+                <h3 className="font-medium mb-2">PayPal Information</h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  After generating a payment reference, you'll be redirected to complete the payment using PayPal.
+                </p>
+                <FormField
+                  control={form.control}
+                  name="supplierEmail"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>PayPal Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter PayPal email" type="email" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
             
             <FormField
               control={form.control}
@@ -568,6 +682,14 @@ const SupplierPaymentForm = ({ onClose }: { onClose: () => void }) => {
                       {form.getValues("paymentAmount")} {form.getValues("paymentCurrency")}
                     </div>
                     
+                    <div className="font-medium">Payment Method:</div>
+                    <div>
+                      {form.getValues("paymentMethod") === "bank_transfer" && "Bank Transfer"}
+                      {form.getValues("paymentMethod") === "alipay" && "Alipay"}
+                      {form.getValues("paymentMethod") === "paypal" && "PayPal"}
+                      {form.getValues("paymentMethod") === "card" && "Credit Card"}
+                    </div>
+                    
                     <div className="font-medium">Purpose:</div>
                     <div>{form.getValues("paymentPurpose")}</div>
                     
@@ -626,7 +748,14 @@ const SupplierPaymentForm = ({ onClose }: { onClose: () => void }) => {
                       <h3 className="font-semibold mb-1">Your Payment Reference</h3>
                       <div className="text-lg font-bold text-primary">{paymentReference}</div>
                       <p className="text-sm text-muted-foreground mt-2">
-                        Use this reference when making your payment through our payment gateway or bank transfer.
+                        {form.getValues("paymentMethod") === "bank_transfer" && 
+                          "Use this reference when making your payment through your bank."}
+                        {form.getValues("paymentMethod") === "alipay" && 
+                          "Use this reference when making your payment through Alipay."}
+                        {form.getValues("paymentMethod") === "paypal" && 
+                          "Use this reference when making your payment through PayPal."}
+                        {form.getValues("paymentMethod") === "card" && 
+                          "Use this reference when making your payment through our payment gateway."}
                       </p>
                     </div>
                     
