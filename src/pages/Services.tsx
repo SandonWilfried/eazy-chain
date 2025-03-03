@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import {
   Banknote,
   Boxes,
-  ChineseYuan,
   Coins,
   CreditCard,
   PackageCheck,
