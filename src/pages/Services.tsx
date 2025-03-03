@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Globe, BarChart, Leaf, Wind, Droplets, ZapOff, Ship, Package, Plane, Truck } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -83,21 +82,6 @@ const Services = () => {
               <CardContent>
                 <CardDescription className="text-center">
                   Ocean freight consolidation from China, Turkey, France, and Germany to Togo, ideal for cost-effective shipments.
-                </CardDescription>
-              </CardContent>
-            </Card>
-            
-            {/* China to Togo */}
-            <Card className="transition-all duration-300 hover:shadow-md">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                  <Truck className="h-8 w-8 text-primary" />
-                </div>
-                <CardTitle>China to Togo Shipping</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  Specialized shipping solutions from China to Togo with end-to-end logistics support and tracking capabilities.
                 </CardDescription>
               </CardContent>
             </Card>
