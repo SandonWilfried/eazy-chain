@@ -88,19 +88,21 @@ const Services = () => {
             </Card>
             
             {/* Payment to Suppliers */}
-            <Card className="transition-all duration-300 hover:shadow-md">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                  <CreditCard className="h-8 w-8 text-primary" />
-                </div>
-                <CardTitle>Payment to Suppliers</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  Secure and reliable payment services to your international suppliers with competitive exchange rates and tracking capabilities.
-                </CardDescription>
-              </CardContent>
-            </Card>
+            <Link to="/supplier-payment" className="block">
+              <Card className="transition-all duration-300 hover:shadow-md h-full">
+                <CardHeader className="text-center">
+                  <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                    <CreditCard className="h-8 w-8 text-primary" />
+                  </div>
+                  <CardTitle>Payment to Suppliers</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-center">
+                    Secure and reliable payment services to your international suppliers with competitive exchange rates and tracking capabilities.
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            </Link>
             
             {/* Courier Services */}
             <Card className="transition-all duration-300 hover:shadow-md">

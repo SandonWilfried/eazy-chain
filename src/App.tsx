@@ -12,6 +12,7 @@ import Dashboard from "./pages/Dashboard";
 import Passengers from "./pages/Passengers";
 import Services from "./pages/Services";
 import NotFound from "./pages/NotFound";
+import SupplierPayment from "./components/SupplierPayment";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/payment" element={<Payment />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/supplier-payment" element={<SupplierPayment />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
