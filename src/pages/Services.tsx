@@ -1,5 +1,6 @@
+
 import { useState } from "react";
-import { Globe, BarChart, Leaf, Wind, Droplets, ZapOff, Ship, Package, Plane, Truck } from "lucide-react";
+import { Globe, BarChart, Leaf, Wind, Droplets, ZapOff, Ship, Package, Plane, Truck, CreditCard, Send } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -86,32 +87,32 @@ const Services = () => {
               </CardContent>
             </Card>
             
-            {/* Turkey to Togo */}
+            {/* Payment to Suppliers */}
             <Card className="transition-all duration-300 hover:shadow-md">
               <CardHeader className="text-center">
                 <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                  <Ship className="h-8 w-8 text-primary" />
+                  <CreditCard className="h-8 w-8 text-primary" />
                 </div>
-                <CardTitle>Turkey to Togo Shipping</CardTitle>
+                <CardTitle>Payment to Suppliers</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-center">
-                  Reliable shipping services from Turkey to Togo with customs handling and competitive transit times.
+                  Secure and reliable payment services to your international suppliers with competitive exchange rates and tracking capabilities.
                 </CardDescription>
               </CardContent>
             </Card>
             
-            {/* Europe to Togo */}
+            {/* Courier Services */}
             <Card className="transition-all duration-300 hover:shadow-md">
               <CardHeader className="text-center">
                 <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                  <Globe className="h-8 w-8 text-primary" />
+                  <Send className="h-8 w-8 text-primary" />
                 </div>
-                <CardTitle>Europe to Togo Shipping</CardTitle>
+                <CardTitle>Courier Services</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-center">
-                  Comprehensive shipping solutions from France and Germany to Togo, featuring flexible scheduling and cargo options.
+                  Fast and reliable courier services for documents and small packages with door-to-door delivery and real-time tracking.
                 </CardDescription>
               </CardContent>
             </Card>
