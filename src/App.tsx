@@ -1,39 +1,35 @@
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { ThemeProvider } from "@/components/theme-provider"
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
-import Booking from "./pages/Booking";
-import Tracking from "./pages/Tracking";
-import Payment from "./pages/Payment";
 import Dashboard from "./pages/Dashboard";
-import Passengers from "./pages/Passengers";
 import Services from "./pages/Services";
+import Booking from "./pages/Booking";
+import Payment from "./pages/Payment";
+import Tracking from "./pages/Tracking";
+import Passengers from "./pages/Passengers";
 import NotFound from "./pages/NotFound";
+import SupplierPayment from "./pages/SupplierPayment";
 
-const queryClient = new QueryClient();
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
+function App() {
+  return (
+    <ThemeProvider defaultTheme="system" storageKey="vite-react-theme">
+      <Router>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/booking" element={<Booking />} />
-          <Route path="/passengers" element={<Passengers />} />
-          <Route path="/tracking" element={<Tracking />} />
-          <Route path="/payment" element={<Payment />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/booking" element={<Booking />} />
+          <Route path="/payment" element={<Payment />} />
+          <Route path="/tracking" element={<Tracking />} />
+          <Route path="/passengers" element={<Passengers />} />
+          <Route path="/supplier-payment" element={<SupplierPayment />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+      </Router>
+    </ThemeProvider>
+  );
+}
 
 export default App;
