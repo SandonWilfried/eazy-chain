@@ -10,26 +10,26 @@ const ContactSection = () => {
   const contactOptions = [
     {
       icon: <Box className="w-16 h-16 text-primary" />,
-      title: "Je souhaite",
-      subtitle: "charger mes marchandises",
+      title: "I would like to",
+      subtitle: "ship my cargo",
       action: () => navigate("/booking")
     },
     {
       icon: <Ship className="w-16 h-16 text-primary" />,
-      title: "Je souhaite",
-      subtitle: "réserver une cabine",
+      title: "I would like to",
+      subtitle: "book a cabin",
       action: () => navigate("/passengers")
     },
     {
       icon: <Briefcase className="w-16 h-16 text-primary" />,
-      title: "Je souhaite",
-      subtitle: "postuler chez TOWT",
+      title: "I would like to",
+      subtitle: "apply at Eazy Chain",
       action: () => window.open('mailto:careers@eazychain.com', '_blank')
     },
     {
       icon: <MessageSquarePlus className="w-16 h-16 text-primary" />,
-      title: "Je souhaite",
-      subtitle: "parler d'un autre sujet",
+      title: "I would like to",
+      subtitle: "discuss another topic",
       action: () => window.open('mailto:contact@eazychain.com', '_blank')
     }
   ];
@@ -38,7 +38,7 @@ const ContactSection = () => {
     <section className="py-16 bg-gradient-to-b from-background to-accent/20">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-3">De quoi allons-nous parler</h2>
+          <h2 className="text-3xl font-bold mb-3">What Would You Like to Discuss?</h2>
         </div>
         
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
