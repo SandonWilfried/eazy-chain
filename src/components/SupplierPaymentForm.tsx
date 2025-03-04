@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -28,22 +29,22 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const formSchema = z.object({
-  // Step 1: Supplier Information
+  // Step 1: Payment Method Selection
+  paymentMethod: z.enum(["bank_transfer", "alipay", "paypal", "card"]).default("bank_transfer"),
+  
+  // Step 2: Supplier Information
   supplierName: z.string().min(2, { message: "Supplier name is required" }),
   supplierEmail: z.string().email({ message: "Invalid email address" }),
   supplierCountry: z.string().min(1, { message: "Country is required" }),
-  supplierBankName: z.string().min(2, { message: "Bank name is required" }),
-  supplierAccountNumber: z.string().min(5, { message: "Account number is required" }),
+  supplierBankName: z.string().min(2, { message: "Bank name is required" }).optional(),
+  supplierAccountNumber: z.string().min(5, { message: "Account number is required" }).optional(),
   supplierBankSwift: z.string().optional(),
   
-  // Step 2: Payment Details
+  // Step 3: Payment Details
   paymentAmount: z.string().min(1, { message: "Amount is required" }),
   paymentCurrency: z.string().min(1, { message: "Currency is required" }),
   paymentPurpose: z.string().min(5, { message: "Payment purpose is required" }),
   paymentNotes: z.string().optional(),
-  paymentMethod: z.enum(["bank_transfer", "alipay", "paypal", "card"]).default("bank_transfer"),
-  
-  // Step 3: Verification is handled via separate state
 });
 
 const SupplierPaymentForm = ({ onClose }: { onClose: () => void }) => {
@@ -61,6 +62,7 @@ const SupplierPaymentForm = ({ onClose }: { onClose: () => void }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      paymentMethod: "bank_transfer",
       supplierName: "",
       supplierEmail: "",
       supplierCountry: "",
@@ -71,7 +73,6 @@ const SupplierPaymentForm = ({ onClose }: { onClose: () => void }) => {
       paymentCurrency: "",
       paymentPurpose: "",
       paymentNotes: "",
-      paymentMethod: "bank_transfer",
     },
   });
 
@@ -80,20 +81,40 @@ const SupplierPaymentForm = ({ onClose }: { onClose: () => void }) => {
 
   const nextStep = () => {
     if (currentStep === 1) {
-      form.trigger(["supplierName", "supplierEmail", "supplierCountry", "supplierBankName", "supplierAccountNumber"]);
-      
-      const supplierInfoValid = form.getValues("supplierName") && 
-                               form.getValues("supplierEmail") && 
-                               form.getValues("supplierCountry") && 
-                               form.getValues("supplierBankName") && 
-                               form.getValues("supplierAccountNumber");
-      
-      if (!supplierInfoValid) {
-        return;
-      }
+      // First step is just payment method selection - always valid
+      setCurrentStep((prev) => prev + 1);
+      return;
     }
     
     if (currentStep === 2) {
+      // For bank transfer, validate bank fields
+      if (paymentMethod === "bank_transfer") {
+        form.trigger(["supplierName", "supplierEmail", "supplierCountry", "supplierBankName", "supplierAccountNumber"]);
+        
+        const supplierInfoValid = form.getValues("supplierName") && 
+                                 form.getValues("supplierEmail") && 
+                                 form.getValues("supplierCountry") && 
+                                 form.getValues("supplierBankName") && 
+                                 form.getValues("supplierAccountNumber");
+        
+        if (!supplierInfoValid) {
+          return;
+        }
+      } else {
+        // For other payment methods, just validate basic supplier info
+        form.trigger(["supplierName", "supplierEmail", "supplierCountry"]);
+        
+        const supplierInfoValid = form.getValues("supplierName") && 
+                                 form.getValues("supplierEmail") && 
+                                 form.getValues("supplierCountry");
+        
+        if (!supplierInfoValid) {
+          return;
+        }
+      }
+    }
+    
+    if (currentStep === 3) {
       form.trigger(["paymentAmount", "paymentCurrency", "paymentPurpose"]);
       
       const paymentDetailsValid = form.getValues("paymentAmount") && 
@@ -105,7 +126,7 @@ const SupplierPaymentForm = ({ onClose }: { onClose: () => void }) => {
       }
     }
     
-    if (currentStep === 3) {
+    if (currentStep === 4) {
       if (!idDocument) {
         toast({
           title: "ID Document Required",
@@ -240,7 +261,106 @@ const SupplierPaymentForm = ({ onClose }: { onClose: () => void }) => {
       case 1:
         return (
           <>
-            <h2 className="text-xl font-semibold mb-4">Step 1: Supplier Information</h2>
+            <h2 className="text-xl font-semibold mb-6">Step 1: Select Payment Method</h2>
+            
+            <FormField
+              control={form.control}
+              name="paymentMethod"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                    >
+                      <Card className={`cursor-pointer transition-all ${field.value === 'bank_transfer' ? 'ring-2 ring-primary' : 'hover:border-primary/50'}`} onClick={() => form.setValue('paymentMethod', 'bank_transfer')}>
+                        <CardContent className="p-6">
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="bank_transfer" />
+                            </FormControl>
+                            <FormLabel className="font-medium flex items-center gap-2 cursor-pointer">
+                              <Building className="h-5 w-5" />
+                              Bank Transfer
+                            </FormLabel>
+                          </FormItem>
+                          <p className="text-sm text-muted-foreground mt-2 ml-6">
+                            Traditional wire transfer to your supplier's bank account
+                          </p>
+                        </CardContent>
+                      </Card>
+                      
+                      <Card className={`cursor-pointer transition-all ${field.value === 'alipay' ? 'ring-2 ring-primary' : 'hover:border-primary/50'}`} onClick={() => form.setValue('paymentMethod', 'alipay')}>
+                        <CardContent className="p-6">
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="alipay" />
+                            </FormControl>
+                            <FormLabel className="font-medium flex items-center gap-2 cursor-pointer">
+                              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 9.5V14C22 14 15.5 15.5 12.5 17C9.5 18.5 7 20.5 7 22H17C20.5 22 22 19.5 22 17V9.5Z" stroke="currentColor" strokeWidth="1.5" />
+                                <path d="M2 8.5C2 5 4.5 2 8.5 2H15C19 2 22 5 22 9" stroke="currentColor" strokeWidth="1.5" />
+                                <path d="M2 14V8.5C2 11.5 4 14 7.5 14H22" stroke="currentColor" strokeWidth="1.5" />
+                              </svg>
+                              Alipay
+                            </FormLabel>
+                          </FormItem>
+                          <p className="text-sm text-muted-foreground mt-2 ml-6">
+                            Fast payments for suppliers in China and Southeast Asia
+                          </p>
+                        </CardContent>
+                      </Card>
+                      
+                      <Card className={`cursor-pointer transition-all ${field.value === 'paypal' ? 'ring-2 ring-primary' : 'hover:border-primary/50'}`} onClick={() => form.setValue('paymentMethod', 'paypal')}>
+                        <CardContent className="p-6">
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="paypal" />
+                            </FormControl>
+                            <FormLabel className="font-medium flex items-center gap-2 cursor-pointer">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M7 11l4.06-6.5C12.48 2.34 14.5 1.5 16.5 1.5c2.53 0 4.35 1.5 4.89 3.87.43 2-.84 4.24-2.13 5.13H17"/>
+                                <path d="M13.5 9.5L8.21 15.9c-1.42 1.71-3.44 2.55-5.44 2.55-2.53 0-4.35-1.5-4.89-3.87-.43-2 .84-4.24 2.13-5.13H3"/>
+                                <path d="M4.5 13.5L10 8"/>
+                              </svg>
+                              PayPal
+                            </FormLabel>
+                          </FormItem>
+                          <p className="text-sm text-muted-foreground mt-2 ml-6">
+                            Quick and secure international payments
+                          </p>
+                        </CardContent>
+                      </Card>
+                      
+                      <Card className={`cursor-pointer transition-all ${field.value === 'card' ? 'ring-2 ring-primary' : 'hover:border-primary/50'}`} onClick={() => form.setValue('paymentMethod', 'card')}>
+                        <CardContent className="p-6">
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="card" />
+                            </FormControl>
+                            <FormLabel className="font-medium flex items-center gap-2 cursor-pointer">
+                              <CreditCard className="h-5 w-5" />
+                              Credit Card
+                            </FormLabel>
+                          </FormItem>
+                          <p className="text-sm text-muted-foreground mt-2 ml-6">
+                            Pay using Visa, Mastercard, or American Express
+                          </p>
+                        </CardContent>
+                      </Card>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </>
+        );
+      case 2:
+        return (
+          <>
+            <h2 className="text-xl font-semibold mb-4">Step 2: Supplier Information</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
@@ -286,56 +406,91 @@ const SupplierPaymentForm = ({ onClose }: { onClose: () => void }) => {
               )}
             />
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-              <FormField
-                control={form.control}
-                name="supplierBankName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Bank Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter bank name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={form.control}
-                name="supplierAccountNumber"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Account Number</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter account number" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            {/* Show bank information only for bank transfer */}
+            {paymentMethod === "bank_transfer" && (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                  <FormField
+                    control={form.control}
+                    name="supplierBankName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Bank Name</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Enter bank name" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="supplierAccountNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Account Number</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Enter account number" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                
+                <FormField
+                  control={form.control}
+                  name="supplierBankSwift"
+                  render={({ field }) => (
+                    <FormItem className="mt-4">
+                      <FormLabel>SWIFT/BIC Code (Optional)</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter SWIFT/BIC code" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
+            )}
             
-            <FormField
-              control={form.control}
-              name="supplierBankSwift"
-              render={({ field }) => (
-                <FormItem className="mt-4">
-                  <FormLabel>SWIFT/BIC Code (Optional)</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter SWIFT/BIC code" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {/* Show Alipay specific information */}
+            {paymentMethod === "alipay" && (
+              <div className="mt-4 p-4 border rounded-md bg-primary/5">
+                <h3 className="font-medium mb-2">Alipay Information</h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Make sure your supplier's email matches their Alipay account.
+                </p>
+              </div>
+            )}
+            
+            {/* Show PayPal specific information */}
+            {paymentMethod === "paypal" && (
+              <div className="mt-4 p-4 border rounded-md bg-primary/5">
+                <h3 className="font-medium mb-2">PayPal Information</h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Make sure your supplier's email is connected to their PayPal account.
+                </p>
+              </div>
+            )}
+            
+            {/* Show Credit Card specific information */}
+            {paymentMethod === "card" && (
+              <div className="mt-4 p-4 border rounded-md bg-primary/5">
+                <h3 className="font-medium mb-2">Credit Card Information</h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Your supplier will receive the payment even if they don't have a card processing account.
+                </p>
+              </div>
+            )}
           </>
         );
-        
-      case 2:
+      
+      case 3:
         return (
           <>
-            <h2 className="text-xl font-semibold mb-4">Step 2: Payment Details</h2>
+            <h2 className="text-xl font-semibold mb-4">Step 3: Payment Details</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
@@ -383,114 +538,6 @@ const SupplierPaymentForm = ({ onClose }: { onClose: () => void }) => {
             
             <FormField
               control={form.control}
-              name="paymentMethod"
-              render={({ field }) => (
-                <FormItem className="mt-4">
-                  <FormLabel>Payment Method</FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2"
-                    >
-                      <FormItem className="flex items-center space-x-3 space-y-0 border rounded-md p-3">
-                        <FormControl>
-                          <RadioGroupItem value="bank_transfer" />
-                        </FormControl>
-                        <FormLabel className="font-normal flex items-center gap-2">
-                          <Building className="h-4 w-4" />
-                          Bank Transfer
-                        </FormLabel>
-                      </FormItem>
-                      <FormItem className="flex items-center space-x-3 space-y-0 border rounded-md p-3">
-                        <FormControl>
-                          <RadioGroupItem value="alipay" />
-                        </FormControl>
-                        <FormLabel className="font-normal flex items-center gap-2">
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M22 9.5V14C22 14 15.5 15.5 12.5 17C9.5 18.5 7 20.5 7 22H17C20.5 22 22 19.5 22 17V9.5Z" stroke="currentColor" strokeWidth="1.5" />
-                            <path d="M2 8.5C2 5 4.5 2 8.5 2H15C19 2 22 5 22 9" stroke="currentColor" strokeWidth="1.5" />
-                            <path d="M2 14V8.5C2 11.5 4 14 7.5 14H22" stroke="currentColor" strokeWidth="1.5" />
-                          </svg>
-                          Alipay
-                        </FormLabel>
-                      </FormItem>
-                      <FormItem className="flex items-center space-x-3 space-y-0 border rounded-md p-3">
-                        <FormControl>
-                          <RadioGroupItem value="paypal" />
-                        </FormControl>
-                        <FormLabel className="font-normal flex items-center gap-2">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M7 11l4.06-6.5C12.48 2.34 14.5 1.5 16.5 1.5c2.53 0 4.35 1.5 4.89 3.87.43 2-.84 4.24-2.13 5.13H17"/>
-                            <path d="M13.5 9.5L8.21 15.9c-1.42 1.71-3.44 2.55-5.44 2.55-2.53 0-4.35-1.5-4.89-3.87-.43-2 .84-4.24 2.13-5.13H3"/>
-                            <path d="M4.5 13.5L10 8"/>
-                          </svg>
-                          PayPal
-                        </FormLabel>
-                      </FormItem>
-                      <FormItem className="flex items-center space-x-3 space-y-0 border rounded-md p-3">
-                        <FormControl>
-                          <RadioGroupItem value="card" />
-                        </FormControl>
-                        <FormLabel className="font-normal flex items-center gap-2">
-                          <CreditCard className="h-4 w-4" />
-                          Credit Card
-                        </FormLabel>
-                      </FormItem>
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            {/* Method-specific additional information */}
-            {paymentMethod === "alipay" && (
-              <div className="mt-4 p-4 border rounded-md bg-primary/5">
-                <h3 className="font-medium mb-2">Alipay Information</h3>
-                <p className="text-sm text-muted-foreground mb-3">
-                  After generating a payment reference, you'll be redirected to complete the payment using Alipay.
-                </p>
-                <FormField
-                  control={form.control}
-                  name="supplierEmail"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Alipay Account Email/Phone</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter Alipay account email or phone" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            )}
-            
-            {paymentMethod === "paypal" && (
-              <div className="mt-4 p-4 border rounded-md bg-primary/5">
-                <h3 className="font-medium mb-2">PayPal Information</h3>
-                <p className="text-sm text-muted-foreground mb-3">
-                  After generating a payment reference, you'll be redirected to complete the payment using PayPal.
-                </p>
-                <FormField
-                  control={form.control}
-                  name="supplierEmail"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>PayPal Email</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter PayPal email" type="email" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            )}
-            
-            <FormField
-              control={form.control}
               name="paymentPurpose"
               render={({ field }) => (
                 <FormItem className="mt-4">
@@ -521,11 +568,11 @@ const SupplierPaymentForm = ({ onClose }: { onClose: () => void }) => {
             />
           </>
         );
-        
-      case 3:
+      
+      case 4:
         return (
           <>
-            <h2 className="text-xl font-semibold mb-4">Step 3: Identity Verification</h2>
+            <h2 className="text-xl font-semibold mb-4">Step 4: Identity Verification</h2>
             
             <div className="space-y-6">
               <div className="border rounded-lg p-4">
@@ -633,13 +680,48 @@ const SupplierPaymentForm = ({ onClose }: { onClose: () => void }) => {
             </div>
           </>
         );
-        
-      case 4:
+      
+      case 5:
         return (
           <>
-            <h2 className="text-xl font-semibold mb-4">Step 4: Review & Confirm</h2>
+            <h2 className="text-xl font-semibold mb-4">Step 5: Review & Confirm</h2>
             
             <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Payment Method</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-sm">
+                    <div className="font-medium">Selected Method:</div>
+                    <div className="flex items-center gap-2 mt-1">
+                      {paymentMethod === "bank_transfer" && <><Building className="h-4 w-4" /> Bank Transfer</>}
+                      {paymentMethod === "alipay" && (
+                        <>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 9.5V14C22 14 15.5 15.5 12.5 17C9.5 18.5 7 20.5 7 22H17C20.5 22 22 19.5 22 17V9.5Z" stroke="currentColor" strokeWidth="1.5" />
+                            <path d="M2 8.5C2 5 4.5 2 8.5 2H15C19 2 22 5 22 9" stroke="currentColor" strokeWidth="1.5" />
+                            <path d="M2 14V8.5C2 11.5 4 14 7.5 14H22" stroke="currentColor" strokeWidth="1.5" />
+                          </svg>
+                          Alipay
+                        </>
+                      )}
+                      {paymentMethod === "paypal" && (
+                        <>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M7 11l4.06-6.5C12.48 2.34 14.5 1.5 16.5 1.5c2.53 0 4.35 1.5 4.89 3.87.43 2-.84 4.24-2.13 5.13H17"/>
+                            <path d="M13.5 9.5L8.21 15.9c-1.42 1.71-3.44 2.55-5.44 2.55-2.53 0-4.35-1.5-4.89-3.87-.43-2 .84-4.24 2.13-5.13H3"/>
+                            <path d="M4.5 13.5L10 8"/>
+                          </svg>
+                          PayPal
+                        </>
+                      )}
+                      {paymentMethod === "card" && <><CreditCard className="h-4 w-4" /> Credit Card</>}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
               <Card>
                 <CardHeader>
                   <CardTitle>Supplier Information</CardTitle>
@@ -655,16 +737,20 @@ const SupplierPaymentForm = ({ onClose }: { onClose: () => void }) => {
                     <div className="font-medium">Country:</div>
                     <div>{form.getValues("supplierCountry")}</div>
                     
-                    <div className="font-medium">Bank Name:</div>
-                    <div>{form.getValues("supplierBankName")}</div>
-                    
-                    <div className="font-medium">Account Number:</div>
-                    <div>{form.getValues("supplierAccountNumber")}</div>
-                    
-                    {form.getValues("supplierBankSwift") && (
+                    {paymentMethod === "bank_transfer" && (
                       <>
-                        <div className="font-medium">SWIFT/BIC:</div>
-                        <div>{form.getValues("supplierBankSwift")}</div>
+                        <div className="font-medium">Bank Name:</div>
+                        <div>{form.getValues("supplierBankName")}</div>
+                        
+                        <div className="font-medium">Account Number:</div>
+                        <div>{form.getValues("supplierAccountNumber")}</div>
+                        
+                        {form.getValues("supplierBankSwift") && (
+                          <>
+                            <div className="font-medium">SWIFT/BIC:</div>
+                            <div>{form.getValues("supplierBankSwift")}</div>
+                          </>
+                        )}
                       </>
                     )}
                   </div>
@@ -680,14 +766,6 @@ const SupplierPaymentForm = ({ onClose }: { onClose: () => void }) => {
                     <div className="font-medium">Amount:</div>
                     <div>
                       {form.getValues("paymentAmount")} {form.getValues("paymentCurrency")}
-                    </div>
-                    
-                    <div className="font-medium">Payment Method:</div>
-                    <div>
-                      {form.getValues("paymentMethod") === "bank_transfer" && "Bank Transfer"}
-                      {form.getValues("paymentMethod") === "alipay" && "Alipay"}
-                      {form.getValues("paymentMethod") === "paypal" && "PayPal"}
-                      {form.getValues("paymentMethod") === "card" && "Credit Card"}
                     </div>
                     
                     <div className="font-medium">Purpose:</div>
@@ -748,13 +826,13 @@ const SupplierPaymentForm = ({ onClose }: { onClose: () => void }) => {
                       <h3 className="font-semibold mb-1">Your Payment Reference</h3>
                       <div className="text-lg font-bold text-primary">{paymentReference}</div>
                       <p className="text-sm text-muted-foreground mt-2">
-                        {form.getValues("paymentMethod") === "bank_transfer" && 
+                        {paymentMethod === "bank_transfer" && 
                           "Use this reference when making your payment through your bank."}
-                        {form.getValues("paymentMethod") === "alipay" && 
+                        {paymentMethod === "alipay" && 
                           "Use this reference when making your payment through Alipay."}
-                        {form.getValues("paymentMethod") === "paypal" && 
+                        {paymentMethod === "paypal" && 
                           "Use this reference when making your payment through PayPal."}
-                        {form.getValues("paymentMethod") === "card" && 
+                        {paymentMethod === "card" && 
                           "Use this reference when making your payment through our payment gateway."}
                       </p>
                     </div>
@@ -790,7 +868,7 @@ const SupplierPaymentForm = ({ onClose }: { onClose: () => void }) => {
         <form className="space-y-6">
           {/* Progress indicator */}
           <div className="flex justify-between mb-8">
-            {[1, 2, 3, 4].map((step) => (
+            {[1, 2, 3, 4, 5].map((step) => (
               <div key={step} className="flex flex-col items-center">
                 <div 
                   className={`w-10 h-10 rounded-full flex items-center justify-center ${
@@ -804,10 +882,11 @@ const SupplierPaymentForm = ({ onClose }: { onClose: () => void }) => {
                   {currentStep > step ? <Check className="h-5 w-5" /> : step}
                 </div>
                 <div className="text-xs mt-1 text-muted-foreground">
-                  {step === 1 && "Supplier"}
-                  {step === 2 && "Payment"}
-                  {step === 3 && "Verify"}
-                  {step === 4 && "Confirm"}
+                  {step === 1 && "Method"}
+                  {step === 2 && "Supplier"}
+                  {step === 3 && "Payment"}
+                  {step === 4 && "Verify"}
+                  {step === 5 && "Confirm"}
                 </div>
               </div>
             ))}
@@ -816,7 +895,7 @@ const SupplierPaymentForm = ({ onClose }: { onClose: () => void }) => {
           {renderStepContent()}
           
           {/* Navigation buttons */}
-          {currentStep < 4 && (
+          {currentStep < 5 && (
             <div className="flex justify-between mt-8">
               <Button
                 type="button"
@@ -835,7 +914,7 @@ const SupplierPaymentForm = ({ onClose }: { onClose: () => void }) => {
             </div>
           )}
           
-          {currentStep === 4 && !paymentReference && (
+          {currentStep === 5 && !paymentReference && (
             <div className="flex justify-between mt-8">
               <Button
                 type="button"
