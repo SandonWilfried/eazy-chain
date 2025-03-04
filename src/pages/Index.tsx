@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import TrackingForm from "@/components/TrackingForm";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import ContactSection from "@/components/ContactSection";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -199,6 +200,9 @@ const Index = () => {
           </Button>
         </div>
       </section>
+      
+      {/* Contact Section */}
+      <ContactSection />
       
       {/* Footer */}
       <footer className="bg-background border-t py-12">
