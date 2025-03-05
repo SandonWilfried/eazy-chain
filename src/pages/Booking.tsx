@@ -4,33 +4,82 @@ import Navbar from "@/components/Navbar";
 import BookingForm from "@/components/BookingForm";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPin, Ship } from "lucide-react";
+import { MapPin, Ship, ArrowRight } from "lucide-react";
 
-// Route Map Component
+// Enhanced Route Map Component
 const RouteMap = () => {
+  // Port data
+  const ports = [
+    { name: "Lomé", country: "Togo", image: "/port-lome.jpg" },
+    { name: "Abidjan", country: "Ivory Coast", image: "/port-abidjan.jpg" },
+    { name: "San Pedro", country: "Ivory Coast", image: "/port-sanpedro.jpg" },
+    { name: "Monrovia", country: "Liberia", image: "/port-monrovia.jpg" },
+    { name: "Conakry", country: "Guinea", image: "/port-conakry.jpg" },
+    { name: "Dakar", country: "Senegal", image: "/port-dakar.jpg" },
+    { name: "Praia", country: "Cape Verde", image: "/port-praia.jpg" },
+  ];
+
   return (
     <Card className="bg-card">
       <CardContent className="p-6">
         <h3 className="text-xl font-semibold mb-4">Voyage Route</h3>
-        <div className="relative h-48 rounded-md overflow-hidden">
+        <div className="relative h-48 rounded-md overflow-hidden mb-4">
           <img
             src="/map-route.png"
             alt="Voyage Route"
             className="object-cover w-full h-full"
           />
           <div className="absolute top-2 left-2 bg-white/80 backdrop-blur-sm rounded-md text-sm px-2 py-1">
-            Lomé ↔ Praia
+            Round Trip: Lomé ↔ Praia
           </div>
         </div>
-        <div className="flex items-center justify-between mt-4">
+        
+        {/* Port Stops Display */}
+        <div className="mb-4">
+          <h4 className="font-medium text-base mb-2">Port Stops</h4>
+          <div className="flex flex-nowrap overflow-x-auto pb-2 gap-2 scrollbar-thin">
+            {ports.map((port, index) => (
+              <div key={port.name} className="flex-none w-32">
+                <div className="relative h-24 w-full rounded-md overflow-hidden mb-1 border border-muted">
+                  <img
+                    src={port.image}
+                    alt={`Port of ${port.name}`}
+                    className="object-cover w-full h-full"
+                    onError={(e) => {
+                      // Fallback to placeholder if image fails to load
+                      (e.target as HTMLImageElement).src = "/placeholder.svg";
+                    }}
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 bg-black/60 p-1 text-white text-xs text-center">
+                    {port.name}
+                  </div>
+                </div>
+                <div className="text-xs text-center text-muted-foreground">
+                  {port.country}
+                </div>
+                {index < ports.length - 1 && (
+                  <div className="flex justify-center my-1">
+                    <ArrowRight className="h-3 w-3 text-muted-foreground" />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <MapPin className="h-5 w-5 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Lomé, Togo</span>
+            <MapPin className="h-5 w-5 text-primary" />
+            <span className="text-sm">Starting Point: Lomé, Togo</span>
           </div>
           <div className="flex items-center gap-2">
-            <MapPin className="h-5 w-5 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Praia, Cape Verde</span>
+            <MapPin className="h-5 w-5 text-primary" />
+            <span className="text-sm">Final Destination: Praia, Cape Verde</span>
           </div>
+        </div>
+        
+        <div className="mt-3 text-sm text-muted-foreground bg-accent/30 p-2 rounded-md">
+          <p>This is a round trip voyage with stops at all ports in both directions.</p>
         </div>
       </CardContent>
     </Card>
@@ -110,7 +159,7 @@ const Booking = () => {
                   <h3 className="text-xl font-semibold mb-4">Shipping Information</h3>
                   
                   <p className="text-muted-foreground mb-6">
-                    <span className="font-medium"> Our vessels operate round trip voyages between Lomé, Togo and Praia, Cape Verde.</span>
+                    <span className="font-medium">Our vessels operate round trip voyages between Lomé, Togo and Praia, Cape Verde with multiple port stops.</span>
                   </p>
                   
                   {/* Add pallet type information */}
