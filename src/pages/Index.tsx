@@ -183,7 +183,7 @@ const Index = () => {
             </div>
             <div className="glass-panel p-6 flex justify-center items-center transition-all duration-300 hover:shadow-md">
               <img 
-                src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" 
+                src="/lovable-uploads/4d84fc1c-2691-435a-8593-fee101cdbedf.png" 
                 alt="Office Ivoirien des chargeurs" 
                 className="h-32 w-auto object-contain"
               />
