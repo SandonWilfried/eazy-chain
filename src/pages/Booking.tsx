@@ -2,9 +2,8 @@
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import BookingForm from "@/components/BookingForm";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPin, Ship, ArrowRight } from "lucide-react";
+import { MapPin, ArrowRight } from "lucide-react";
 
 // Enhanced Route Map Component
 const RouteMap = () => {
@@ -192,12 +191,6 @@ const Booking = () => {
                   </div>
                   
                   <RouteMap />
-                  
-                  {/* Create Custom Booking button */}
-                  <Button className="w-full mt-6">
-                    <Ship className="mr-2 h-4 w-4" />
-                    Create Custom Booking
-                  </Button>
                 </CardContent>
               </Card>
             </div>
