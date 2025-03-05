@@ -1,5 +1,5 @@
 
-import { Box, Briefcase, MessageSquarePlus, Ship } from "lucide-react";
+import { Box, Briefcase, MessageSquarePlus, Ship, Phone, Mail, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
@@ -92,6 +92,29 @@ const ContactSection = () => {
                 <p className="text-xl font-semibold">{option.subtitle}</p>
               </Card>
             ))}
+          </div>
+
+          {/* Contact Information */}
+          <div className="mt-16 max-w-4xl mx-auto">
+            <div className="glass-panel p-8 grid md:grid-cols-3 gap-8">
+              <div className="flex flex-col items-center text-center">
+                <MapPin className="w-10 h-10 text-primary mb-4" />
+                <h3 className="text-lg font-semibold mb-2">Address</h3>
+                <p className="text-muted-foreground">Port de Lomé</p>
+              </div>
+              
+              <div className="flex flex-col items-center text-center">
+                <Phone className="w-10 h-10 text-primary mb-4" />
+                <h3 className="text-lg font-semibold mb-2">Phone</h3>
+                <p className="text-muted-foreground">0022898464040</p>
+              </div>
+              
+              <div className="flex flex-col items-center text-center">
+                <Mail className="w-10 h-10 text-primary mb-4" />
+                <h3 className="text-lg font-semibold mb-2">Email</h3>
+                <p className="text-muted-foreground">contact@eazy-chain.com</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
