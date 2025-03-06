@@ -101,13 +101,25 @@ const PalletPriceCalculator = () => {
   const [currency, setCurrency] = useState<Currency>("eur");
   const [departurePort, setDeparturePort] = useState<PortCode>("lome");
   const [arrivalPort, setArrivalPort] = useState<PortCode>("praia");
-  const [totalPrice, setTotalPrice] = useState<number | null>(null);
   const [pricePerPallet, setPricePerPallet] = useState<number | null>(null);
+  const [totalPrice, setTotalPrice] = useState<number | null>(null);
+  // Store prices in all currencies
+  const [prices, setPrices] = useState<{
+    perPallet: { usd: number; eur: number; xof: number } | null;
+    total: { usd: number; eur: number; xof: number } | null;
+  }>({
+    perPallet: null,
+    total: null
+  });
 
   const calculatePrice = () => {
     if (departurePort === arrivalPort) {
       setPricePerPallet(0);
       setTotalPrice(0);
+      setPrices({
+        perPallet: { usd: 0, eur: 0, xof: 0 },
+        total: { usd: 0, eur: 0, xof: 0 }
+      });
       return;
     }
 
@@ -125,18 +137,37 @@ const PalletPriceCalculator = () => {
       basePrice = basePrice * 1.2; // US pallets are 20% more expensive
     }
     
-    // Convert from EUR to selected currency
+    // Convert from EUR to USD first (base for all calculations)
     const eurToUsd = 1 / CURRENCY_RATES.eur;
     const priceInUsd = basePrice * eurToUsd;
+    
+    // Convert to selected currency for display
     const convertedPrice = priceInUsd * CURRENCY_RATES[currency];
+    
+    // Calculate prices in all currencies
+    const perPalletPrices = {
+      usd: priceInUsd,
+      eur: priceInUsd * CURRENCY_RATES.eur,
+      xof: priceInUsd * CURRENCY_RATES.xof
+    };
+    
+    const totalPrices = {
+      usd: perPalletPrices.usd * quantity,
+      eur: perPalletPrices.eur * quantity,
+      xof: perPalletPrices.xof * quantity
+    };
     
     setPricePerPallet(convertedPrice);
     setTotalPrice(convertedPrice * quantity);
+    setPrices({
+      perPallet: perPalletPrices,
+      total: totalPrices
+    });
   };
 
   // Format currency for display
-  const formatCurrency = (value: number) => {
-    switch (currency) {
+  const formatCurrency = (value: number, currencyCode: Currency) => {
+    switch (currencyCode) {
       case "usd":
         return `$${value.toLocaleString('en-US', { maximumFractionDigits: 2 })}`;
       case "xof":
@@ -252,21 +283,47 @@ const PalletPriceCalculator = () => {
             Calculate Price
           </Button>
           
-          {totalPrice !== null && pricePerPallet !== null && (
+          {prices.perPallet !== null && prices.total !== null && (
             <div className="mt-4 p-4 bg-primary/10 rounded-md">
-              <h4 className="font-medium mb-1">Estimated Shipping Costs:</h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                <div>
-                  <span className="text-sm text-muted-foreground">Per pallet:</span>
-                  <p className="text-xl font-bold">
-                    {formatCurrency(pricePerPallet)}
-                  </p>
+              <h4 className="font-medium mb-3">Estimated Shipping Costs:</h4>
+              
+              <div className="grid grid-cols-1 gap-4">
+                {/* Per pallet costs */}
+                <div className="border-b border-primary/20 pb-3">
+                  <h5 className="text-sm text-muted-foreground mb-2">Per pallet:</h5>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                    <div className="bg-secondary/10 p-2 rounded">
+                      <span className="text-xs text-muted-foreground">EUR</span>
+                      <p className="text-lg font-semibold">{formatCurrency(prices.perPallet.eur, "eur")}</p>
+                    </div>
+                    <div className="bg-secondary/10 p-2 rounded">
+                      <span className="text-xs text-muted-foreground">USD</span>
+                      <p className="text-lg font-semibold">{formatCurrency(prices.perPallet.usd, "usd")}</p>
+                    </div>
+                    <div className="bg-secondary/10 p-2 rounded">
+                      <span className="text-xs text-muted-foreground">XOF</span>
+                      <p className="text-lg font-semibold">{formatCurrency(prices.perPallet.xof, "xof")}</p>
+                    </div>
+                  </div>
                 </div>
+                
+                {/* Total costs */}
                 <div>
-                  <span className="text-sm text-muted-foreground">Total ({quantity} pallets):</span>
-                  <p className="text-xl font-bold">
-                    {formatCurrency(totalPrice)}
-                  </p>
+                  <h5 className="text-sm text-muted-foreground mb-2">Total ({quantity} pallets):</h5>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                    <div className="bg-primary/20 p-2 rounded">
+                      <span className="text-xs text-muted-foreground">EUR</span>
+                      <p className="text-lg font-bold">{formatCurrency(prices.total.eur, "eur")}</p>
+                    </div>
+                    <div className="bg-primary/20 p-2 rounded">
+                      <span className="text-xs text-muted-foreground">USD</span>
+                      <p className="text-lg font-bold">{formatCurrency(prices.total.usd, "usd")}</p>
+                    </div>
+                    <div className="bg-primary/20 p-2 rounded">
+                      <span className="text-xs text-muted-foreground">XOF</span>
+                      <p className="text-lg font-bold">{formatCurrency(prices.total.xof, "xof")}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
               
