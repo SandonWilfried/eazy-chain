@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calculator, Anchor, Ship } from "lucide-react";
+import { Calculator, Anchor, Ship, MapPin } from "lucide-react";
 
 // Currency conversion rates
 const CURRENCY_RATES = {
@@ -77,10 +77,10 @@ const PORT_DISTANCES = {
   "praia-dakar": 1000,
 };
 
-// Reference pricing constants
-const REFERENCE_PRICE_EUR = 865; // Reference price for Le Havre to New York in EUR
-const REFERENCE_DISTANCE_KM = 5800; // Distance from Le Havre to New York in km
-const COST_PER_KM_EUR = REFERENCE_PRICE_EUR / REFERENCE_DISTANCE_KM; // ~0.15 EUR/km
+// New reference pricing constants based on 238 EUR from Lomé to Abidjan (500 km)
+const REFERENCE_PRICE_EUR = 238; // Reference price for Lomé to Abidjan in EUR
+const REFERENCE_DISTANCE_KM = 500; // Distance from Lomé to Abidjan in km
+const COST_PER_KM_EUR = REFERENCE_PRICE_EUR / REFERENCE_DISTANCE_KM; // ~0.476 EUR/km
 
 // Sailing ship discount factor (since our ship uses wind power)
 const WIND_POWERED_DISCOUNT = 0.85; // 15% discount due to lower fuel costs
@@ -125,9 +125,8 @@ const PalletPriceCalculator = () => {
       return;
     }
     
-    // Calculate the cost based on the hypothesis:
-    // Cost = distance (km) * cost per km (0.15 EUR/km) * 1000 pallets / 1000 pallets
-    // This simplifies to: distance (km) * 0.15 EUR/km
+    // Calculate the cost based on the new reference (238 EUR for 500 km)
+    // Cost = distance (km) * cost per km (0.476 EUR/km)
     let basePrice = distanceKm * COST_PER_KM_EUR;
     
     // Apply wind-powered discount
@@ -329,9 +328,13 @@ const PalletPriceCalculator = () => {
               </div>
               
               <div className="mt-3 text-sm text-muted-foreground">
-                <p>Route: {PORTS[departurePort]} → {PORTS[arrivalPort]}</p>
+                <p className="flex items-center">
+                  <MapPin className="h-4 w-4 mr-1 text-primary" />
+                  Route: {PORTS[departurePort]} → {PORTS[arrivalPort]}
+                </p>
                 <p>Pallet type: {palletType === "us" ? "US Pallet" : "Euro Pallet"}</p>
                 <p>Distance: {PORT_DISTANCES[`${departurePort}-${arrivalPort}` as keyof typeof PORT_DISTANCES] || 0} km</p>
+                <p>Base rate: {COST_PER_KM_EUR.toFixed(3)} EUR/km</p>
               </div>
             </div>
           )}
@@ -345,8 +348,9 @@ const PalletPriceCalculator = () => {
             <div>
               <p className="text-sm text-muted-foreground">
                 This calculator provides an estimate for shipping pallets on our wind-powered vessels.
-                Prices reflect our eco-friendly advantage with 15% lower costs than diesel vessels.
-                Pricing is based on a cost of {COST_PER_KM_EUR.toFixed(2)} EUR per km with a max capacity of 1,000 pallets per vessel.
+                Prices are based on a reference rate of {REFERENCE_PRICE_EUR} EUR for the Lomé-Abidjan route ({REFERENCE_DISTANCE_KM} km), 
+                with a cost of {COST_PER_KM_EUR.toFixed(3)} EUR per km.
+                Our eco-friendly vessels offer 15% lower costs than diesel vessels, with a capacity of 1,000 pallets per vessel.
                 Contact us for bulk shipping quotes.
               </p>
             </div>
