@@ -7,12 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calculator, Anchor, Ship } from "lucide-react";
 
-// Price per pallet type in USD
-const PALLET_PRICES = {
-  "us": 1200, // US Pallet
-  "euro": 1000, // Euro Pallet
-};
-
 // Currency conversion rates
 const CURRENCY_RATES = {
   "usd": 1,
@@ -20,8 +14,7 @@ const CURRENCY_RATES = {
   "eur": 0.92, // 1 USD = 0.92 EUR (approx)
 };
 
-// Port distances and relative cost factors
-// Based on the competitor's price of 865 EUR for Le Havre to New York
+// Port names and codes
 const PORTS = {
   "lome": "Lomé, Togo",
   "abidjan": "Abidjan, Côte d'Ivoire",
@@ -32,61 +25,62 @@ const PORTS = {
   "praia": "Praia, Cape Verde",
 };
 
-// Distance factors relative to base route (Le Havre to New York)
-// These factors adjust the price based on the distance ratio compared to reference route
-const DISTANCE_FACTORS = {
-  "lome-abidjan": 0.15,
-  "lome-sanpedro": 0.20,
-  "lome-monrovia": 0.30,
-  "lome-conakry": 0.45,
-  "lome-dakar": 0.60,
-  "lome-praia": 0.75,
+// Port distances in km (based on the provided hypothesis)
+const PORT_DISTANCES = {
+  "lome-abidjan": 500,
+  "lome-sanpedro": 600,
+  "lome-monrovia": 1000,
+  "lome-conakry": 1200,
+  "lome-dakar": 2000,
+  "lome-praia": 2500,
   
-  "abidjan-lome": 0.15,
-  "abidjan-sanpedro": 0.10,
-  "abidjan-monrovia": 0.25,
-  "abidjan-conakry": 0.40,
-  "abidjan-dakar": 0.55,
-  "abidjan-praia": 0.70,
+  "abidjan-lome": 500,
+  "abidjan-sanpedro": 300,
+  "abidjan-monrovia": 1000,
+  "abidjan-conakry": 1200,
+  "abidjan-dakar": 2000,
+  "abidjan-praia": 2500,
   
-  "sanpedro-lome": 0.20,
-  "sanpedro-abidjan": 0.10,
-  "sanpedro-monrovia": 0.20,
-  "sanpedro-conakry": 0.35,
-  "sanpedro-dakar": 0.50,
-  "sanpedro-praia": 0.65,
+  "sanpedro-lome": 600,
+  "sanpedro-abidjan": 300,
+  "sanpedro-monrovia": 1200,
+  "sanpedro-conakry": 1500,
+  "sanpedro-dakar": 2500,
+  "sanpedro-praia": 3000,
   
-  "monrovia-lome": 0.30,
-  "monrovia-abidjan": 0.25,
-  "monrovia-sanpedro": 0.20,
-  "monrovia-conakry": 0.25,
-  "monrovia-dakar": 0.40,
-  "monrovia-praia": 0.55,
+  "monrovia-lome": 1000,
+  "monrovia-abidjan": 1000,
+  "monrovia-sanpedro": 1200,
+  "monrovia-conakry": 800,
+  "monrovia-dakar": 2500,
+  "monrovia-praia": 3000,
   
-  "conakry-lome": 0.45,
-  "conakry-abidjan": 0.40,
-  "conakry-sanpedro": 0.35,
-  "conakry-monrovia": 0.25,
-  "conakry-dakar": 0.25,
-  "conakry-praia": 0.40,
+  "conakry-lome": 1200,
+  "conakry-abidjan": 1200,
+  "conakry-sanpedro": 1500,
+  "conakry-monrovia": 800,
+  "conakry-dakar": 1500,
+  "conakry-praia": 2000,
   
-  "dakar-lome": 0.60,
-  "dakar-abidjan": 0.55,
-  "dakar-sanpedro": 0.50,
-  "dakar-monrovia": 0.40,
-  "dakar-conakry": 0.25,
-  "dakar-praia": 0.25,
+  "dakar-lome": 2000,
+  "dakar-abidjan": 2000,
+  "dakar-sanpedro": 2500,
+  "dakar-monrovia": 2500,
+  "dakar-conakry": 1500,
+  "dakar-praia": 1000,
   
-  "praia-lome": 0.75,
-  "praia-abidjan": 0.70,
-  "praia-sanpedro": 0.65,
-  "praia-monrovia": 0.55,
-  "praia-conakry": 0.40,
-  "praia-dakar": 0.25,
+  "praia-lome": 2500,
+  "praia-abidjan": 2500,
+  "praia-sanpedro": 3000,
+  "praia-monrovia": 3000,
+  "praia-conakry": 2000,
+  "praia-dakar": 1000,
 };
 
-// Base price from competitor (Le Havre to New York)
-const BASE_PRICE_EUR = 865;
+// Reference pricing constants
+const REFERENCE_PRICE_EUR = 865; // Reference price for Le Havre to New York in EUR
+const REFERENCE_DISTANCE_KM = 5800; // Distance from Le Havre to New York in km
+const COST_PER_KM_EUR = REFERENCE_PRICE_EUR / REFERENCE_DISTANCE_KM; // ~0.15 EUR/km
 
 // Sailing ship discount factor (since our ship uses wind power)
 const WIND_POWERED_DISCOUNT = 0.85; // 15% discount due to lower fuel costs
@@ -123,18 +117,25 @@ const PalletPriceCalculator = () => {
       return;
     }
 
-    const routeKey = `${departurePort}-${arrivalPort}` as keyof typeof DISTANCE_FACTORS;
-    const distanceFactor = DISTANCE_FACTORS[routeKey] || 1.0;
+    const routeKey = `${departurePort}-${arrivalPort}` as keyof typeof PORT_DISTANCES;
+    const distanceKm = PORT_DISTANCES[routeKey] || 0;
     
-    // Calculate based on competitor's reference price, adjusted for our route
-    let basePrice = BASE_PRICE_EUR * distanceFactor;
+    if (distanceKm === 0) {
+      console.error("Distance not found for route:", routeKey);
+      return;
+    }
+    
+    // Calculate the cost based on the hypothesis:
+    // Cost = distance (km) * cost per km (0.15 EUR/km) * 1000 pallets / 1000 pallets
+    // This simplifies to: distance (km) * 0.15 EUR/km
+    let basePrice = distanceKm * COST_PER_KM_EUR;
     
     // Apply wind-powered discount
     basePrice = basePrice * WIND_POWERED_DISCOUNT;
     
     // Adjust price for pallet type
     if (palletType === "us") {
-      basePrice = basePrice * 1.2; // US pallets are 20% more expensive
+      basePrice = basePrice * 1.2; // US pallets are 20% more expensive due to size
     }
     
     // Convert from EUR to USD first (base for all calculations)
@@ -330,6 +331,7 @@ const PalletPriceCalculator = () => {
               <div className="mt-3 text-sm text-muted-foreground">
                 <p>Route: {PORTS[departurePort]} → {PORTS[arrivalPort]}</p>
                 <p>Pallet type: {palletType === "us" ? "US Pallet" : "Euro Pallet"}</p>
+                <p>Distance: {PORT_DISTANCES[`${departurePort}-${arrivalPort}` as keyof typeof PORT_DISTANCES] || 0} km</p>
               </div>
             </div>
           )}
@@ -343,8 +345,9 @@ const PalletPriceCalculator = () => {
             <div>
               <p className="text-sm text-muted-foreground">
                 This calculator provides an estimate for shipping pallets on our wind-powered vessels.
-                Prices reflect our eco-friendly shipping advantage with lower fuel consumption.
-                Maximum capacity: 1,000 pallets per vessel. Contact us for bulk shipping quotes.
+                Prices reflect our eco-friendly advantage with 15% lower costs than diesel vessels.
+                Pricing is based on a cost of {COST_PER_KM_EUR.toFixed(2)} EUR per km with a max capacity of 1,000 pallets per vessel.
+                Contact us for bulk shipping quotes.
               </p>
             </div>
           </div>
