@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -24,67 +25,60 @@ const PORTS = {
   "praia": "Praia, Cape Verde",
 };
 
-// Port distances in km (based on the provided hypothesis)
+// Port distances in nautical miles
 const PORT_DISTANCES = {
-  "lome-abidjan": 500,
-  "lome-sanpedro": 600,
-  "lome-monrovia": 1000,
-  "lome-conakry": 1200,
-  "lome-dakar": 2000,
-  "lome-praia": 2500,
+  "lome-abidjan": 270,
+  "lome-sanpedro": 324,
+  "lome-monrovia": 540,
+  "lome-conakry": 648,
+  "lome-dakar": 1080,
+  "lome-praia": 1350,
   
-  "abidjan-lome": 500,
-  "abidjan-sanpedro": 300,
-  "abidjan-monrovia": 1000,
-  "abidjan-conakry": 1200,
-  "abidjan-dakar": 2000,
-  "abidjan-praia": 2500,
+  "abidjan-lome": 270,
+  "abidjan-sanpedro": 162,
+  "abidjan-monrovia": 540,
+  "abidjan-conakry": 648,
+  "abidjan-dakar": 1080,
+  "abidjan-praia": 1350,
   
-  "sanpedro-lome": 600,
-  "sanpedro-abidjan": 300,
-  "sanpedro-monrovia": 1200,
-  "sanpedro-conakry": 1500,
-  "sanpedro-dakar": 2500,
-  "sanpedro-praia": 3000,
+  "sanpedro-lome": 324,
+  "sanpedro-abidjan": 162,
+  "sanpedro-monrovia": 648,
+  "sanpedro-conakry": 810,
+  "sanpedro-dakar": 1350,
+  "sanpedro-praia": 1620,
   
-  "monrovia-lome": 1000,
-  "monrovia-abidjan": 1000,
-  "monrovia-sanpedro": 1200,
-  "monrovia-conakry": 800,
-  "monrovia-dakar": 2500,
-  "monrovia-praia": 3000,
+  "monrovia-lome": 540,
+  "monrovia-abidjan": 540,
+  "monrovia-sanpedro": 648,
+  "monrovia-conakry": 432,
+  "monrovia-dakar": 1350,
+  "monrovia-praia": 1620,
   
-  "conakry-lome": 1200,
-  "conakry-abidjan": 1200,
-  "conakry-sanpedro": 1500,
-  "conakry-monrovia": 800,
-  "conakry-dakar": 1500,
-  "conakry-praia": 2000,
+  "conakry-lome": 648,
+  "conakry-abidjan": 648,
+  "conakry-sanpedro": 810,
+  "conakry-monrovia": 432,
+  "conakry-dakar": 810,
+  "conakry-praia": 1080,
   
-  "dakar-lome": 2000,
-  "dakar-abidjan": 2000,
-  "dakar-sanpedro": 2500,
-  "dakar-monrovia": 2500,
-  "dakar-conakry": 1500,
-  "dakar-praia": 1000,
+  "dakar-lome": 1080,
+  "dakar-abidjan": 1080,
+  "dakar-sanpedro": 1350,
+  "dakar-monrovia": 1350,
+  "dakar-conakry": 810,
+  "dakar-praia": 540,
   
-  "praia-lome": 2500,
-  "praia-abidjan": 2500,
-  "praia-sanpedro": 3000,
-  "praia-monrovia": 3000,
-  "praia-conakry": 2000,
-  "praia-dakar": 1000,
+  "praia-lome": 1350,
+  "praia-abidjan": 1350,
+  "praia-sanpedro": 1620,
+  "praia-monrovia": 1620,
+  "praia-conakry": 1080,
+  "praia-dakar": 540,
 };
 
-// Fixed rates in EUR for routes from Lomé
-const FIXED_RATES_FROM_LOME = {
-  "abidjan": 238,
-  "sanpedro": 268,
-  "monrovia": 364,
-  "conakry": 446,
-  "dakar": 561,
-  "praia": 680,
-};
+// Rate per nautical mile in EUR
+const RATE_PER_NAUTICAL_MILE = 0.69;
 
 // Sailing ship discount factor (since our ship uses wind power)
 const WIND_POWERED_DISCOUNT = 0.85; // 15% discount due to lower fuel costs
@@ -121,39 +115,17 @@ const PalletPriceCalculator = () => {
       return;
     }
 
-    let basePrice: number;
+    // Get the distance in nautical miles
+    const routeKey = `${departurePort}-${arrivalPort}` as keyof typeof PORT_DISTANCES;
+    const distanceNM = PORT_DISTANCES[routeKey] || 0;
     
-    // Use the fixed rates if the departure port is Lomé
-    if (departurePort === "lome" && arrivalPort in FIXED_RATES_FROM_LOME) {
-      basePrice = FIXED_RATES_FROM_LOME[arrivalPort as keyof typeof FIXED_RATES_FROM_LOME];
-    } 
-    // For other routes, calculate based on distance and extrapolated rates from Lomé routes
-    else {
-      const routeKey = `${departurePort}-${arrivalPort}` as keyof typeof PORT_DISTANCES;
-      const distanceKm = PORT_DISTANCES[routeKey] || 0;
-      
-      if (distanceKm === 0) {
-        console.error("Distance not found for route:", routeKey);
-        return;
-      }
-      
-      // Calculate equivalent Lomé route to determine the rate
-      // First check if there's a direct rate from Lomé to arrival port
-      if (arrivalPort in FIXED_RATES_FROM_LOME) {
-        // For routes from other ports to the same destination as Lomé routes
-        // Use the Lomé rate and adjust based on distance ratio
-        const lomeToArrivalDistance = PORT_DISTANCES[`lome-${arrivalPort}` as keyof typeof PORT_DISTANCES];
-        const lomeRate = FIXED_RATES_FROM_LOME[arrivalPort as keyof typeof FIXED_RATES_FROM_LOME];
-        
-        basePrice = (lomeRate / lomeToArrivalDistance) * distanceKm;
-      } 
-      // For routes where neither departure nor arrival is Lomé, extrapolate from the Lomé-Abidjan reference
-      else {
-        // Use Lomé-Abidjan as reference: 238 EUR for 500 km
-        const referenceRate = 238 / 500; // EUR per km based on Lomé-Abidjan
-        basePrice = referenceRate * distanceKm;
-      }
+    if (distanceNM === 0) {
+      console.error("Distance not found for route:", routeKey);
+      return;
     }
+    
+    // Calculate base price using the rate per nautical mile
+    let basePrice = distanceNM * RATE_PER_NAUTICAL_MILE;
     
     // Apply wind-powered discount
     basePrice = basePrice * WIND_POWERED_DISCOUNT;
@@ -239,16 +211,19 @@ const PalletPriceCalculator = () => {
               <Select 
                 value={arrivalPort} 
                 onValueChange={(value: PortCode) => setArrivalPort(value)}
+                disabled={!departurePort}
               >
                 <SelectTrigger id="arrival-port" className="w-full">
                   <SelectValue placeholder="Select arrival port" />
                 </SelectTrigger>
                 <SelectContent>
-                  {Object.entries(PORTS).map(([code, name]) => (
-                    <SelectItem key={`arr-${code}`} value={code}>
-                      {name}
-                    </SelectItem>
-                  ))}
+                  {Object.entries(PORTS)
+                    .filter(([code]) => code !== departurePort) // Filter out the departure port
+                    .map(([code, name]) => (
+                      <SelectItem key={`arr-${code}`} value={code}>
+                        {name}
+                      </SelectItem>
+                    ))}
                 </SelectContent>
               </Select>
             </div>
@@ -359,10 +334,8 @@ const PalletPriceCalculator = () => {
                   Route: {PORTS[departurePort]} → {PORTS[arrivalPort]}
                 </p>
                 <p>Pallet type: {palletType === "us" ? "US Pallet" : "Euro Pallet"}</p>
-                <p>Distance: {PORT_DISTANCES[`${departurePort}-${arrivalPort}` as keyof typeof PORT_DISTANCES] || 0} km</p>
-                {departurePort === "lome" && arrivalPort in FIXED_RATES_FROM_LOME && (
-                  <p>Fixed rate: {FIXED_RATES_FROM_LOME[arrivalPort as keyof typeof FIXED_RATES_FROM_LOME]} EUR</p>
-                )}
+                <p>Distance: {PORT_DISTANCES[`${departurePort}-${arrivalPort}` as keyof typeof PORT_DISTANCES] || 0} nautical miles</p>
+                <p>Rate: {RATE_PER_NAUTICAL_MILE} EUR per nautical mile</p>
               </div>
             </div>
           )}
@@ -376,7 +349,7 @@ const PalletPriceCalculator = () => {
             <div>
               <p className="text-sm text-muted-foreground">
                 This calculator provides an estimate for shipping pallets on our wind-powered vessels.
-                Prices are based on fixed rates from Lomé to major ports, with other routes calculated proportionally.
+                Prices are based on a rate of {RATE_PER_NAUTICAL_MILE} EUR per nautical mile.
                 Our eco-friendly vessels offer 15% lower costs than diesel vessels, with a capacity of 1,000 pallets per vessel.
                 Contact us for bulk shipping quotes.
               </p>
