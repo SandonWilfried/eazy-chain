@@ -58,11 +58,11 @@ const Booking = () => {
           </div>
         </section>
         
-        {/* Booking Form Section */}
+        {/* Main Content Section with Booking Form and Shipping Info Side by Side */}
         <div className="container mx-auto px-4 py-8">
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Main Content - 2/3 width on large screens */}
-            <div className="lg:col-span-2">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            {/* Main Content - Book Your Cargo */}
+            <div className="lg:col-span-8">
               <Card>
                 <CardContent className="p-6">
                   <h3 className="text-xl font-semibold mb-4">Book Your Cargo</h3>
@@ -71,48 +71,49 @@ const Booking = () => {
               </Card>
             </div>
             
-            {/* Sidebar - 1/3 width on large screens */}
-            <div>
-              <Card className="bg-card">
+            {/* Sidebar - Shipping Information */}
+            <div className="lg:col-span-4">
+              <Card className="bg-card mb-6">
                 <CardContent className="p-6">
                   <h3 className="text-xl font-semibold mb-4">Shipping Information</h3>
                   
-                  <p className="text-muted-foreground mb-6">
-                    <span className="font-medium">Our vessels operate round trip voyages between Lomé, Togo and Praia, Cape Verde with multiple port stops.</span>
+                  <p className="text-muted-foreground mb-4">
+                    Our vessels operate round trip voyages between Lomé, Togo and Praia, Cape Verde with multiple port stops.
                   </p>
                   
-                  {/* Add pallet type information */}
-                  <div className="bg-primary/10 rounded-lg p-4 mb-6">
-                    <h3 className="font-medium text-lg mb-2">Pallet Types Available</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Pallet type information */}
+                  <div className="bg-primary/10 rounded-lg p-4">
+                    <h4 className="font-medium text-base mb-2">Pallet Types Available</h4>
+                    <div className="grid grid-cols-1 gap-3">
                       <div className="flex items-start space-x-3">
                         <div className="bg-primary/20 p-2 rounded-full">
-                          <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center text-white font-bold">
+                          <div className="h-5 w-5 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xs">
                             US
                           </div>
                         </div>
                         <div>
-                          <p className="font-medium">US Pallet</p>
-                          <p className="text-sm text-muted-foreground">1200 x 1000 mm</p>
+                          <p className="font-medium text-sm">US Pallet</p>
+                          <p className="text-xs text-muted-foreground">1200 x 1000 mm</p>
                         </div>
                       </div>
                       <div className="flex items-start space-x-3">
                         <div className="bg-primary/20 p-2 rounded-full">
-                          <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center text-white font-bold">
+                          <div className="h-5 w-5 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xs">
                             EU
                           </div>
                         </div>
                         <div>
-                          <p className="font-medium">Euro Pallet</p>
-                          <p className="text-sm text-muted-foreground">1200 x 800 mm</p>
+                          <p className="font-medium text-sm">Euro Pallet</p>
+                          <p className="text-xs text-muted-foreground">1200 x 800 mm</p>
                         </div>
                       </div>
                     </div>
                   </div>
-                  
-                  <PalletPriceCalculator />
                 </CardContent>
               </Card>
+              
+              {/* Price Calculator */}
+              <PalletPriceCalculator />
             </div>
           </div>
         </div>
