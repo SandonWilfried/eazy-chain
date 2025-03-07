@@ -8,11 +8,17 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import CustomsClearanceForm from "@/components/CustomsClearanceForm";
 import AirConsolidationForm from "@/components/AirConsolidationForm";
 import OceanConsolidationForm from "@/components/OceanConsolidationForm";
+import AirFreightForm from "@/components/AirFreightForm";
+import OceanFreightForm from "@/components/OceanFreightForm";
+import CourierServiceForm from "@/components/CourierServiceForm";
 
 const Services = () => {
   const [customsDialogOpen, setCustomsDialogOpen] = useState(false);
   const [airConsolidationDialogOpen, setAirConsolidationDialogOpen] = useState(false);
   const [oceanConsolidationDialogOpen, setOceanConsolidationDialogOpen] = useState(false);
+  const [airFreightDialogOpen, setAirFreightDialogOpen] = useState(false);
+  const [oceanFreightDialogOpen, setOceanFreightDialogOpen] = useState(false);
+  const [courierServiceDialogOpen, setCourierServiceDialogOpen] = useState(false);
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -51,39 +57,61 @@ const Services = () => {
               </CardContent>
             </Card>
             
-            {/* Air Consolidation */}
+            {/* Air Freight */}
             <Card 
               className="transition-all duration-300 hover:shadow-md cursor-pointer"
-              onClick={() => setAirConsolidationDialogOpen(true)}
+              onClick={() => setAirFreightDialogOpen(true)}
             >
               <CardHeader className="text-center">
                 <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
                   <Plane className="h-8 w-8 text-primary" />
                 </div>
-                <CardTitle>Air Consolidation Service</CardTitle>
+                <CardTitle>Air Freight</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-center">
-                  Consolidation services by air from China, Turkey, France, and Germany to Togo, optimizing shipping costs and transit times.
+                  Fast and reliable air freight services for urgent shipments and time-sensitive cargo, including air consolidation options.
                 </CardDescription>
+                <div className="mt-4 flex justify-center">
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setAirConsolidationDialogOpen(true);
+                    }} 
+                    className="text-primary hover:underline text-sm font-medium"
+                  >
+                    Air Consolidation Service
+                  </button>
+                </div>
               </CardContent>
             </Card>
             
-            {/* Ocean Consolidation */}
+            {/* Ocean Freight */}
             <Card 
               className="transition-all duration-300 hover:shadow-md cursor-pointer"
-              onClick={() => setOceanConsolidationDialogOpen(true)}
+              onClick={() => setOceanFreightDialogOpen(true)}
             >
               <CardHeader className="text-center">
                 <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
                   <Ship className="h-8 w-8 text-primary" />
                 </div>
-                <CardTitle>Ocean Consolidation Service</CardTitle>
+                <CardTitle>Ocean Freight</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-center">
-                  Ocean freight consolidation from China, Turkey, France, and Germany to Togo, ideal for cost-effective shipments.
+                  Cost-effective ocean freight services for container shipments and large cargo volumes, including consolidation options.
                 </CardDescription>
+                <div className="mt-4 flex justify-center">
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setOceanConsolidationDialogOpen(true);
+                    }} 
+                    className="text-primary hover:underline text-sm font-medium"
+                  >
+                    Ocean Consolidation Service
+                  </button>
+                </div>
               </CardContent>
             </Card>
             
@@ -105,7 +133,10 @@ const Services = () => {
             </Link>
             
             {/* Courier Services */}
-            <Card className="transition-all duration-300 hover:shadow-md">
+            <Card 
+              className="transition-all duration-300 hover:shadow-md cursor-pointer"
+              onClick={() => setCourierServiceDialogOpen(true)}
+            >
               <CardHeader className="text-center">
                 <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
                   <Send className="h-8 w-8 text-primary" />
@@ -114,7 +145,7 @@ const Services = () => {
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-center">
-                  Fast and reliable courier services for documents and small packages with door-to-door delivery and real-time tracking.
+                  Fast and reliable courier services for documents and small packages with door-to-door delivery to all countries served by Asky Airlines.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -230,6 +261,16 @@ const Services = () => {
         </DialogContent>
       </Dialog>
       
+      {/* Air Freight Dialog */}
+      <Dialog open={airFreightDialogOpen} onOpenChange={setAirFreightDialogOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl">Air Freight Service Request</DialogTitle>
+          </DialogHeader>
+          <AirFreightForm onClose={() => setAirFreightDialogOpen(false)} />
+        </DialogContent>
+      </Dialog>
+      
       {/* Air Consolidation Dialog */}
       <Dialog open={airConsolidationDialogOpen} onOpenChange={setAirConsolidationDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -240,6 +281,16 @@ const Services = () => {
         </DialogContent>
       </Dialog>
       
+      {/* Ocean Freight Dialog */}
+      <Dialog open={oceanFreightDialogOpen} onOpenChange={setOceanFreightDialogOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl">Ocean Freight Service Request</DialogTitle>
+          </DialogHeader>
+          <OceanFreightForm onClose={() => setOceanFreightDialogOpen(false)} />
+        </DialogContent>
+      </Dialog>
+      
       {/* Ocean Consolidation Dialog */}
       <Dialog open={oceanConsolidationDialogOpen} onOpenChange={setOceanConsolidationDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -247,6 +298,16 @@ const Services = () => {
             <DialogTitle className="text-2xl">Ocean Consolidation Service Request</DialogTitle>
           </DialogHeader>
           <OceanConsolidationForm onClose={() => setOceanConsolidationDialogOpen(false)} />
+        </DialogContent>
+      </Dialog>
+      
+      {/* Courier Service Dialog */}
+      <Dialog open={courierServiceDialogOpen} onOpenChange={setCourierServiceDialogOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl">Courier Service Request</DialogTitle>
+          </DialogHeader>
+          <CourierServiceForm onClose={() => setCourierServiceDialogOpen(false)} />
         </DialogContent>
       </Dialog>
       
