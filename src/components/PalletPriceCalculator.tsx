@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -77,10 +76,15 @@ const PORT_DISTANCES = {
   "praia-dakar": 1000,
 };
 
-// New reference pricing constants based on 238 EUR from Lomé to Abidjan (500 km)
-const REFERENCE_PRICE_EUR = 238; // Reference price for Lomé to Abidjan in EUR
-const REFERENCE_DISTANCE_KM = 500; // Distance from Lomé to Abidjan in km
-const COST_PER_KM_EUR = REFERENCE_PRICE_EUR / REFERENCE_DISTANCE_KM; // ~0.476 EUR/km
+// Fixed rates in EUR for routes from Lomé
+const FIXED_RATES_FROM_LOME = {
+  "abidjan": 238,
+  "sanpedro": 268,
+  "monrovia": 364,
+  "conakry": 446,
+  "dakar": 561,
+  "praia": 680,
+};
 
 // Sailing ship discount factor (since our ship uses wind power)
 const WIND_POWERED_DISCOUNT = 0.85; // 15% discount due to lower fuel costs
@@ -117,17 +121,39 @@ const PalletPriceCalculator = () => {
       return;
     }
 
-    const routeKey = `${departurePort}-${arrivalPort}` as keyof typeof PORT_DISTANCES;
-    const distanceKm = PORT_DISTANCES[routeKey] || 0;
+    let basePrice: number;
     
-    if (distanceKm === 0) {
-      console.error("Distance not found for route:", routeKey);
-      return;
+    // Use the fixed rates if the departure port is Lomé
+    if (departurePort === "lome" && arrivalPort in FIXED_RATES_FROM_LOME) {
+      basePrice = FIXED_RATES_FROM_LOME[arrivalPort as keyof typeof FIXED_RATES_FROM_LOME];
+    } 
+    // For other routes, calculate based on distance and extrapolated rates from Lomé routes
+    else {
+      const routeKey = `${departurePort}-${arrivalPort}` as keyof typeof PORT_DISTANCES;
+      const distanceKm = PORT_DISTANCES[routeKey] || 0;
+      
+      if (distanceKm === 0) {
+        console.error("Distance not found for route:", routeKey);
+        return;
+      }
+      
+      // Calculate equivalent Lomé route to determine the rate
+      // First check if there's a direct rate from Lomé to arrival port
+      if (arrivalPort in FIXED_RATES_FROM_LOME) {
+        // For routes from other ports to the same destination as Lomé routes
+        // Use the Lomé rate and adjust based on distance ratio
+        const lomeToArrivalDistance = PORT_DISTANCES[`lome-${arrivalPort}` as keyof typeof PORT_DISTANCES];
+        const lomeRate = FIXED_RATES_FROM_LOME[arrivalPort as keyof typeof FIXED_RATES_FROM_LOME];
+        
+        basePrice = (lomeRate / lomeToArrivalDistance) * distanceKm;
+      } 
+      // For routes where neither departure nor arrival is Lomé, extrapolate from the Lomé-Abidjan reference
+      else {
+        // Use Lomé-Abidjan as reference: 238 EUR for 500 km
+        const referenceRate = 238 / 500; // EUR per km based on Lomé-Abidjan
+        basePrice = referenceRate * distanceKm;
+      }
     }
-    
-    // Calculate the cost based on the new reference (238 EUR for 500 km)
-    // Cost = distance (km) * cost per km (0.476 EUR/km)
-    let basePrice = distanceKm * COST_PER_KM_EUR;
     
     // Apply wind-powered discount
     basePrice = basePrice * WIND_POWERED_DISCOUNT;
@@ -334,7 +360,9 @@ const PalletPriceCalculator = () => {
                 </p>
                 <p>Pallet type: {palletType === "us" ? "US Pallet" : "Euro Pallet"}</p>
                 <p>Distance: {PORT_DISTANCES[`${departurePort}-${arrivalPort}` as keyof typeof PORT_DISTANCES] || 0} km</p>
-                <p>Base rate: {COST_PER_KM_EUR.toFixed(3)} EUR/km</p>
+                {departurePort === "lome" && arrivalPort in FIXED_RATES_FROM_LOME && (
+                  <p>Fixed rate: {FIXED_RATES_FROM_LOME[arrivalPort as keyof typeof FIXED_RATES_FROM_LOME]} EUR</p>
+                )}
               </div>
             </div>
           )}
@@ -348,8 +376,7 @@ const PalletPriceCalculator = () => {
             <div>
               <p className="text-sm text-muted-foreground">
                 This calculator provides an estimate for shipping pallets on our wind-powered vessels.
-                Prices are based on a reference rate of {REFERENCE_PRICE_EUR} EUR for the Lomé-Abidjan route ({REFERENCE_DISTANCE_KM} km), 
-                with a cost of {COST_PER_KM_EUR.toFixed(3)} EUR per km.
+                Prices are based on fixed rates from Lomé to major ports, with other routes calculated proportionally.
                 Our eco-friendly vessels offer 15% lower costs than diesel vessels, with a capacity of 1,000 pallets per vessel.
                 Contact us for bulk shipping quotes.
               </p>
