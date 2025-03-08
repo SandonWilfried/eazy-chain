@@ -5,8 +5,11 @@ import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import SupplierPaymentForm from "@/components/SupplierPaymentForm";
 import { Link } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const SupplierPayment = () => {
+  const { t } = useLanguage();
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -19,12 +22,12 @@ const SupplierPayment = () => {
               <Link to="/services">
                 <Button variant="ghost" className="mb-4 -ml-3 text-muted-foreground flex items-center gap-1.5">
                   <ArrowLeft className="h-4 w-4" />
-                  Back to Services
+                  {t('backToServices')}
                 </Button>
               </Link>
-              <h1 className="text-3xl md:text-4xl font-bold">Payment to Suppliers</h1>
+              <h1 className="text-3xl md:text-4xl font-bold">{t('paymentToSuppliers')}</h1>
               <p className="text-lg md:text-xl mt-2 text-muted-foreground max-w-2xl">
-                Securely pay your international suppliers with our reliable payment service
+                {t('suppliersDesc')}
               </p>
             </div>
           </div>
@@ -47,7 +50,7 @@ const SupplierPayment = () => {
               <span className="font-semibold text-xl">Eazy Chain</span>
             </div>
             <div className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} Eazy Chain. All rights reserved.
+              © {new Date().getFullYear()} Eazy Chain. {t('allRightsReserved')}
             </div>
           </div>
         </div>

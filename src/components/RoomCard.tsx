@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export interface RoomProps {
   id: string;
@@ -26,14 +27,15 @@ export interface RoomProps {
 const RoomCard = ({ room }: { room: RoomProps }) => {
   const [isHovered, setIsHovered] = useState(false);
   const { toast } = useToast();
+  const { t } = useLanguage();
   
   // Convert USD to XOF (1 USD ≈ 600 XOF)
   const xofPrice = room.price * 600;
   
   const handleBookNow = () => {
     toast({
-      title: "Room Selected",
-      description: `You've selected ${room.name}. Complete your booking details.`,
+      title: t('roomSelected'),
+      description: t('roomSelectedDesc').replace('{name}', room.name),
     });
   };
 
@@ -56,7 +58,7 @@ const RoomCard = ({ room }: { room: RoomProps }) => {
         <div className="absolute top-0 right-0 m-2">
           <Badge variant={room.available > 0 ? "outline" : "destructive"} 
             className={room.available > 0 ? "bg-green-50 text-green-700 border-green-200" : ""}>
-            {room.available > 0 ? "Available" : "Sold Out"}
+            {room.available > 0 ? t('available') : t('soldOut')}
           </Badge>
         </div>
       </div>
@@ -67,22 +69,22 @@ const RoomCard = ({ room }: { room: RoomProps }) => {
           <div className="text-right">
             <div className="text-lg font-semibold">
               ${room.price.toLocaleString()}
-              <span className="text-sm text-muted-foreground font-normal"> per night</span>
+              <span className="text-sm text-muted-foreground font-normal"> {t('perNight')}</span>
             </div>
             <div className="text-sm text-muted-foreground">
-              {xofPrice.toLocaleString()} XOF <span className="font-normal">per night</span>
+              {xofPrice.toLocaleString()} XOF <span className="font-normal">{t('perNight')}</span>
             </div>
           </div>
         </CardTitle>
         <CardDescription className="flex items-center gap-1">
           <Users size={16} />
-          <span>{room.capacity} person{room.capacity > 1 ? 's' : ''} ({room.available} available)</span>
+          <span>{room.capacity} {room.capacity > 1 ? 'persons' : 'person'} ({room.available} {t('available').toLowerCase()})</span>
         </CardDescription>
       </CardHeader>
       
       <CardContent>
         <div className="space-y-2">
-          <h3 className="text-sm font-medium">Amenities:</h3>
+          <h3 className="text-sm font-medium">{t('amenities')}</h3>
           <div className="flex flex-wrap gap-2">
             {room.amenities.map((amenity, index) => (
               <div key={index} className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -100,7 +102,7 @@ const RoomCard = ({ room }: { room: RoomProps }) => {
           className="w-full"
           disabled={room.available <= 0}
         >
-          {room.available > 0 ? "Book Now" : "Sold Out"}
+          {room.available > 0 ? t('bookNow') : t('soldOut')}
         </Button>
       </CardFooter>
     </Card>
