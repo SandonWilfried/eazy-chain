@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 type Language = 'en' | 'fr' | 'es';
@@ -65,6 +64,23 @@ const translations = {
     vessel: 'Vessel',
     lastUpdated: 'Last Updated',
     shipmentTimeline: 'Shipment Timeline',
+    
+    // Services
+    internationalShippingServices: 'International Shipping Services',
+    customsClearance: 'Customs Clearance Request',
+    customsClearanceDesc: 'Streamlined customs clearance services to expedite your shipments through border controls and regulatory checkpoints.',
+    airFreight: 'Air Freight',
+    airFreightDesc: 'Fast and reliable air freight services for urgent shipments and time-sensitive cargo, including air consolidation options.',
+    airConsolidation: 'Air Consolidation Service',
+    oceanFreight: 'Ocean Freight',
+    oceanFreightDesc: 'Cost-effective ocean freight services for container shipments and large cargo volumes, including consolidation options.',
+    oceanConsolidation: 'Ocean Consolidation Service',
+    courierServices: 'Courier Services',
+    courierServicesDesc: 'Fast and reliable courier services for documents and small packages with door-to-door delivery to all countries served by Asky Airlines.',
+    droneServices: 'Drone Delivery Services',
+    droneServicesDesc: 'Fast, efficient drone delivery services for packages within Togo, Benin, Côte d\'Ivoire, and Senegal with same-day delivery options.',
+    droneServiceRequest: 'Drone Delivery Service Request',
+    maritimeSolutions: 'Maritime Solutions',
     
     // Booking
     booking: 'Booking',
@@ -195,6 +211,23 @@ const translations = {
     lastUpdated: 'Dernière Mise à Jour',
     shipmentTimeline: 'Chronologie de l\'Expédition',
     
+    // Services
+    internationalShippingServices: 'Services d\'Expédition Internationale',
+    customsClearance: 'Demande de Dédouanement',
+    customsClearanceDesc: 'Services de dédouanement rationalisés pour accélérer vos expéditions à travers les contrôles frontaliers et les points de contrôle réglementaires.',
+    airFreight: 'Fret Aérien',
+    airFreightDesc: 'Services de fret aérien rapides et fiables pour les expéditions urgentes et les cargaisons sensibles au facteur temps, y compris les options de consolidation aérienne.',
+    airConsolidation: 'Service de Consolidation Aérienne',
+    oceanFreight: 'Fret Maritime',
+    oceanFreightDesc: 'Services de fret maritime rentables pour les expéditions en conteneurs et les grands volumes de cargaison, y compris les options de consolidation.',
+    oceanConsolidation: 'Service de Consolidation Maritime',
+    courierServices: 'Services de Courrier',
+    courierServicesDesc: 'Services de courrier rapides et fiables pour les documents et les petits colis avec livraison porte-à-porte dans tous les pays desservis par Asky Airlines.',
+    droneServices: 'Services de Livraison par Drone',
+    droneServicesDesc: 'Services de livraison par drone rapides et efficaces pour les colis au Togo, au Bénin, en Côte d\'Ivoire et au Sénégal avec options de livraison le jour même.',
+    droneServiceRequest: 'Demande de Service de Livraison par Drone',
+    maritimeSolutions: 'Solutions Maritimes',
+    
     // Booking
     booking: 'Réservation',
     bookingDesc: 'Réservez de l\'espace de fret sur nos navires pour vos expéditions',
@@ -323,6 +356,23 @@ const translations = {
     vessel: 'Buque',
     lastUpdated: 'Última Actualización',
     shipmentTimeline: 'Cronología del Envío',
+    
+    // Services
+    internationalShippingServices: 'Servicios de Envío Internacional',
+    customsClearance: 'Solicitud de Despacho Aduanero',
+    customsClearanceDesc: 'Servicios de despacho aduanero optimizados para agilizar sus envíos a través de controles fronterizos y puntos de control regulatorios.',
+    airFreight: 'Carga Aérea',
+    airFreightDesc: 'Servicios de carga aérea rápidos y confiables para envíos urgentes y carga sensible al tiempo, incluidas opciones de consolidación aérea.',
+    airConsolidation: 'Servicio de Consolidación Aérea',
+    oceanFreight: 'Carga Marítima',
+    oceanFreightDesc: 'Servicios de carga marítima rentables para envíos en contenedores y grandes volúmenes de carga, incluidas opciones de consolidación.',
+    oceanConsolidation: 'Servicio de Consolidación Marítima',
+    courierServices: 'Servicios de Mensajería',
+    courierServicesDesc: 'Servicios de mensajería rápidos y confiables para documentos y paquetes pequeños con entrega puerta a puerta a todos los países atendidos por Asky Airlines.',
+    droneServices: 'Servicios de Entrega por Dron',
+    droneServicesDesc: 'Servicios de entrega por dron rápidos y eficientes para paquetes dentro de Togo, Benín, Costa de Marfil y Senegal con opciones de entrega el mismo día.',
+    droneServiceRequest: 'Solicitud de Servicio de Entrega por Dron',
+    maritimeSolutions: 'Soluciones Marítimas',
     
     // Booking
     booking: 'Reserva',

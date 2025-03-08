@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { Globe, BarChart, Leaf, Wind, Droplets, ZapOff, Ship, Package, Plane, Truck, CreditCard, Send } from "lucide-react";
+import { Globe, BarChart, Leaf, Wind, Droplets, ZapOff, Ship, Package, Plane, Truck, CreditCard, Send, Drone } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,6 +10,8 @@ import OceanConsolidationForm from "@/components/OceanConsolidationForm";
 import AirFreightForm from "@/components/AirFreightForm";
 import OceanFreightForm from "@/components/OceanFreightForm";
 import CourierServiceForm from "@/components/CourierServiceForm";
+import DroneServiceForm from "@/components/DroneServiceForm";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Services = () => {
   const [customsDialogOpen, setCustomsDialogOpen] = useState(false);
@@ -19,6 +20,8 @@ const Services = () => {
   const [airFreightDialogOpen, setAirFreightDialogOpen] = useState(false);
   const [oceanFreightDialogOpen, setOceanFreightDialogOpen] = useState(false);
   const [courierServiceDialogOpen, setCourierServiceDialogOpen] = useState(false);
+  const [droneServiceDialogOpen, setDroneServiceDialogOpen] = useState(false);
+  const { t } = useLanguage();
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -27,9 +30,9 @@ const Services = () => {
       {/* Header */}
       <section className="bg-primary/5 py-16 md:py-24">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold mb-6">Our Services</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-6">{t('ourServices')}</h1>
           <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto text-muted-foreground">
-            Comprehensive maritime solutions for your business needs
+            {t('servicesDesc')}
           </p>
         </div>
       </section>
@@ -37,7 +40,7 @@ const Services = () => {
       {/* International Shipping Services - Moved above Maritime Solutions */}
       <section className="py-16 bg-gray-50 dark:bg-gray-900/20">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold mb-8 text-center">International Shipping Services</h2>
+          <h2 className="text-2xl font-bold mb-8 text-center">{t('internationalShippingServices')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Customs Clearance */}
             <Card 
@@ -48,11 +51,11 @@ const Services = () => {
                 <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
                   <Package className="h-8 w-8 text-primary" />
                 </div>
-                <CardTitle>Customs Clearance Request</CardTitle>
+                <CardTitle>{t('customsClearance')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-center">
-                  Streamlined customs clearance services to expedite your shipments through border controls and regulatory checkpoints.
+                  {t('customsClearanceDesc')}
                 </CardDescription>
               </CardContent>
             </Card>
@@ -66,11 +69,11 @@ const Services = () => {
                 <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
                   <Plane className="h-8 w-8 text-primary" />
                 </div>
-                <CardTitle>Air Freight</CardTitle>
+                <CardTitle>{t('airFreight')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-center">
-                  Fast and reliable air freight services for urgent shipments and time-sensitive cargo, including air consolidation options.
+                  {t('airFreightDesc')}
                 </CardDescription>
                 <div className="mt-4 flex justify-center">
                   <button 
@@ -80,7 +83,7 @@ const Services = () => {
                     }} 
                     className="text-primary hover:underline text-sm font-medium"
                   >
-                    Air Consolidation Service
+                    {t('airConsolidation')}
                   </button>
                 </div>
               </CardContent>
@@ -95,11 +98,11 @@ const Services = () => {
                 <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
                   <Ship className="h-8 w-8 text-primary" />
                 </div>
-                <CardTitle>Ocean Freight</CardTitle>
+                <CardTitle>{t('oceanFreight')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-center">
-                  Cost-effective ocean freight services for container shipments and large cargo volumes, including consolidation options.
+                  {t('oceanFreightDesc')}
                 </CardDescription>
                 <div className="mt-4 flex justify-center">
                   <button 
@@ -109,7 +112,7 @@ const Services = () => {
                     }} 
                     className="text-primary hover:underline text-sm font-medium"
                   >
-                    Ocean Consolidation Service
+                    {t('oceanConsolidation')}
                   </button>
                 </div>
               </CardContent>
@@ -122,11 +125,11 @@ const Services = () => {
                   <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
                     <CreditCard className="h-8 w-8 text-primary" />
                   </div>
-                  <CardTitle>Payment to Suppliers</CardTitle>
+                  <CardTitle>{t('paymentToSuppliers')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-center">
-                    Secure and reliable payment services to your international suppliers with competitive exchange rates and tracking capabilities.
+                    {t('suppliersDesc')}
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -141,11 +144,29 @@ const Services = () => {
                 <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
                   <Send className="h-8 w-8 text-primary" />
                 </div>
-                <CardTitle>Courier Services</CardTitle>
+                <CardTitle>{t('courierServices')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-center">
-                  Fast and reliable courier services for documents and small packages with door-to-door delivery to all countries served by Asky Airlines.
+                  {t('courierServicesDesc')}
+                </CardDescription>
+              </CardContent>
+            </Card>
+            
+            {/* Drone Services - NEW */}
+            <Card 
+              className="transition-all duration-300 hover:shadow-md cursor-pointer"
+              onClick={() => setDroneServiceDialogOpen(true)}
+            >
+              <CardHeader className="text-center">
+                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                  <Drone className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle>{t('droneServices')}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-center">
+                  {t('droneServicesDesc')}
                 </CardDescription>
               </CardContent>
             </Card>
@@ -156,7 +177,7 @@ const Services = () => {
       {/* Services Grid - Maritime Solutions */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold mb-8 text-center">Maritime Solutions</h2>
+          <h2 className="text-2xl font-bold mb-8 text-center">{t('maritimeSolutions')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Service 1 */}
             <Card className="transition-all duration-300 hover:shadow-md">
@@ -308,6 +329,16 @@ const Services = () => {
             <DialogTitle className="text-2xl">Courier Service Request</DialogTitle>
           </DialogHeader>
           <CourierServiceForm onClose={() => setCourierServiceDialogOpen(false)} />
+        </DialogContent>
+      </Dialog>
+      
+      {/* Drone Service Dialog - NEW */}
+      <Dialog open={droneServiceDialogOpen} onOpenChange={setDroneServiceDialogOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl">{t('droneServiceRequest')}</DialogTitle>
+          </DialogHeader>
+          <DroneServiceForm onClose={() => setDroneServiceDialogOpen(false)} />
         </DialogContent>
       </Dialog>
       
