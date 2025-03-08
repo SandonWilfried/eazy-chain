@@ -3,11 +3,14 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Ship } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageSelector from "./LanguageSelector";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const { t } = useLanguage();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -29,12 +32,12 @@ const Navbar = () => {
   }, [location.pathname]);
 
   const navLinks = [
-    { title: "Home", path: "/" },
-    { title: "Book", path: "/booking" },
-    { title: "Passengers", path: "/passengers" },
-    { title: "Track", path: "/tracking" },
-    { title: "Dashboard", path: "/dashboard" },
-    { title: "Other Services", path: "/services" }
+    { title: t('home'), path: "/" },
+    { title: t('book'), path: "/booking" },
+    { title: t('passengers'), path: "/passengers" },
+    { title: t('track'), path: "/tracking" },
+    { title: t('dashboard'), path: "/dashboard" },
+    { title: t('otherServices'), path: "/services" }
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -80,12 +83,14 @@ const Navbar = () => {
               </Link>
             ))}
             <Button asChild size="sm" className="ml-4">
-              <Link to="/payment">Pay Now</Link>
+              <Link to="/payment">{t('payNow')}</Link>
             </Button>
+            <LanguageSelector />
           </div>
 
           {/* Mobile Menu Toggle */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center gap-2">
+            <LanguageSelector />
             <Button
               variant="ghost"
               size="icon"
@@ -115,7 +120,7 @@ const Navbar = () => {
                 </Link>
               ))}
               <Button asChild size="sm" className="mt-4">
-                <Link to="/payment">Pay Now</Link>
+                <Link to="/payment">{t('payNow')}</Link>
               </Button>
             </div>
           </div>
