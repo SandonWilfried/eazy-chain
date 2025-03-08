@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Globe, BarChart, Leaf, Wind, Droplets, ZapOff, Ship, Package, Plane, Truck, CreditCard, Send, Drone } from "lucide-react";
+import { Globe, BarChart, Leaf, Wind, Droplets, ZapOff, Ship, Package, Plane, Truck, CreditCard, Send, Cpu } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -160,7 +160,7 @@ const Services = () => {
             >
               <CardHeader className="text-center">
                 <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                  <Drone className="h-8 w-8 text-primary" />
+                  <Cpu className="h-8 w-8 text-primary" />
                 </div>
                 <CardTitle>{t('droneServices')}</CardTitle>
               </CardHeader>
