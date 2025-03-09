@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 type Language = 'en' | 'fr' | 'es';
@@ -132,6 +133,39 @@ const translations = {
     customs: 'Customs Clearance',
     delayed: 'Delayed',
     
+    // Drone Services Form
+    personalInformation: 'Personal Information',
+    enterFullName: 'Enter your full name',
+    enterEmail: 'Enter your email',
+    enterPhone: 'Enter your phone number',
+    selectCountry: 'Select your country',
+    enterCity: 'Enter your city',
+    packageInformation: 'Package Information',
+    packageType: 'Package Type',
+    selectPackageType: 'Select package type',
+    packageWeight: 'Package Weight (kg)',
+    enterWeight: 'Enter weight in kg',
+    packageDimensions: 'Package Dimensions (cm)',
+    lengthWidthHeight: 'Length x Width x Height',
+    pickupAddress: 'Pickup Address',
+    enterPickupAddress: 'Enter pickup address',
+    deliveryAddress: 'Delivery Address',
+    enterDeliveryAddress: 'Enter delivery address',
+    urgentDelivery: 'Urgent Delivery',
+    selectForPriority: 'Select for priority handling and faster delivery',
+    additionalInformation: 'Additional Information',
+    specialInstructions: 'Any special instructions or requirements',
+    cancel: 'Cancel',
+    processing: 'Processing...',
+    submitRequest: 'Submit Request',
+    
+    // Package types
+    documents: 'Documents',
+    smallPackage: 'Small Package',
+    mediumPackage: 'Medium Package',
+    fragileItems: 'Fragile Items',
+    medicalSupplies: 'Medical Supplies',
+    
     // Common
     back: 'Back',
     loading: 'Loading...',
@@ -145,15 +179,17 @@ const translations = {
     next: 'Next',
     previous: 'Previous',
     submit: 'Submit',
-    firstName: 'First Name',
+    firstName: 'Full Name',
     lastName: 'Last Name',
     email: 'Email',
     phone: 'Phone Number',
+    country: 'Country',
+    city: 'City',
     specialRequests: 'Special Requests',
     processingRequest: 'Processing...',
     submitBooking: 'Submit Booking',
-    bookingSuccess: 'Booking Request Submitted',
-    bookingSuccessDesc: 'We\'ll contact you shortly to confirm your booking.'
+    bookingSuccess: 'Request Submitted',
+    bookingSuccessDesc: 'We\'ll contact you shortly to confirm your drone delivery service.'
   },
   fr: {
     // Navbar
@@ -278,6 +314,39 @@ const translations = {
     customs: 'Dédouanement',
     delayed: 'Retardé',
     
+    // Drone Services Form
+    personalInformation: 'Informations Personnelles',
+    enterFullName: 'Entrez votre nom complet',
+    enterEmail: 'Entrez votre email',
+    enterPhone: 'Entrez votre numéro de téléphone',
+    selectCountry: 'Sélectionnez votre pays',
+    enterCity: 'Entrez votre ville',
+    packageInformation: 'Informations sur le Colis',
+    packageType: 'Type de Colis',
+    selectPackageType: 'Sélectionnez le type de colis',
+    packageWeight: 'Poids du Colis (kg)',
+    enterWeight: 'Entrez le poids en kg',
+    packageDimensions: 'Dimensions du Colis (cm)',
+    lengthWidthHeight: 'Longueur x Largeur x Hauteur',
+    pickupAddress: 'Adresse de Ramassage',
+    enterPickupAddress: 'Entrez l\'adresse de ramassage',
+    deliveryAddress: 'Adresse de Livraison',
+    enterDeliveryAddress: 'Entrez l\'adresse de livraison',
+    urgentDelivery: 'Livraison Urgente',
+    selectForPriority: 'Sélectionnez pour un traitement prioritaire et une livraison plus rapide',
+    additionalInformation: 'Informations Supplémentaires',
+    specialInstructions: 'Instructions spéciales ou exigences particulières',
+    cancel: 'Annuler',
+    processing: 'Traitement en cours...',
+    submitRequest: 'Soumettre la Demande',
+    
+    // Package types
+    documents: 'Documents',
+    smallPackage: 'Petit Colis',
+    mediumPackage: 'Colis Moyen',
+    fragileItems: 'Articles Fragiles',
+    medicalSupplies: 'Fournitures Médicales',
+    
     // Common
     back: 'Retour',
     loading: 'Chargement...',
@@ -291,15 +360,17 @@ const translations = {
     next: 'Suivant',
     previous: 'Précédent',
     submit: 'Soumettre',
-    firstName: 'Prénom',
+    firstName: 'Nom Complet',
     lastName: 'Nom de Famille',
     email: 'Email',
     phone: 'Numéro de Téléphone',
+    country: 'Pays',
+    city: 'Ville',
     specialRequests: 'Demandes Spéciales',
     processingRequest: 'Traitement en cours...',
     submitBooking: 'Soumettre la Réservation',
-    bookingSuccess: 'Demande de Réservation Soumise',
-    bookingSuccessDesc: 'Nous vous contacterons sous peu pour confirmer votre réservation.'
+    bookingSuccess: 'Demande Soumise',
+    bookingSuccessDesc: 'Nous vous contacterons sous peu pour confirmer votre service de livraison par drone.'
   },
   es: {
     // Navbar
@@ -424,6 +495,39 @@ const translations = {
     customs: 'Despacho de Aduanas',
     delayed: 'Retrasado',
     
+    // Drone Services Form
+    personalInformation: 'Información Personal',
+    enterFullName: 'Ingrese su nombre completo',
+    enterEmail: 'Ingrese su correo electrónico',
+    enterPhone: 'Ingrese su número de teléfono',
+    selectCountry: 'Seleccione su país',
+    enterCity: 'Ingrese su ciudad',
+    packageInformation: 'Información del Paquete',
+    packageType: 'Tipo de Paquete',
+    selectPackageType: 'Seleccione tipo de paquete',
+    packageWeight: 'Peso del Paquete (kg)',
+    enterWeight: 'Ingrese peso en kg',
+    packageDimensions: 'Dimensiones del Paquete (cm)',
+    lengthWidthHeight: 'Largo x Ancho x Alto',
+    pickupAddress: 'Dirección de Recogida',
+    enterPickupAddress: 'Ingrese dirección de recogida',
+    deliveryAddress: 'Dirección de Entrega',
+    enterDeliveryAddress: 'Ingrese dirección de entrega',
+    urgentDelivery: 'Entrega Urgente',
+    selectForPriority: 'Seleccione para manejo prioritario y entrega más rápida',
+    additionalInformation: 'Información Adicional',
+    specialInstructions: 'Cualquier instrucción especial o requisito',
+    cancel: 'Cancelar',
+    processing: 'Procesando...',
+    submitRequest: 'Enviar Solicitud',
+    
+    // Package types
+    documents: 'Documentos',
+    smallPackage: 'Paquete Pequeño',
+    mediumPackage: 'Paquete Mediano',
+    fragileItems: 'Artículos Frágiles',
+    medicalSupplies: 'Suministros Médicos',
+    
     // Common
     back: 'Atrás',
     loading: 'Cargando...',
@@ -437,15 +541,17 @@ const translations = {
     next: 'Siguiente',
     previous: 'Anterior',
     submit: 'Enviar',
-    firstName: 'Nombre',
+    firstName: 'Nombre Completo',
     lastName: 'Apellido',
     email: 'Correo Electrónico',
     phone: 'Número de Teléfono',
+    country: 'País',
+    city: 'Ciudad',
     specialRequests: 'Solicitudes Especiales',
     processingRequest: 'Procesando...',
     submitBooking: 'Enviar Reserva',
-    bookingSuccess: 'Solicitud de Reserva Enviada',
-    bookingSuccessDesc: 'Nos pondremos en contacto con usted pronto para confirmar su reserva.'
+    bookingSuccess: 'Solicitud Enviada',
+    bookingSuccessDesc: 'Nos pondremos en contacto con usted pronto para confirmar su servicio de entrega por dron.'
   },
 };
 

@@ -102,8 +102,8 @@ const DroneServiceForm = ({ onClose }: DroneServiceFormProps) => {
     
     // Show success toast
     toast({
-      title: "Request Submitted",
-      description: "We'll contact you shortly to confirm your drone delivery service.",
+      title: t('bookingSuccess'),
+      description: t('bookingSuccessDesc'),
     });
     
     setIsSubmitting(false);
@@ -111,7 +111,7 @@ const DroneServiceForm = ({ onClose }: DroneServiceFormProps) => {
   };
 
   const countries = ["Togo", "Benin", "Côte d'Ivoire", "Senegal"];
-  const packageTypes = ["Documents", "Small Package", "Medium Package", "Fragile Items", "Medical Supplies"];
+  const packageTypes = [t('documents'), t('smallPackage'), t('mediumPackage'), t('fragileItems'), t('medicalSupplies')];
 
   return (
     <Form {...form}>
@@ -119,16 +119,16 @@ const DroneServiceForm = ({ onClose }: DroneServiceFormProps) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Personal Information */}
           <div className="space-y-4">
-            <h3 className="text-lg font-medium">Personal Information</h3>
+            <h3 className="text-lg font-medium">{t('personalInformation')}</h3>
             
             <FormField
               control={form.control}
               name="fullName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Full Name</FormLabel>
+                  <FormLabel>{t('firstName')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your full name" {...field} />
+                    <Input placeholder={t('enterFullName')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -140,9 +140,9 @@ const DroneServiceForm = ({ onClose }: DroneServiceFormProps) => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t('email')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your email" type="email" {...field} />
+                    <Input placeholder={t('enterEmail')} type="email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -154,9 +154,9 @@ const DroneServiceForm = ({ onClose }: DroneServiceFormProps) => {
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
+                  <FormLabel>{t('phone')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your phone number" {...field} />
+                    <Input placeholder={t('enterPhone')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -168,14 +168,14 @@ const DroneServiceForm = ({ onClose }: DroneServiceFormProps) => {
               name="country"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Country</FormLabel>
+                  <FormLabel>{t('country')}</FormLabel>
                   <Select 
                     onValueChange={field.onChange} 
                     defaultValue={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select your country" />
+                        <SelectValue placeholder={t('selectCountry')} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -196,9 +196,9 @@ const DroneServiceForm = ({ onClose }: DroneServiceFormProps) => {
               name="city"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>City</FormLabel>
+                  <FormLabel>{t('city')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your city" {...field} />
+                    <Input placeholder={t('enterCity')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -208,21 +208,21 @@ const DroneServiceForm = ({ onClose }: DroneServiceFormProps) => {
           
           {/* Package Information */}
           <div className="space-y-4">
-            <h3 className="text-lg font-medium">Package Information</h3>
+            <h3 className="text-lg font-medium">{t('packageInformation')}</h3>
             
             <FormField
               control={form.control}
               name="packageType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Package Type</FormLabel>
+                  <FormLabel>{t('packageType')}</FormLabel>
                   <Select 
                     onValueChange={field.onChange} 
                     defaultValue={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select package type" />
+                        <SelectValue placeholder={t('selectPackageType')} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -243,9 +243,9 @@ const DroneServiceForm = ({ onClose }: DroneServiceFormProps) => {
               name="packageWeight"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Package Weight (kg)</FormLabel>
+                  <FormLabel>{t('packageWeight')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter weight in kg" {...field} />
+                    <Input placeholder={t('enterWeight')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -257,9 +257,9 @@ const DroneServiceForm = ({ onClose }: DroneServiceFormProps) => {
               name="packageDimensions"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Package Dimensions (cm)</FormLabel>
+                  <FormLabel>{t('packageDimensions')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Length x Width x Height" {...field} />
+                    <Input placeholder={t('lengthWidthHeight')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -271,9 +271,9 @@ const DroneServiceForm = ({ onClose }: DroneServiceFormProps) => {
               name="pickupAddress"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Pickup Address</FormLabel>
+                  <FormLabel>{t('pickupAddress')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter pickup address" {...field} />
+                    <Input placeholder={t('enterPickupAddress')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -285,9 +285,9 @@ const DroneServiceForm = ({ onClose }: DroneServiceFormProps) => {
               name="deliveryAddress"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Delivery Address</FormLabel>
+                  <FormLabel>{t('deliveryAddress')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter delivery address" {...field} />
+                    <Input placeholder={t('enterDeliveryAddress')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -306,9 +306,9 @@ const DroneServiceForm = ({ onClose }: DroneServiceFormProps) => {
                     />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormLabel>Urgent Delivery</FormLabel>
+                    <FormLabel>{t('urgentDelivery')}</FormLabel>
                     <p className="text-sm text-muted-foreground">
-                      Select for priority handling and faster delivery
+                      {t('selectForPriority')}
                     </p>
                   </div>
                 </FormItem>
@@ -322,10 +322,10 @@ const DroneServiceForm = ({ onClose }: DroneServiceFormProps) => {
           name="additionalInformation"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Additional Information</FormLabel>
+              <FormLabel>{t('additionalInformation')}</FormLabel>
               <FormControl>
                 <Textarea 
-                  placeholder="Any special instructions or requirements" 
+                  placeholder={t('specialInstructions')} 
                   className="min-h-32"
                   {...field} 
                 />
@@ -341,7 +341,7 @@ const DroneServiceForm = ({ onClose }: DroneServiceFormProps) => {
             variant="outline" 
             onClick={onClose}
           >
-            Cancel
+            {t('cancel')}
           </Button>
           <Button 
             type="submit" 
@@ -350,12 +350,12 @@ const DroneServiceForm = ({ onClose }: DroneServiceFormProps) => {
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Processing...
+                {t('processing')}
               </>
             ) : (
               <>
                 <Check className="mr-2 h-4 w-4" />
-                Submit Request
+                {t('submitRequest')}
               </>
             )}
           </Button>
