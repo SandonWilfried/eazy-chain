@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type ApplicationFormValues = {
   name: string;
@@ -23,6 +24,7 @@ type ApplicationFormValues = {
 const ContactSection = () => {
   const navigate = useNavigate();
   const [showApplicationForm, setShowApplicationForm] = useState(false);
+  const { t } = useLanguage();
 
   const form = useForm<ApplicationFormValues>({
     defaultValues: {
@@ -100,7 +102,7 @@ const ContactSection = () => {
               <div className="flex flex-col items-center text-center">
                 <MapPin className="w-10 h-10 text-primary mb-4" />
                 <h3 className="text-lg font-semibold mb-2">Address</h3>
-                <p className="text-muted-foreground">Port de Lomé</p>
+                <p className="text-muted-foreground">Avenue Pya, rue de la clinique Bayor, Djidjolé, Lomé Togo</p>
               </div>
               
               <div className="flex flex-col items-center text-center">
