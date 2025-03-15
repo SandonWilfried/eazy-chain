@@ -446,8 +446,7 @@ const translations = {
     totalAmount: 'Montant Total',
     paid: 'Payé',
     paymentPending: 'Paiement en attente',
-    paymentOverdue: 'Paiement en retard',
-    cancelled: 'Annulé'
+    paymentOverdue: 'Paiement en retard'
   },
   es: {
     // Navbar
@@ -666,8 +665,7 @@ const translations = {
     totalAmount: 'Monto Total',
     paid: 'Pagado',
     paymentPending: 'Pago Pendiente',
-    paymentOverdue: 'Pago Atrasado',
-    cancelled: 'Cancelado'
+    paymentOverdue: 'Pago Atrasado'
   },
 };
 
