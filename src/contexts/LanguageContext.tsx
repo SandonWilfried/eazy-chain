@@ -501,7 +501,7 @@ const translations = {
     whatIsYourIncentiveAccreditationReport: 'What is your incentive accreditation report?',
     whatIsYourMotivationAccreditationReport: 'What is your motivation accreditation report?',
     whatIsYourEngagementAccreditationReport: 'What is your engagement accreditation report?',
-    whatIsYourParticipationAccreditationReport: 'What is your participation assessment report?',
+    // Removed duplicate: whatIsYourParticipationAccreditationReport
     whatIsYourContributionAccreditationReport: 'What is your contribution accreditation report?',
     whatIsYourImpactAccreditationReport: 'What is your impact accreditation report?',
     whatIsYourSustainabilityStandard: 'What is your sustainability standard?',
