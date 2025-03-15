@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 type Language = 'en' | 'fr' | 'es';
@@ -189,7 +188,45 @@ const translations = {
     processingRequest: 'Processing...',
     submitBooking: 'Submit Booking',
     bookingSuccess: 'Request Submitted',
-    bookingSuccessDesc: 'We\'ll contact you shortly to confirm your drone delivery service.'
+    bookingSuccessDesc: 'We\'ll contact you shortly to confirm your drone delivery service.',
+    
+    // PassengerBookingForm
+    roomType: 'Room Type',
+    selectRoomType: 'Select a room type',
+    standardCabin: 'Standard Cabin',
+    deluxeCabin: 'Deluxe Cabin',
+    premiumCabin: 'Premium Cabin',
+    numberOfPassengers: 'Number of Passengers',
+    selectNumberOfPassengers: 'Select number of passengers',
+    passenger: 'Passenger',
+    passengers: 'Passengers',
+    pickDate: 'Pick a date',
+    specialRequestsPlaceholder: 'Any dietary requirements, accessibility needs, or other special requests...',
+    enterLastName: 'Enter your last name',
+    
+    // RoomCard
+    person: 'person',
+    persons: 'persons',
+    
+    // ContactSection
+    submitApplication: 'Submit Application',
+    applyFormDesc: 'Fill out the form below to apply for a position at Eazy Chain. Upload your CV and cover letter.',
+    position: 'Position',
+    positionApplyingFor: 'Position you\'re applying for',
+    tellUsAboutYourself: 'Tell us about yourself and why you\'re interested in this position',
+    cvResume: 'CV/Resume',
+    coverLetter: 'Cover Letter',
+    
+    // ShipmentCard
+    trackingNumber: 'Tracking #',
+    containers: 'Containers',
+    unit: 'unit',
+    units: 'units',
+    totalAmount: 'Total Amount',
+    paid: 'Paid',
+    paymentPending: 'Payment Pending',
+    paymentOverdue: 'Payment Overdue',
+    cancelled: 'Cancelled'
   },
   fr: {
     // Navbar
@@ -370,7 +407,45 @@ const translations = {
     processingRequest: 'Traitement en cours...',
     submitBooking: 'Soumettre la Réservation',
     bookingSuccess: 'Demande Soumise',
-    bookingSuccessDesc: 'Nous vous contacterons sous peu pour confirmer votre service de livraison par drone.'
+    bookingSuccessDesc: 'Nous vous contacterons sous peu pour confirmer votre service de livraison par drone.',
+    
+    // PassengerBookingForm
+    roomType: 'Type de Chambre',
+    selectRoomType: 'Sélectionner un type de chambre',
+    standardCabin: 'Cabine Standard',
+    deluxeCabin: 'Cabine Deluxe',
+    premiumCabin: 'Cabine Premium',
+    numberOfPassengers: 'Nombre de Passagers',
+    selectNumberOfPassengers: 'Sélectionner le nombre de passagers',
+    passenger: 'Passager',
+    passengers: 'Passagers',
+    pickDate: 'Choisir une date',
+    specialRequestsPlaceholder: 'Exigences alimentaires, besoins d\'accessibilité ou autres demandes spéciales...',
+    enterLastName: 'Entrez votre nom de famille',
+    
+    // RoomCard
+    person: 'personne',
+    persons: 'personnes',
+    
+    // ContactSection
+    submitApplication: 'Soumettre la Candidature',
+    applyFormDesc: 'Remplissez le formulaire ci-dessous pour postuler à un poste chez Eazy Chain. Téléchargez votre CV et votre lettre de motivation.',
+    position: 'Poste',
+    positionApplyingFor: 'Poste pour lequel vous postulez',
+    tellUsAboutYourself: 'Parlez-nous de vous et de votre intérêt pour ce poste',
+    cvResume: 'CV',
+    coverLetter: 'Lettre de Motivation',
+    
+    // ShipmentCard
+    trackingNumber: 'Numéro de suivi',
+    containers: 'Conteneurs',
+    unit: 'unité',
+    units: 'unités',
+    totalAmount: 'Montant Total',
+    paid: 'Payé',
+    paymentPending: 'Paiement en attente',
+    paymentOverdue: 'Paiement en retard',
+    cancelled: 'Annulé'
   },
   es: {
     // Navbar
@@ -526,7 +601,7 @@ const translations = {
     smallPackage: 'Paquete Pequeño',
     mediumPackage: 'Paquete Mediano',
     fragileItems: 'Artículos Frágiles',
-    medicalSupplies: 'Suministros Médicos',
+    medicalSupplies: 'Fornitures Médicas',
     
     // Common
     back: 'Atrás',
@@ -551,7 +626,45 @@ const translations = {
     processingRequest: 'Procesando...',
     submitBooking: 'Enviar Reserva',
     bookingSuccess: 'Solicitud Enviada',
-    bookingSuccessDesc: 'Nos pondremos en contacto con usted pronto para confirmar su servicio de entrega por dron.'
+    bookingSuccessDesc: 'Nos pondremos en contacto con usted pronto para confirmar su servicio de entrega por dron.',
+    
+    // PassengerBookingForm
+    roomType: 'Tipo de Habitación',
+    selectRoomType: 'Seleccione un tipo de habitación',
+    standardCabin: 'Camarote Estándar',
+    deluxeCabin: 'Camarote Deluxe',
+    premiumCabin: 'Camarote Premium',
+    numberOfPassengers: 'Número de Pasajeros',
+    selectNumberOfPassengers: 'Seleccione número de pasajeros',
+    passenger: 'Pasajero',
+    passengers: 'Pasajeros',
+    pickDate: 'Elija una fecha',
+    specialRequestsPlaceholder: 'Requisitos dietéticos, necesidades de accesibilidad u otras solicitudes especiales...',
+    enterLastName: 'Ingrese su apellido',
+    
+    // RoomCard
+    person: 'persona',
+    persons: 'personas',
+    
+    // ContactSection
+    submitApplication: 'Enviar Solicitud',
+    applyFormDesc: 'Complete el formulario a continuación para solicitar un puesto en Eazy Chain. Suba su CV y carta de presentación.',
+    position: 'Posición',
+    positionApplyingFor: 'Posición a la que está aplicando',
+    tellUsAboutYourself: 'Cuéntenos sobre usted y por qué está interesado en esta posición',
+    cvResume: 'CV/Currículum',
+    coverLetter: 'Carta de Presentación',
+    
+    // ShipmentCard
+    trackingNumber: 'Número de seguimiento',
+    containers: 'Contenedores',
+    unit: 'unidad',
+    units: 'unidades',
+    totalAmount: 'Monto Total',
+    paid: 'Pagado',
+    paymentPending: 'Pago Pendiente',
+    paymentOverdue: 'Pago Atrasado',
+    cancelled: 'Cancelado'
   },
 };
 
@@ -586,3 +699,4 @@ export const useLanguage = (): LanguageContextType => {
   }
   return context;
 };
+

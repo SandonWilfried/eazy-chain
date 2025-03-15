@@ -42,7 +42,7 @@ const ContactSection = () => {
     // In a real application, you would handle file uploads here
     // and send the data to your backend
 
-    toast.success("Application submitted successfully!");
+    toast.success(t('bookingSuccess'));
     setShowApplicationForm(false);
     form.reset();
   };
@@ -50,26 +50,26 @@ const ContactSection = () => {
   const contactOptions = [
     {
       icon: <Box className="w-16 h-16 text-primary" />,
-      title: "I would like to",
-      subtitle: "ship my cargo",
+      title: t('iWouldLikeTo'),
+      subtitle: t('shipMyCargo'),
       action: () => navigate("/booking")
     },
     {
       icon: <Ship className="w-16 h-16 text-primary" />,
-      title: "I would like to",
-      subtitle: "book a cabin",
+      title: t('iWouldLikeTo'),
+      subtitle: t('bookCabin'),
       action: () => navigate("/passengers")
     },
     {
       icon: <Briefcase className="w-16 h-16 text-primary" />,
-      title: "I would like to",
-      subtitle: "apply at Eazy Chain",
+      title: t('iWouldLikeTo'),
+      subtitle: t('applyAtEazyChain'),
       action: () => setShowApplicationForm(true)
     },
     {
       icon: <MessageSquarePlus className="w-16 h-16 text-primary" />,
-      title: "I would like to",
-      subtitle: "discuss another topic",
+      title: t('iWouldLikeTo'),
+      subtitle: t('discussAnotherTopic'),
       action: () => window.open('mailto:contact@eazy-chain.com', '_blank')
     }
   ];
@@ -89,7 +89,7 @@ const ContactSection = () => {
       <section className="py-16 bg-gradient-to-b from-background to-accent/20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-3">What Would You Like to Discuss?</h2>
+            <h2 className="text-3xl font-bold mb-3">{t('whatWouldYouLikeToDiscuss')}</h2>
           </div>
           
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -111,7 +111,7 @@ const ContactSection = () => {
             <div className="glass-panel p-8 grid md:grid-cols-3 gap-8">
               <div className="flex flex-col items-center text-center">
                 <MapPin className="w-10 h-10 text-primary mb-4" />
-                <h3 className="text-lg font-semibold mb-2">Address</h3>
+                <h3 className="text-lg font-semibold mb-2">{t('address')}</h3>
                 <a 
                   href={googleMapsUrl}
                   target="_blank"
@@ -125,7 +125,7 @@ const ContactSection = () => {
               
               <div className="flex flex-col items-center text-center">
                 <Phone className="w-10 h-10 text-primary mb-4" />
-                <h3 className="text-lg font-semibold mb-2">Phone</h3>
+                <h3 className="text-lg font-semibold mb-2">{t('phone')}</h3>
                 <div className="flex flex-col gap-3">
                   <div className="flex flex-col">
                     <a 
@@ -167,7 +167,7 @@ const ContactSection = () => {
               
               <div className="flex flex-col items-center text-center">
                 <Mail className="w-10 h-10 text-primary mb-4" />
-                <h3 className="text-lg font-semibold mb-2">Email</h3>
+                <h3 className="text-lg font-semibold mb-2">{t('email')}</h3>
                 <a 
                   href={emailUrl}
                   className="text-muted-foreground hover:text-primary hover:underline"
@@ -183,9 +183,9 @@ const ContactSection = () => {
       <Dialog open={showApplicationForm} onOpenChange={setShowApplicationForm}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
-            <DialogTitle>Apply at Eazy Chain</DialogTitle>
+            <DialogTitle>{t('applyAtEazyChain')}</DialogTitle>
             <DialogDescription>
-              Fill out the form below to apply for a position at Eazy Chain. Upload your CV and cover letter.
+              {t('applyFormDesc')}
             </DialogDescription>
           </DialogHeader>
           
@@ -196,9 +196,9 @@ const ContactSection = () => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Full Name</FormLabel>
+                    <FormLabel>{t('fullName')}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter your full name" {...field} />
+                      <Input placeholder={t('enterFullName')} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -210,9 +210,9 @@ const ContactSection = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t('email')}</FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="your.email@example.com" {...field} />
+                      <Input type="email" placeholder={t('enterEmail')} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -224,9 +224,9 @@ const ContactSection = () => {
                 name="position"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Position</FormLabel>
+                    <FormLabel>{t('position')}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Position you're applying for" {...field} />
+                      <Input placeholder={t('positionApplyingFor')} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -238,9 +238,9 @@ const ContactSection = () => {
                 name="message"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Message</FormLabel>
+                    <FormLabel>{t('message')}</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="Tell us about yourself and why you're interested in this position" {...field} />
+                      <Textarea placeholder={t('tellUsAboutYourself')} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -252,7 +252,7 @@ const ContactSection = () => {
                 name="cv"
                 render={({ field: { value, onChange, ...fieldProps } }) => (
                   <FormItem>
-                    <FormLabel>CV/Resume</FormLabel>
+                    <FormLabel>{t('cvResume')}</FormLabel>
                     <FormControl>
                       <Input 
                         type="file" 
@@ -271,7 +271,7 @@ const ContactSection = () => {
                 name="coverLetter"
                 render={({ field: { value, onChange, ...fieldProps } }) => (
                   <FormItem>
-                    <FormLabel>Cover Letter</FormLabel>
+                    <FormLabel>{t('coverLetter')}</FormLabel>
                     <FormControl>
                       <Input 
                         type="file" 
@@ -286,8 +286,8 @@ const ContactSection = () => {
               />
               
               <DialogFooter>
-                <Button type="button" variant="outline" onClick={() => setShowApplicationForm(false)}>Cancel</Button>
-                <Button type="submit">Submit Application</Button>
+                <Button type="button" variant="outline" onClick={() => setShowApplicationForm(false)}>{t('cancel')}</Button>
+                <Button type="submit">{t('submitApplication')}</Button>
               </DialogFooter>
             </form>
           </Form>

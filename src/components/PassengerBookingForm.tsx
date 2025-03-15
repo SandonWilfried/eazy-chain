@@ -31,6 +31,7 @@ import {
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const formSchema = z.object({
   firstName: z.string().min(2, { message: "First name must be at least 2 characters." }),
@@ -52,6 +53,7 @@ interface PassengerBookingFormProps {
 export default function PassengerBookingForm({ roomId }: PassengerBookingFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { t } = useLanguage();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -75,8 +77,8 @@ export default function PassengerBookingForm({ roomId }: PassengerBookingFormPro
     console.log("Booking form submitted:", data);
     
     toast({
-      title: "Booking Request Submitted",
-      description: "We'll contact you shortly to confirm your booking.",
+      title: t('bookingSuccess'),
+      description: t('bookingSuccessDesc'),
     });
     
     form.reset();
@@ -92,10 +94,10 @@ export default function PassengerBookingForm({ roomId }: PassengerBookingFormPro
             name="firstName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>First Name</FormLabel>
+                <FormLabel>{t('firstName')}</FormLabel>
                 <FormControl>
                   <div className="relative">
-                    <Input placeholder="Enter your first name" {...field} />
+                    <Input placeholder={t('enterFullName')} {...field} />
                     <User className="absolute right-3 top-2.5 h-5 w-5 text-muted-foreground" />
                   </div>
                 </FormControl>
@@ -109,10 +111,10 @@ export default function PassengerBookingForm({ roomId }: PassengerBookingFormPro
             name="lastName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Last Name</FormLabel>
+                <FormLabel>{t('lastName')}</FormLabel>
                 <FormControl>
                   <div className="relative">
-                    <Input placeholder="Enter your last name" {...field} />
+                    <Input placeholder={t('enterLastName')} {...field} />
                     <User className="absolute right-3 top-2.5 h-5 w-5 text-muted-foreground" />
                   </div>
                 </FormControl>
@@ -126,10 +128,10 @@ export default function PassengerBookingForm({ roomId }: PassengerBookingFormPro
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>{t('email')}</FormLabel>
                 <FormControl>
                   <div className="relative">
-                    <Input placeholder="Enter your email" type="email" {...field} />
+                    <Input placeholder={t('enterEmail')} type="email" {...field} />
                     <Mail className="absolute right-3 top-2.5 h-5 w-5 text-muted-foreground" />
                   </div>
                 </FormControl>
@@ -143,10 +145,10 @@ export default function PassengerBookingForm({ roomId }: PassengerBookingFormPro
             name="phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Phone Number</FormLabel>
+                <FormLabel>{t('phone')}</FormLabel>
                 <FormControl>
                   <div className="relative">
-                    <Input placeholder="Enter your phone number" type="tel" {...field} />
+                    <Input placeholder={t('enterPhone')} type="tel" {...field} />
                     <Phone className="absolute right-3 top-2.5 h-5 w-5 text-muted-foreground" />
                   </div>
                 </FormControl>
@@ -162,7 +164,7 @@ export default function PassengerBookingForm({ roomId }: PassengerBookingFormPro
             name="roomType"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Room Type</FormLabel>
+                <FormLabel>{t('roomType')}</FormLabel>
                 <Select 
                   onValueChange={field.onChange} 
                   defaultValue={field.value} 
@@ -170,13 +172,13 @@ export default function PassengerBookingForm({ roomId }: PassengerBookingFormPro
                 >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select a room type" />
+                      <SelectValue placeholder={t('selectRoomType')} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="standard">Standard Cabin</SelectItem>
-                    <SelectItem value="deluxe">Deluxe Cabin</SelectItem>
-                    <SelectItem value="premium">Premium Cabin</SelectItem>
+                    <SelectItem value="standard">{t('standardCabin')}</SelectItem>
+                    <SelectItem value="deluxe">{t('deluxeCabin')}</SelectItem>
+                    <SelectItem value="premium">{t('premiumCabin')}</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -189,7 +191,7 @@ export default function PassengerBookingForm({ roomId }: PassengerBookingFormPro
             name="passengers"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Number of Passengers</FormLabel>
+                <FormLabel>{t('numberOfPassengers')}</FormLabel>
                 <Select 
                   onValueChange={(value) => field.onChange(parseInt(value))} 
                   defaultValue={field.value.toString()}
@@ -197,12 +199,12 @@ export default function PassengerBookingForm({ roomId }: PassengerBookingFormPro
                 >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select number of passengers" />
+                      <SelectValue placeholder={t('selectNumberOfPassengers')} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="1">1 Passenger</SelectItem>
-                    <SelectItem value="2">2 Passengers</SelectItem>
+                    <SelectItem value="1">1 {t('passenger')}</SelectItem>
+                    <SelectItem value="2">2 {t('passengers')}</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -216,7 +218,7 @@ export default function PassengerBookingForm({ roomId }: PassengerBookingFormPro
           name="departureDate"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>Departure Date</FormLabel>
+              <FormLabel>{t('departureDate')}</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -230,7 +232,7 @@ export default function PassengerBookingForm({ roomId }: PassengerBookingFormPro
                       {field.value ? (
                         format(field.value, "PPP")
                       ) : (
-                        <span>Pick a date</span>
+                        <span>{t('pickDate')}</span>
                       )}
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
@@ -256,10 +258,10 @@ export default function PassengerBookingForm({ roomId }: PassengerBookingFormPro
           name="specialRequests"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Special Requests</FormLabel>
+              <FormLabel>{t('specialRequests')}</FormLabel>
               <FormControl>
                 <Textarea 
-                  placeholder="Any dietary requirements, accessibility needs, or other special requests..."
+                  placeholder={t('specialRequestsPlaceholder')}
                   className="min-h-[120px]"
                   {...field}
                 />
@@ -270,7 +272,7 @@ export default function PassengerBookingForm({ roomId }: PassengerBookingFormPro
         />
         
         <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {isSubmitting ? "Processing..." : "Submit Booking"}
+          {isSubmitting ? t('processingRequest') : t('submitBooking')}
         </Button>
       </form>
     </Form>

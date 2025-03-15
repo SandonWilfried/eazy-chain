@@ -78,7 +78,7 @@ const RoomCard = ({ room }: { room: RoomProps }) => {
         </CardTitle>
         <CardDescription className="flex items-center gap-1">
           <Users size={16} />
-          <span>{room.capacity} {room.capacity > 1 ? 'persons' : 'person'} ({room.available} {t('available').toLowerCase()})</span>
+          <span>{room.capacity} {room.capacity > 1 ? t('persons') : t('person')} ({room.available} {t('available').toLowerCase()})</span>
         </CardDescription>
       </CardHeader>
       
