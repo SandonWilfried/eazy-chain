@@ -74,8 +74,8 @@ const ContactSection = () => {
     }
   ];
 
-  // Address Google Maps URL
-  const googleMapsUrl = "https://maps.google.com/?q=Avenue+Pya,+rue+de+la+clinique+Bayor,+Djidjolé,+Lomé+Togo";
+  // Updated Google Maps URL with precise location
+  const googleMapsUrl = "https://www.google.com/maps/place/Eazy+Chain/@6.1876146,1.190399,17z/data=!3m1!4b1!4m6!3m5!1s0x102159b6294d8231:0xb834142ae26180d2!8m2!3d6.1876093!4d1.1929739!16s%2Fg%2F11x26y0tjb?entry=ttu";
   
   // WhatsApp URLs
   const whatsAppUrl1 = "https://wa.me/22898464040";
