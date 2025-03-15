@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 type Language = 'en' | 'fr' | 'es';
@@ -131,6 +132,7 @@ const translations = {
     delivered: 'Delivered',
     customs: 'Customs Clearance',
     delayed: 'Delayed',
+    cancelled: 'Cancelled',
     
     // Drone Services Form
     personalInformation: 'Personal Information',
@@ -225,8 +227,7 @@ const translations = {
     totalAmount: 'Total Amount',
     paid: 'Paid',
     paymentPending: 'Payment Pending',
-    paymentOverdue: 'Payment Overdue',
-    cancelled: 'Cancelled'
+    paymentOverdue: 'Payment Overdue'
   },
   fr: {
     // Navbar
@@ -350,6 +351,7 @@ const translations = {
     delivered: 'Livré',
     customs: 'Dédouanement',
     delayed: 'Retardé',
+    cancelled: 'Annulé',
     
     // Drone Services Form
     personalInformation: 'Informations Personnelles',
@@ -569,6 +571,7 @@ const translations = {
     delivered: 'Entregado',
     customs: 'Despacho de Aduanas',
     delayed: 'Retrasado',
+    cancelled: 'Cancelado',
     
     // Drone Services Form
     personalInformation: 'Información Personal',
@@ -699,4 +702,3 @@ export const useLanguage = (): LanguageContextType => {
   }
   return context;
 };
-
