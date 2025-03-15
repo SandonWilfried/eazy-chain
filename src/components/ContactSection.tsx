@@ -1,5 +1,5 @@
 
-import { Box, Briefcase, MessageSquarePlus, Ship, Phone, Mail, MapPin } from "lucide-react";
+import { Box, Briefcase, MessageSquarePlus, Ship, Phone, Mail, MapPin, ExternalLink, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
@@ -74,6 +74,16 @@ const ContactSection = () => {
     }
   ];
 
+  // Address Google Maps URL
+  const googleMapsUrl = "https://maps.google.com/?q=Avenue+Pya,+rue+de+la+clinique+Bayor,+Djidjolé,+Lomé+Togo";
+  
+  // WhatsApp URLs
+  const whatsAppUrl1 = "https://wa.me/22898464040";
+  const whatsAppUrl2 = "https://wa.me/22893546464";
+  
+  // Email URL
+  const emailUrl = "mailto:contact@eazy-chain.com";
+
   return (
     <>
       <section className="py-16 bg-gradient-to-b from-background to-accent/20">
@@ -102,20 +112,68 @@ const ContactSection = () => {
               <div className="flex flex-col items-center text-center">
                 <MapPin className="w-10 h-10 text-primary mb-4" />
                 <h3 className="text-lg font-semibold mb-2">Address</h3>
-                <p className="text-muted-foreground">Avenue Pya, rue de la clinique Bayor, Djidjolé, Lomé Togo</p>
+                <a 
+                  href={googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-primary hover:underline flex items-center justify-center gap-2"
+                >
+                  <span>Avenue Pya, rue de la clinique Bayor, Djidjolé, Lomé Togo</span>
+                  <ExternalLink className="w-4 h-4" />
+                </a>
               </div>
               
               <div className="flex flex-col items-center text-center">
                 <Phone className="w-10 h-10 text-primary mb-4" />
                 <h3 className="text-lg font-semibold mb-2">Phone</h3>
-                <p className="text-muted-foreground">0022898464040</p>
-                <p className="text-muted-foreground mt-1">+22893546464</p>
+                <div className="flex flex-col gap-3">
+                  <div className="flex flex-col">
+                    <a 
+                      href="tel:+22898464040"
+                      className="text-muted-foreground hover:text-primary hover:underline"
+                    >
+                      +22898464040
+                    </a>
+                    <a 
+                      href={whatsAppUrl1}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-1 text-muted-foreground hover:text-green-600"
+                    >
+                      <Smartphone className="w-4 h-4" />
+                      <span className="text-sm">WhatsApp</span>
+                    </a>
+                  </div>
+                  
+                  <div className="flex flex-col">
+                    <a 
+                      href="tel:+22893546464"
+                      className="text-muted-foreground hover:text-primary hover:underline"
+                    >
+                      +22893546464
+                    </a>
+                    <a 
+                      href={whatsAppUrl2}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-1 text-muted-foreground hover:text-green-600"
+                    >
+                      <Smartphone className="w-4 h-4" />
+                      <span className="text-sm">WhatsApp</span>
+                    </a>
+                  </div>
+                </div>
               </div>
               
               <div className="flex flex-col items-center text-center">
                 <Mail className="w-10 h-10 text-primary mb-4" />
                 <h3 className="text-lg font-semibold mb-2">Email</h3>
-                <p className="text-muted-foreground">contact@eazy-chain.com</p>
+                <a 
+                  href={emailUrl}
+                  className="text-muted-foreground hover:text-primary hover:underline"
+                >
+                  contact@eazy-chain.com
+                </a>
               </div>
             </div>
           </div>
