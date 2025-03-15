@@ -33,6 +33,11 @@ const RoomCard = ({ room }: { room: RoomProps }) => {
   const xofPrice = room.price * 600;
   
   const handleBookNow = () => {
+    // Send email notification
+    const emailSubject = `Room Booking Request: ${room.name}`;
+    const emailBody = `Hello,\n\nI would like to book the ${room.name} room.\n\nThank you.`;
+    window.location.href = `mailto:contact@eazy-chain.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+    
     toast({
       title: t('roomSelected'),
       description: t('roomSelectedDesc').replace('{name}', room.name),
