@@ -33,6 +33,20 @@ const RoomCard = ({ room }: { room: RoomProps }) => {
   const xofPrice = room.price * 600;
   
   const handleBookNow = () => {
+    // Email forwarding functionality
+    const emailSubject = `Room Booking Request: ${room.name}`;
+    const emailBody = `
+      Room Name: ${room.name}
+      Price: $${room.price} (${xofPrice} XOF)
+      Capacity: ${room.capacity} persons
+      
+      This is an automated booking request from the website.
+    `;
+    
+    // In a production environment, you would send this to your backend
+    // For now we'll open the user's email client
+    window.location.href = `mailto:contact@eazy-chain.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+    
     toast({
       title: t('roomSelected'),
       description: t('roomSelectedDesc').replace('{name}', room.name),

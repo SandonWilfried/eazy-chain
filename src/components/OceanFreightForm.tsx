@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -83,10 +82,52 @@ const OceanFreightForm = ({ onClose }: { onClose: () => void }) => {
   const onSubmit = (data: FormValues) => {
     setIsSubmitting(true);
     
+    // Create reference number for bookings
+    const reference = `OCF-${Math.floor(Math.random() * 1000000)}`;
+    
+    // Create email content
+    const emailSubject = `Ocean Freight Request: ${reference}`;
+    const emailBody = `
+      Ocean Freight Booking Request:
+      =============================
+      Booking Reference: ${reference}
+      
+      Container Details:
+      - Cargo Description: ${data.cargoDescription}
+      - Container Type: ${data.containerType}
+      - Container Size: ${data.containerSize}
+      - Number of Containers: ${data.containerQuantity}
+      - Total Weight (kg): ${data.weight}
+      
+      Route Information:
+      - Origin Port: ${data.originPort}
+      - Destination Port: ${data.destinationPort}
+      - Requested Shipping Date: ${format(data.requestedShippingDate, 'PPP')}
+      - Pickup Address: ${data.pickupAddress}
+      - Delivery Address: ${data.deliveryAddress}
+      
+      Contact Information:
+      - Name: ${data.contactName}
+      - Email: ${data.contactEmail}
+      - Phone: ${data.contactPhone}
+      
+      Additional Instructions:
+      ${data.additionalInstructions || 'None provided'}
+      
+      Special Requirements:
+      - Hazardous Materials: ${data.hazardousMaterials ? 'Yes' : 'No'}
+      - Temperature Controlled: ${data.temperatureControlled ? 'Yes' : 'No'}
+      
+      This is an automated request from the website.
+    `;
+    
+    // Open email client with pre-filled details
+    window.location.href = `mailto:contact@eazy-chain.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+    
     // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
-      setBookingReference(`OCF-${Math.floor(Math.random() * 1000000)}`);
+      setBookingReference(reference);
       toast.success("Ocean freight request submitted successfully!");
       console.log("Form data:", data);
     }, 1500);

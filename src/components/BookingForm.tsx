@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -184,6 +183,34 @@ const BookingForm = () => {
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     console.log(values);
+    
+    // Create email content
+    const emailSubject = "Cargo Booking Request";
+    const emailBody = `
+      Cargo Booking Request Details:
+      ----------------------------
+      Origin Port: ${values.originPort}
+      Destination Port: ${values.destinationPort}
+      Departure Date: ${format(values.departureDate, 'PPP')}
+      
+      Cargo Information:
+      - Cargo Type: ${values.cargoType}
+      - Container Count: ${values.containerCount}
+      - Pallet Count: ${values.palletCount}
+      - Pallet Type: ${values.palletType}
+      - Weight (kg): ${values.weight}
+      - Cargo Description: ${values.cargoDescription || 'Not provided'}
+      
+      Contact Information:
+      - Name: ${values.contactName}
+      - Email: ${values.contactEmail}
+      - Phone: ${values.contactPhone}
+      
+      This is an automated booking request from the website.
+    `;
+    
+    // Open email client with pre-filled details
+    window.location.href = `mailto:contact@eazy-chain.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
     
     // Simulate API call
     setTimeout(() => {

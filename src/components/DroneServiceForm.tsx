@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -95,10 +94,35 @@ const DroneServiceForm = ({ onClose }: DroneServiceFormProps) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
     console.log("Drone service form submitted:", values);
+    
+    // Create email content
+    const emailSubject = "Drone Service Request";
+    const emailBody = `
+      Drone Service Request Details:
+      -----------------------------
+      Full Name: ${values.fullName}
+      Email: ${values.email}
+      Phone: ${values.phone}
+      Country: ${values.country}
+      City: ${values.city}
+      
+      Package Information:
+      - Type: ${values.packageType}
+      - Weight: ${values.packageWeight}
+      - Dimensions: ${values.packageDimensions}
+      - Pickup Address: ${values.pickupAddress}
+      - Delivery Address: ${values.deliveryAddress}
+      - Urgent Delivery: ${values.urgentDelivery ? 'Yes' : 'No'}
+      
+      Additional Information:
+      ${values.additionalInformation || 'None provided'}
+      
+      This is an automated request from the website.
+    `;
+    
+    // Open email client with pre-filled details
+    window.location.href = `mailto:contact@eazy-chain.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
     
     // Show success toast
     toast({

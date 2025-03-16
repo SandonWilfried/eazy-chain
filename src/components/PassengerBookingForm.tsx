@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -71,10 +70,24 @@ export default function PassengerBookingForm({ roomId }: PassengerBookingFormPro
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
     console.log("Booking form submitted:", data);
+    
+    const emailSubject = "Passenger Booking Request";
+    const emailBody = `
+      Passenger Booking Details:
+      --------------------------
+      Name: ${data.firstName} ${data.lastName}
+      Email: ${data.email}
+      Phone: ${data.phone}
+      Room Type: ${data.roomType}
+      Number of Passengers: ${data.passengers}
+      Departure Date: ${format(data.departureDate, 'PPP')}
+      Special Requests: ${data.specialRequests || 'None'}
+      
+      This is an automated booking request from the website.
+    `;
+    
+    window.location.href = `mailto:contact@eazy-chain.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
     
     toast({
       title: t('bookingSuccess'),

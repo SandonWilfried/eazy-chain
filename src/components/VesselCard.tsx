@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Ship, Calendar, Package, Users, RepeatIcon, BarChart4 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -40,7 +41,23 @@ const VesselCard = ({ vessel }: { vessel: VesselProps }) => {
   };
 
   const handleBookNow = () => {
-    // This would typically navigate to booking page with vessel pre-selected
+    // Create email content
+    const emailSubject = `Vessel Booking Request: ${vessel.name}`;
+    const emailBody = `
+      Vessel Booking Details:
+      -----------------------
+      Vessel Name: ${vessel.name}
+      Route: ${vessel.route}
+      Departure Date: ${formatDate(vessel.departureDate)}
+      Arrival Date: ${formatDate(vessel.arrivalDate)}
+      Price per pallet: $${vessel.price.toLocaleString()}${vessel.priceXOF ? ` (${vessel.priceXOF.toLocaleString()} XOF)` : ''}
+      
+      This is an automated booking request from the website.
+    `;
+    
+    // Open the user's email client with pre-filled details
+    window.location.href = `mailto:contact@eazy-chain.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+    
     toast({
       title: "Vessel Selected",
       description: `You've selected ${vessel.name}. Complete your booking details.`,
