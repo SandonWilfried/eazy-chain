@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -26,6 +27,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 
+// Form schema for validation
 const formSchema = z.object({
   fullName: z.string().min(2, {
     message: "Full name must be at least 2 characters.",
@@ -70,6 +72,7 @@ const DroneServiceForm = ({ onClose }: DroneServiceFormProps) => {
   const { toast } = useToast();
   const { t } = useLanguage();
   
+  // Initialize the form with default values
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -88,51 +91,23 @@ const DroneServiceForm = ({ onClose }: DroneServiceFormProps) => {
     },
   });
 
+  // Form submission handler
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     
-    try {
-      const emailSubject = `Drone Service Request`;
-      const emailBody = `
-Drone Service Request Details:
-
-Personal Information:
-- Full Name: ${values.fullName}
-- Email: ${values.email}
-- Phone: ${values.phone}
-- Country: ${values.country}
-- City: ${values.city}
-
-Package Information:
-- Package Type: ${values.packageType}
-- Package Weight: ${values.packageWeight}
-- Package Dimensions: ${values.packageDimensions}
-- Pickup Address: ${values.pickupAddress}
-- Delivery Address: ${values.deliveryAddress}
-- Urgent Delivery: ${values.urgentDelivery ? 'Yes' : 'No'}
-
-Additional Information:
-${values.additionalInformation || 'None provided'}
-      `;
-      
-      window.location.href = `mailto:contact@eazy-chain.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-      
-      toast({
-        title: t('bookingSuccess'),
-        description: t('bookingSuccessDesc'),
-      });
-      
-      setIsSubmitting(false);
-      onClose();
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      toast({
-        title: t('errorOccurred'),
-        description: t('pleaseTryAgain'),
-        variant: "destructive",
-      });
-      setIsSubmitting(false);
-    }
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    console.log("Drone service form submitted:", values);
+    
+    // Show success toast
+    toast({
+      title: t('bookingSuccess'),
+      description: t('bookingSuccessDesc'),
+    });
+    
+    setIsSubmitting(false);
+    onClose();
   };
 
   const countries = ["Togo", "Benin", "Côte d'Ivoire", "Senegal"];
@@ -142,6 +117,7 @@ ${values.additionalInformation || 'None provided'}
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 mt-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Personal Information */}
           <div className="space-y-4">
             <h3 className="text-lg font-medium">{t('personalInformation')}</h3>
             
@@ -230,6 +206,7 @@ ${values.additionalInformation || 'None provided'}
             />
           </div>
           
+          {/* Package Information */}
           <div className="space-y-4">
             <h3 className="text-lg font-medium">{t('packageInformation')}</h3>
             

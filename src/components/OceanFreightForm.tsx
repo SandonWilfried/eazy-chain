@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -82,50 +83,13 @@ const OceanFreightForm = ({ onClose }: { onClose: () => void }) => {
   const onSubmit = (data: FormValues) => {
     setIsSubmitting(true);
     
-    try {
-      // Prepare email content
-      const emailSubject = `Ocean Freight Request: ${data.originPort} to ${data.destinationPort}`;
-      const emailBody = `
-Ocean Freight Request Details:
-
-Container Details:
-- Container Type: ${data.containerType}
-- Container Size: ${data.containerSize}
-- Container Quantity: ${data.containerQuantity}
-- Cargo Description: ${data.cargoDescription}
-- Total Weight (kg): ${data.weight}
-
-Route Information:
-- Origin Port: ${data.originPort}
-- Destination Port: ${data.destinationPort}
-- Pickup Address: ${data.pickupAddress}
-- Delivery Address: ${data.deliveryAddress}
-- Requested Shipping Date: ${format(data.requestedShippingDate, 'PPP')}
-
-Contact Information:
-- Name: ${data.contactName}
-- Email: ${data.contactEmail}
-- Phone: ${data.contactPhone}
-
-Additional Instructions:
-${data.additionalInstructions || 'None provided'}
-      `;
-      
-      // Open email client
-      window.location.href = `mailto:contact@eazy-chain.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-      
-      // Simulate API call for UI feedback
-      setTimeout(() => {
-        setIsSubmitting(false);
-        setBookingReference(`OCF-${Math.floor(Math.random() * 1000000)}`);
-        toast.success("Ocean freight request submitted successfully!");
-        console.log("Form data:", data);
-      }, 1500);
-    } catch (error) {
-      console.error("Error submitting form:", error);
+    // Simulate API call
+    setTimeout(() => {
       setIsSubmitting(false);
-      toast.error("An error occurred. Please try again.");
-    }
+      setBookingReference(`OCF-${Math.floor(Math.random() * 1000000)}`);
+      toast.success("Ocean freight request submitted successfully!");
+      console.log("Form data:", data);
+    }, 1500);
   };
 
   return (

@@ -1,3 +1,4 @@
+
 import { Box, Briefcase, MessageSquarePlus, Ship, Phone, Mail, MapPin, ExternalLink, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -38,20 +39,8 @@ const ContactSection = () => {
 
   const onSubmit = (data: ApplicationFormValues) => {
     console.log("Application submitted:", data);
-    
-    // Prepare email content
-    const emailSubject = `Job Application: ${data.position}`;
-    const emailBody = `
-Name: ${data.name}
-Email: ${data.email}
-Position: ${data.position}
-Message: ${data.message}
-
-Note: CV and cover letter files need to be sent separately.
-  `;
-    
-    // Open email client with prefilled information
-    window.location.href = `mailto:contact@eazy-chain.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+    // In a real application, you would handle file uploads here
+    // and send the data to your backend
 
     toast.success(t('bookingSuccess'));
     setShowApplicationForm(false);

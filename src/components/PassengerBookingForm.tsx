@@ -71,40 +71,18 @@ export default function PassengerBookingForm({ roomId }: PassengerBookingFormPro
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
     
-    try {
-      // Prepare email content
-      const emailSubject = `Passenger Booking Request: ${data.roomType}`;
-      const emailBody = `
-Booking Details:
-- First Name: ${data.firstName}
-- Last Name: ${data.lastName}
-- Email: ${data.email}
-- Phone: ${data.phone}
-- Room Type: ${data.roomType}
-- Number of Passengers: ${data.passengers}
-- Departure Date: ${format(data.departureDate, 'PPP')}
-- Special Requests: ${data.specialRequests || 'None'}
-      `;
-      
-      // Open email client
-      window.location.href = `mailto:contact@eazy-chain.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-      
-      toast({
-        title: t('bookingSuccess'),
-        description: t('bookingSuccessDesc'),
-      });
-      
-      form.reset();
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      toast({
-        title: t('errorOccurred'),
-        description: t('pleaseTryAgain'),
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    console.log("Booking form submitted:", data);
+    
+    toast({
+      title: t('bookingSuccess'),
+      description: t('bookingSuccessDesc'),
+    });
+    
+    form.reset();
+    setIsSubmitting(false);
   };
 
   return (
