@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 type Language = 'en' | 'fr' | 'es';
@@ -601,7 +602,7 @@ const translations = {
     smallPackage: 'Paquete Pequeño',
     mediumPackage: 'Paquete Mediano',
     fragileItems: 'Artículos Frágiles',
-    medicalSupplies: 'Fornitures Médicas',
+    medicalSupplies: 'Suministros Médicos',
     
     // Common
     back: 'Atrás',
