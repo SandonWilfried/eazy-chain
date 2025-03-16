@@ -138,10 +138,10 @@ const ContactSection = () => {
                       href={whatsAppUrl1}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-1 text-muted-foreground hover:text-green-600"
+                      className="flex items-center justify-center gap-1 text-green-600 hover:text-green-700 mt-1"
                     >
                       <Smartphone className="w-4 h-4" />
-                      <span className="text-sm">WhatsApp</span>
+                      <span className="text-sm font-medium">WhatsApp</span>
                     </a>
                   </div>
                   
@@ -156,10 +156,10 @@ const ContactSection = () => {
                       href={whatsAppUrl2}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-1 text-muted-foreground hover:text-green-600"
+                      className="flex items-center justify-center gap-1 text-green-600 hover:text-green-700 mt-1"
                     >
                       <Smartphone className="w-4 h-4" />
-                      <span className="text-sm">WhatsApp</span>
+                      <span className="text-sm font-medium">WhatsApp</span>
                     </a>
                   </div>
                 </div>
