@@ -217,6 +217,15 @@ const translations = {
     tellUsAboutYourself: 'Tell us about yourself and why you\'re interested in this position',
     cvResume: 'CV/Resume',
     coverLetter: 'Cover Letter',
+    message: 'Message',
+    fullName: 'Full Name',
+    address: 'Address',
+    iWouldLikeTo: 'I would like to',
+    shipMyCargo: 'Ship my cargo',
+    bookCabin: 'Book a cabin',
+    applyAtEazyChain: 'Apply at Eazy Chain',
+    discussAnotherTopic: 'Discuss another topic',
+    whatWouldYouLikeToDiscuss: 'What would you like to discuss?',
     
     // ShipmentCard
     trackingNumber: 'Tracking #',
@@ -436,6 +445,15 @@ const translations = {
     tellUsAboutYourself: 'Parlez-nous de vous et de votre intérêt pour ce poste',
     cvResume: 'CV',
     coverLetter: 'Lettre de Motivation',
+    message: 'Message',
+    fullName: 'Nom Complet',
+    address: 'Adresse',
+    iWouldLikeTo: 'Je voudrais',
+    shipMyCargo: 'Expédier ma cargaison',
+    bookCabin: 'Réserver une cabine',
+    applyAtEazyChain: 'Postuler chez Eazy Chain',
+    discussAnotherTopic: 'Discuter d\'un autre sujet',
+    whatWouldYouLikeToDiscuss: 'Que voulez-vous discuter?',
     
     // ShipmentCard
     trackingNumber: 'Numéro de suivi',
@@ -655,6 +673,15 @@ const translations = {
     tellUsAboutYourself: 'Cuéntenos sobre usted y por qué está interesado en esta posición',
     cvResume: 'CV/Currículum',
     coverLetter: 'Carta de Presentación',
+    message: 'Mensaje',
+    fullName: 'Nombre Completo',
+    address: 'Dirección',
+    iWouldLikeTo: 'Me gustaría',
+    shipMyCargo: 'Enviar mi carga',
+    bookCabin: 'Reservar un camarote',
+    applyAtEazyChain: 'Aplicar en Eazy Chain',
+    discussAnotherTopic: 'Discutir otro tema',
+    whatWouldYouLikeToDiscuss: '¿Qué le gustaría discutir?',
     
     // ShipmentCard
     trackingNumber: 'Número de seguimiento',
