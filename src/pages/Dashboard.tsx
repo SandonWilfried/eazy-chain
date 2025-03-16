@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Navbar from "@/components/Navbar";
+import NavbarWithAuth from "@/components/NavbarWithAuth";
 import ShipmentCard, { ShipmentProps } from "@/components/ShipmentCard";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import BillOfLadingModal from "@/components/BillOfLadingModal";
+import { useAuth } from "@/contexts/AuthContext";
 
 // Mock shipment data
 const mockShipments: ShipmentProps[] = [
@@ -74,6 +75,7 @@ const Dashboard = () => {
   const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
   const [selectedShipment, setSelectedShipment] = useState<ShipmentProps | null>(null);
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const filteredShipments = shipments.filter((shipment) => {
     const matchesSearch = shipment.trackingNumber.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -98,7 +100,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-pattern">
-      <Navbar />
+      <NavbarWithAuth />
       
       <main className="flex-1 pt-20">
         <div className="container mx-auto px-4 py-8">
@@ -106,7 +108,7 @@ const Dashboard = () => {
             <div>
               <h1 className="text-3xl font-bold mb-2">Dashboard</h1>
               <p className="text-muted-foreground">
-                Manage your shipments and payments
+                Welcome, {user?.name}! Manage your shipments and payments
               </p>
             </div>
             <div className="mt-4 md:mt-0">
