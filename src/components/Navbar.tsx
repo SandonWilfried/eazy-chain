@@ -36,7 +36,6 @@ const Navbar = () => {
     { title: t('book'), path: "/booking" },
     { title: t('passengers'), path: "/passengers" },
     { title: t('track'), path: "/tracking" },
-    { title: t('dashboard'), path: "/dashboard" },
     { title: t('otherServices'), path: "/services" }
   ];
 
