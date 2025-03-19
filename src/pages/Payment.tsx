@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Elements } from "@stripe/react-stripe-js";
@@ -7,6 +8,7 @@ import PaymentForm from "@/components/PaymentForm";
 import BillOfLadingModal from "@/components/BillOfLadingModal";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // Initialize Stripe with your public key
 // Replace with your actual Stripe publishable key when in production
@@ -32,6 +34,7 @@ const Payment = () => {
   const [showBillOfLading, setShowBillOfLading] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   useEffect(() => {
     const shipmentId = new URLSearchParams(location.search).get("id");
@@ -76,25 +79,25 @@ const Payment = () => {
                 onClick={() => navigate(-1)}
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back
+                {t('back')}
               </Button>
-              <h1 className="text-3xl font-bold mb-2">Secure Payment</h1>
+              <h1 className="text-3xl font-bold mb-2">{t('securePayment')}</h1>
               <p className="text-muted-foreground">
-                Complete your payment details to finalize your shipping transaction
+                {t('paymentDesc')}
               </p>
               
-              {/* Payment amount summary - changed from purple to red */}
+              {/* Payment amount summary */}
               {shipmentData && (
                 <div className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
                   <div className="flex justify-between items-center">
                     <div>
-                      <p className="text-sm text-red-700 dark:text-red-300">Shipment Total</p>
+                      <p className="text-sm text-red-700 dark:text-red-300">{t('shipmentTotal')}</p>
                       <p className="text-2xl font-bold text-red-800 dark:text-red-200">
                         ${shipmentData.amount.toLocaleString()}
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm text-red-700 dark:text-red-300">Shipment ID</p>
+                      <p className="text-sm text-red-700 dark:text-red-300">{t('shipmentId')}</p>
                       <p className="font-medium text-red-800 dark:text-red-200">{shipmentData.id}</p>
                     </div>
                   </div>
@@ -104,7 +107,7 @@ const Payment = () => {
             
             {loading ? (
               <div className="glass-panel p-8 text-center animate-pulse">
-                <p className="text-lg">Loading payment information...</p>
+                <p className="text-lg">{t('loadingPayment')}</p>
               </div>
             ) : (
               <div className="animate-fade-in">
@@ -138,7 +141,7 @@ const Payment = () => {
       {/* Footer */}
       <footer className="bg-background border-t py-8">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} CargoCaravan. All rights reserved.
+          © {new Date().getFullYear()} Eazy Chain. {t('allRightsReserved')}
         </div>
       </footer>
     </div>

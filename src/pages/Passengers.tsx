@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import RoomCard, { RoomProps } from "@/components/RoomCard";
@@ -6,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Ship, Users, ShipWheel, User } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // Room data with images - updated to only include premium cabins
 const availableRooms: RoomProps[] = [
@@ -65,25 +67,6 @@ const availableRooms: RoomProps[] = [
   }
 ];
 
-// Vessel features
-const vesselFeatures = [
-  {
-    icon: <ShipWheel className="h-12 w-12 text-primary" />,
-    title: "Eco-Friendly Travel",
-    description: "Our vessel is powered by wind and solar energy, making your journey environmentally responsible."
-  },
-  {
-    icon: <Users className="h-12 w-12 text-primary" />,
-    title: "Limited Capacity",
-    description: "With only 6 cabins for 12 passengers, enjoy an exclusive and personalized sailing experience."
-  },
-  {
-    icon: <Ship className="h-12 w-12 text-primary" />,
-    title: "10-Day Voyage",
-    description: "Experience a tranquil 10-day journey between Lomé, Togo and Praia, Cape Verde with coastal stops."
-  }
-];
-
 // Additional room images to showcase
 const additionalRoomImages = [
   {
@@ -121,11 +104,31 @@ const additionalRoomImages = [
 const Passengers = () => {
   const [activeTab, setActiveTab] = useState("rooms");
   const [showCustomForm, setShowCustomForm] = useState(false);
+  const { t } = useLanguage();
 
   const handleCustomBookingClick = () => {
     setShowCustomForm(true);
     setActiveTab("custom");
   };
+
+  // Vessel features with translations
+  const vesselFeatures = [
+    {
+      icon: <ShipWheel className="h-12 w-12 text-primary" />,
+      title: t('ecoFriendlyTravel'),
+      description: t('ecoDesc')
+    },
+    {
+      icon: <Users className="h-12 w-12 text-primary" />,
+      title: t('limitedCapacity'),
+      description: t('capacityDesc')
+    },
+    {
+      icon: <Ship className="h-12 w-12 text-primary" />,
+      title: t('tenDayVoyage'),
+      description: t('voyageDesc')
+    }
+  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-pattern">
@@ -136,18 +139,17 @@ const Passengers = () => {
           <div className="max-w-4xl mx-auto">
             <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
               <div>
-                <h1 className="text-3xl font-bold mb-2">Passenger Accommodations</h1>
+                <h1 className="text-3xl font-bold mb-2">{t('passengerAccommodations')}</h1>
                 <p className="text-muted-foreground">
-                  Book your cabin on our sailing vessel for a unique and sustainable ocean voyage
+                  {t('passengerDesc')}
                 </p>
               </div>
             </div>
             
             <div className="glass-panel p-6 mb-8">
-              <h2 className="text-xl font-semibold mb-3">Sailing Voyage Experience</h2>
+              <h2 className="text-xl font-semibold mb-3">{t('sailingVoyageExperience')}</h2>
               <p className="mb-4">
-                Eazy Chain offers passenger accommodations on our cargo sailing vessel. Join us for a unique 10-day voyage between 
-                <span className="font-medium"> Lomé, Togo and Praia, Cape Verde</span>, with stops at beautiful coastal cities along the way.
+                {t('sailingDesc')}
               </p>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
@@ -164,13 +166,13 @@ const Passengers = () => {
               
               <div className="text-center mt-6 mb-2">
                 <p className="text-muted-foreground mb-3">
-                  Can't find what you're looking for? Create a custom booking request.
+                  {t('cantFind')}
                 </p>
                 <Button 
                   onClick={handleCustomBookingClick}
                   className="px-6"
                 >
-                  Create Custom Booking
+                  {t('createCustomBooking')}
                 </Button>
               </div>
             </div>
@@ -184,11 +186,11 @@ const Passengers = () => {
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="rooms" className="text-base py-3">
                   <Ship className="mr-2 h-4 w-4" />
-                  Available Cabins
+                  {t('availableCabins')}
                 </TabsTrigger>
                 <TabsTrigger value="custom" className="text-base py-3">
                   <User className="mr-2 h-4 w-4" />
-                  Custom Booking
+                  {t('customBooking')}
                 </TabsTrigger>
               </TabsList>
               
@@ -201,8 +203,8 @@ const Passengers = () => {
                 
                 {/* Room Image Gallery Section */}
                 <div className="mt-12 mb-8">
-                  <h2 className="text-2xl font-semibold mb-6 text-center">More Cabin Views</h2>
-                  <p className="text-muted-foreground text-center mb-8">Explore more images of our premium cabin accommodations</p>
+                  <h2 className="text-2xl font-semibold mb-6 text-center">{t('moreCabinViews')}</h2>
+                  <p className="text-muted-foreground text-center mb-8">{t('moreCabinDesc')}</p>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {additionalRoomImages.map((image) => (
@@ -226,9 +228,9 @@ const Passengers = () => {
               
               <TabsContent value="custom" className="animate-fade-in">
                 <div className="glass-panel px-4 py-6 md:p-8 mb-8">
-                  <h2 className="text-2xl font-semibold mb-6">Passenger Booking Request</h2>
+                  <h2 className="text-2xl font-semibold mb-6">{t('customBooking')}</h2>
                   <p className="text-muted-foreground mb-6">
-                    Please provide your details below to book your cabin on our sailing vessel.
+                    {t('passengerDesc')}
                   </p>
                   <PassengerBookingForm />
                 </div>
@@ -241,7 +243,7 @@ const Passengers = () => {
       {/* Footer */}
       <footer className="bg-background border-t py-8">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Eazy Chain. All rights reserved.
+          © {new Date().getFullYear()} Eazy Chain. {t('allRightsReserved')}
         </div>
       </footer>
     </div>

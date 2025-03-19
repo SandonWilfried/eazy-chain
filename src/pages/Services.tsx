@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Globe, BarChart, Leaf, Wind, Droplets, ZapOff, Ship, Package, Plane, Truck, CreditCard, Send, Cpu } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -22,6 +23,39 @@ const Services = () => {
   const [courierServiceDialogOpen, setCourierServiceDialogOpen] = useState(false);
   const [droneServiceDialogOpen, setDroneServiceDialogOpen] = useState(false);
   const { t } = useLanguage();
+  
+  const maritimeSolutions = [
+    {
+      icon: <Globe className="h-8 w-8 text-primary" />,
+      titleKey: 'globalTradeConsulting',
+      descriptionKey: 'globalTradeConsultingDesc',
+    },
+    {
+      icon: <BarChart className="h-8 w-8 text-primary" />,
+      titleKey: 'supplyChainAnalytics',
+      descriptionKey: 'supplyChainAnalyticsDesc',
+    },
+    {
+      icon: <Leaf className="h-8 w-8 text-primary" />,
+      titleKey: 'sustainableShipping',
+      descriptionKey: 'sustainableShippingDesc',
+    },
+    {
+      icon: <Wind className="h-8 w-8 text-primary" />,
+      titleKey: 'weatherRoutingServices',
+      descriptionKey: 'weatherRoutingServicesDesc',
+    },
+    {
+      icon: <Droplets className="h-8 w-8 text-primary" />,
+      titleKey: 'ballastWaterManagement',
+      descriptionKey: 'ballastWaterManagementDesc',
+    },
+    {
+      icon: <ZapOff className="h-8 w-8 text-primary" />,
+      titleKey: 'energyEfficiencyConsulting',
+      descriptionKey: 'energyEfficiencyConsultingDesc',
+    },
+  ];
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -153,7 +187,7 @@ const Services = () => {
               </CardContent>
             </Card>
             
-            {/* Drone Services - NEW */}
+            {/* Drone Services */}
             <Card 
               className="transition-all duration-300 hover:shadow-md cursor-pointer"
               onClick={() => setDroneServiceDialogOpen(true)}
@@ -179,95 +213,21 @@ const Services = () => {
         <div className="container mx-auto px-4">
           <h2 className="text-2xl font-bold mb-8 text-center">{t('maritimeSolutions')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Service 1 */}
-            <Card className="transition-all duration-300 hover:shadow-md">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                  <Globe className="h-8 w-8 text-primary" />
-                </div>
-                <CardTitle>Global Trade Consulting</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  Expert advice on international trade regulations, customs, and compliance to help your business navigate global markets.
-                </CardDescription>
-              </CardContent>
-            </Card>
-            
-            {/* Service 2 */}
-            <Card className="transition-all duration-300 hover:shadow-md">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                  <BarChart className="h-8 w-8 text-primary" />
-                </div>
-                <CardTitle>Supply Chain Analytics</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  Data-driven insights to optimize your supply chain operations and reduce costs while improving efficiency.
-                </CardDescription>
-              </CardContent>
-            </Card>
-            
-            {/* Service 3 */}
-            <Card className="transition-all duration-300 hover:shadow-md">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                  <Leaf className="h-8 w-8 text-primary" />
-                </div>
-                <CardTitle>Sustainable Shipping</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  Eco-friendly shipping options to reduce your carbon footprint and meet environmental compliance standards.
-                </CardDescription>
-              </CardContent>
-            </Card>
-            
-            {/* Service 4 */}
-            <Card className="transition-all duration-300 hover:shadow-md">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                  <Wind className="h-8 w-8 text-primary" />
-                </div>
-                <CardTitle>Weather Routing Services</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  Optimized route planning based on weather forecasts to ensure safer voyages and reduced fuel consumption.
-                </CardDescription>
-              </CardContent>
-            </Card>
-            
-            {/* Service 5 */}
-            <Card className="transition-all duration-300 hover:shadow-md">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                  <Droplets className="h-8 w-8 text-primary" />
-                </div>
-                <CardTitle>Ballast Water Management</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  Comprehensive solutions for ballast water treatment systems to comply with international regulations.
-                </CardDescription>
-              </CardContent>
-            </Card>
-            
-            {/* Service 6 */}
-            <Card className="transition-all duration-300 hover:shadow-md">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                  <ZapOff className="h-8 w-8 text-primary" />
-                </div>
-                <CardTitle>Energy Efficiency Consulting</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  Expert advice on reducing energy consumption and emissions for your vessel operations.
-                </CardDescription>
-              </CardContent>
-            </Card>
+            {maritimeSolutions.map((service, index) => (
+              <Card key={index} className="transition-all duration-300 hover:shadow-md">
+                <CardHeader className="text-center">
+                  <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                    {service.icon}
+                  </div>
+                  <CardTitle>{t(service.titleKey)}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-center">
+                    {t(service.descriptionKey)}
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
@@ -276,7 +236,7 @@ const Services = () => {
       <Dialog open={customsDialogOpen} onOpenChange={setCustomsDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-2xl">Customs Clearance Request</DialogTitle>
+            <DialogTitle className="text-2xl">{t('customsClearance')}</DialogTitle>
           </DialogHeader>
           <CustomsClearanceForm onClose={() => setCustomsDialogOpen(false)} />
         </DialogContent>
@@ -286,7 +246,7 @@ const Services = () => {
       <Dialog open={airFreightDialogOpen} onOpenChange={setAirFreightDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-2xl">Air Freight Service Request</DialogTitle>
+            <DialogTitle className="text-2xl">{t('airFreight')}</DialogTitle>
           </DialogHeader>
           <AirFreightForm onClose={() => setAirFreightDialogOpen(false)} />
         </DialogContent>
@@ -296,7 +256,7 @@ const Services = () => {
       <Dialog open={airConsolidationDialogOpen} onOpenChange={setAirConsolidationDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-2xl">Air Consolidation Service Request</DialogTitle>
+            <DialogTitle className="text-2xl">{t('airConsolidation')}</DialogTitle>
           </DialogHeader>
           <AirConsolidationForm onClose={() => setAirConsolidationDialogOpen(false)} />
         </DialogContent>
@@ -306,7 +266,7 @@ const Services = () => {
       <Dialog open={oceanFreightDialogOpen} onOpenChange={setOceanFreightDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-2xl">Ocean Freight Service Request</DialogTitle>
+            <DialogTitle className="text-2xl">{t('oceanFreight')}</DialogTitle>
           </DialogHeader>
           <OceanFreightForm onClose={() => setOceanFreightDialogOpen(false)} />
         </DialogContent>
@@ -316,7 +276,7 @@ const Services = () => {
       <Dialog open={oceanConsolidationDialogOpen} onOpenChange={setOceanConsolidationDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-2xl">Ocean Consolidation Service Request</DialogTitle>
+            <DialogTitle className="text-2xl">{t('oceanConsolidation')}</DialogTitle>
           </DialogHeader>
           <OceanConsolidationForm onClose={() => setOceanConsolidationDialogOpen(false)} />
         </DialogContent>
@@ -326,13 +286,13 @@ const Services = () => {
       <Dialog open={courierServiceDialogOpen} onOpenChange={setCourierServiceDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-2xl">Courier Service Request</DialogTitle>
+            <DialogTitle className="text-2xl">{t('courierServices')}</DialogTitle>
           </DialogHeader>
           <CourierServiceForm onClose={() => setCourierServiceDialogOpen(false)} />
         </DialogContent>
       </Dialog>
       
-      {/* Drone Service Dialog - NEW */}
+      {/* Drone Service Dialog */}
       <Dialog open={droneServiceDialogOpen} onOpenChange={setDroneServiceDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
@@ -345,13 +305,13 @@ const Services = () => {
       {/* CTA Section */}
       <section className="bg-primary text-primary-foreground py-16">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6">Ready to Get Started?</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-6">{t('readyToGetStarted')}</h2>
           <p className="text-lg mb-8 max-w-2xl mx-auto opacity-90">
-            Contact our team today to discuss how we can help optimize your maritime operations.
+            {t('contactOurTeam')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/booking" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary-foreground text-primary hover:bg-primary-foreground/90 h-10 px-4 py-2">
-              Book a Consultation
+              {t('bookConsultation')}
             </Link>
           </div>
         </div>
@@ -366,7 +326,7 @@ const Services = () => {
               <span className="font-semibold text-xl">Eazy Chain</span>
             </div>
             <div className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} Eazy Chain. All rights reserved.
+              © {new Date().getFullYear()} Eazy Chain. {t('allRightsReserved')}
             </div>
           </div>
         </div>

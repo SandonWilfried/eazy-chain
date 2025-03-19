@@ -235,7 +235,26 @@ const translations = {
     paid: 'Paid',
     paymentPending: 'Payment Pending',
     paymentOverdue: 'Payment Overdue',
-    cancelled: 'Cancelled'
+    cancelled: 'Cancelled',
+    
+    // Maritime Solutions
+    globalTradeConsulting: 'Global Trade Consulting',
+    globalTradeConsultingDesc: 'Expert advice on international trade regulations, customs, and compliance to help your business navigate global markets.',
+    supplyChainAnalytics: 'Supply Chain Analytics',
+    supplyChainAnalyticsDesc: 'Data-driven insights to optimize your supply chain operations and reduce costs while improving efficiency.',
+    sustainableShipping: 'Sustainable Shipping',
+    sustainableShippingDesc: 'Eco-friendly shipping options to reduce your carbon footprint and meet environmental compliance standards.',
+    weatherRoutingServices: 'Weather Routing Services',
+    weatherRoutingServicesDesc: 'Optimized route planning based on weather forecasts to ensure safer voyages and reduced fuel consumption.',
+    ballastWaterManagement: 'Ballast Water Management',
+    ballastWaterManagementDesc: 'Comprehensive solutions for ballast water treatment systems to comply with international regulations.',
+    energyEfficiencyConsulting: 'Energy Efficiency Consulting',
+    energyEfficiencyConsultingDesc: 'Expert advice on reducing energy consumption and emissions for your vessel operations.',
+    
+    // CTA Section
+    readyToGetStarted: 'Ready to Get Started?',
+    contactOurTeam: 'Contact our team today to discuss how we can help optimize your maritime operations.',
+    bookConsultation: 'Book a Consultation'
   },
   fr: {
     // Navbar
@@ -462,7 +481,26 @@ const translations = {
     paid: 'Payé',
     paymentPending: 'Paiement en attente',
     paymentOverdue: 'Paiement en retard',
-    cancelled: 'Annulé'
+    cancelled: 'Annulé',
+    
+    // Maritime Solutions
+    globalTradeConsulting: 'Conseil en Commerce International',
+    globalTradeConsultingDesc: 'Conseils d\'experts sur les réglementations du commerce international, les douanes et la conformité pour aider votre entreprise à naviguer sur les marchés mondiaux.',
+    supplyChainAnalytics: 'Analyse de la Chaîne d\'Approvisionnement',
+    supplyChainAnalyticsDesc: 'Insights basés sur les données pour optimiser vos opérations de chaîne d\'approvisionnement et réduire les coûts tout en améliorant l\'efficacité.',
+    sustainableShipping: 'Expédition Durable',
+    sustainableShippingDesc: 'Options d\'expédition écologiques pour réduire votre empreinte carbone et respecter les normes de conformité environnementale.',
+    weatherRoutingServices: 'Services de Routage Météorologique',
+    weatherRoutingServicesDesc: 'Planification de route optimisée basée sur les prévisions météorologiques pour assurer des voyages plus sûrs et réduire la consommation de carburant.',
+    ballastWaterManagement: 'Gestion des Eaux de Ballast',
+    ballastWaterManagementDesc: 'Solutions complètes pour les systèmes de traitement des eaux de ballast pour se conformer aux réglementations internationales.',
+    energyEfficiencyConsulting: 'Conseil en Efficacité Énergétique',
+    energyEfficiencyConsultingDesc: 'Conseils d\'experts sur la réduction de la consommation d\'énergie et des émissions pour vos opérations de navires.',
+    
+    // CTA Section
+    readyToGetStarted: 'Prêt à Commencer?',
+    contactOurTeam: 'Contactez notre équipe aujourd\'hui pour discuter de la façon dont nous pouvons vous aider à optimiser vos opérations maritimes.',
+    bookConsultation: 'Réserver une Consultation'
   },
   es: {
     // Navbar
@@ -689,7 +727,26 @@ const translations = {
     paid: 'Pagado',
     paymentPending: 'Pago Pendiente',
     paymentOverdue: 'Pago Atrasado',
-    cancelled: 'Cancelado'
+    cancelled: 'Cancelado',
+    
+    // Maritime Solutions
+    globalTradeConsulting: 'Consultoría de Comercio Global',
+    globalTradeConsultingDesc: 'Asesoramiento experto sobre regulaciones comerciales internacionales, aduanas y cumplimiento para ayudar a su negocio a navegar en mercados globales.',
+    supplyChainAnalytics: 'Análisis de Cadena de Suministro',
+    supplyChainAnalyticsDesc: 'Información basada en datos para optimizar sus operaciones de cadena de suministro y reducir costos mientras mejora la eficiencia.',
+    sustainableShipping: 'Envío Sostenible',
+    sustainableShippingDesc: 'Opciones de envío ecológicas para reducir su huella de carbono y cumplir con los estándares de cumplimiento ambiental.',
+    weatherRoutingServices: 'Servicios de Enrutamiento Meteorológico',
+    weatherRoutingServicesDesc: 'Planificación de ruta optimizada basada en pronósticos meteorológicos para garantizar viajes más seguros y reducir el consumo de combustible.',
+    ballastWaterManagement: 'Gestión de Agua de Lastre',
+    ballastWaterManagementDesc: 'Soluciones integrales para sistemas de tratamiento de agua de lastre para cumplir con las regulaciones internacionales.',
+    energyEfficiencyConsulting: 'Consultoría de Eficiencia Energética',
+    energyEfficiencyConsultingDesc: 'Asesoramiento experto sobre reducción de consumo de energía y emisiones para sus operaciones de embarcaciones.',
+    
+    // CTA Section
+    readyToGetStarted: '¿Listo para Comenzar?',
+    contactOurTeam: 'Contacte a nuestro equipo hoy para discutir cómo podemos ayudar a optimizar sus operaciones marítimas.',
+    bookConsultation: 'Reservar una Consulta'
   },
 };
 
@@ -724,4 +781,3 @@ export const useLanguage = (): LanguageContextType => {
   }
   return context;
 };
-
