@@ -10,14 +10,25 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 // Room data with images - updated to only include premium cabins
-const availableRooms: RoomProps[] = [
+const getRoomData = (t: (key: string) => string) => [
   {
     id: "premium-1",
     name: "Timbuktu",
     capacity: 2,
     available: 2,
     price: 100,
-    amenities: ["Luxurious bathroom", "King-size bed", "Panoramic view", "Sitting area", "Room service", "Premium amenities", "Free WiFi", "Breakfast included", "Lunch included", "Dinner included"],
+    amenities: [
+      t('luxuriousBathroom'), 
+      t('kingSizeBed'), 
+      t('panoramicView'), 
+      t('sittingArea'), 
+      t('roomService'), 
+      t('premiumAmenities'), 
+      t('freeWiFi'), 
+      t('breakfastIncluded'), 
+      t('lunchIncluded'), 
+      t('dinnerIncluded')
+    ],
     imageUrl: "/lovable-uploads/e3fd6dab-0bc4-469c-9c15-f714d7767334.png"
   },
   {
@@ -26,7 +37,18 @@ const availableRooms: RoomProps[] = [
     capacity: 2,
     available: 2,
     price: 100,
-    amenities: ["Luxurious bathroom", "King-size bed", "Panoramic view", "Sitting area", "Room service", "Premium amenities", "Free WiFi", "Breakfast included", "Lunch included", "Dinner included"],
+    amenities: [
+      t('luxuriousBathroom'), 
+      t('kingSizeBed'), 
+      t('panoramicView'), 
+      t('sittingArea'), 
+      t('roomService'), 
+      t('premiumAmenities'), 
+      t('freeWiFi'), 
+      t('breakfastIncluded'), 
+      t('lunchIncluded'), 
+      t('dinnerIncluded')
+    ],
     imageUrl: "/lovable-uploads/0de33748-89e1-424d-8fc8-67b808131ea3.png"
   },
   {
@@ -35,7 +57,18 @@ const availableRooms: RoomProps[] = [
     capacity: 2,
     available: 2,
     price: 100,
-    amenities: ["Luxurious bathroom", "King-size bed", "Panoramic view", "Sitting area", "Room service", "Premium amenities", "Free WiFi", "Breakfast included", "Lunch included", "Dinner included"],
+    amenities: [
+      t('luxuriousBathroom'), 
+      t('kingSizeBed'), 
+      t('panoramicView'), 
+      t('sittingArea'), 
+      t('roomService'), 
+      t('premiumAmenities'), 
+      t('freeWiFi'), 
+      t('breakfastIncluded'), 
+      t('lunchIncluded'), 
+      t('dinnerIncluded')
+    ],
     imageUrl: "/lovable-uploads/e3fd6dab-0bc4-469c-9c15-f714d7767334.png"
   },
   {
@@ -44,7 +77,18 @@ const availableRooms: RoomProps[] = [
     capacity: 2,
     available: 2,
     price: 100,
-    amenities: ["Luxurious bathroom", "King-size bed", "Panoramic view", "Sitting area", "Room service", "Premium amenities", "Free WiFi", "Breakfast included", "Lunch included", "Dinner included"],
+    amenities: [
+      t('luxuriousBathroom'), 
+      t('kingSizeBed'), 
+      t('panoramicView'), 
+      t('sittingArea'), 
+      t('roomService'), 
+      t('premiumAmenities'), 
+      t('freeWiFi'), 
+      t('breakfastIncluded'), 
+      t('lunchIncluded'), 
+      t('dinnerIncluded')
+    ],
     imageUrl: "/lovable-uploads/0de33748-89e1-424d-8fc8-67b808131ea3.png"
   },
   {
@@ -53,7 +97,18 @@ const availableRooms: RoomProps[] = [
     capacity: 2,
     available: 2,
     price: 100,
-    amenities: ["Luxurious bathroom", "King-size bed", "Panoramic view", "Sitting area", "Room service", "Premium amenities", "Free WiFi", "Breakfast included", "Lunch included", "Dinner included"],
+    amenities: [
+      t('luxuriousBathroom'), 
+      t('kingSizeBed'), 
+      t('panoramicView'), 
+      t('sittingArea'), 
+      t('roomService'), 
+      t('premiumAmenities'), 
+      t('freeWiFi'), 
+      t('breakfastIncluded'), 
+      t('lunchIncluded'), 
+      t('dinnerIncluded')
+    ],
     imageUrl: "/lovable-uploads/e3fd6dab-0bc4-469c-9c15-f714d7767334.png"
   },
   {
@@ -62,41 +117,52 @@ const availableRooms: RoomProps[] = [
     capacity: 2,
     available: 2,
     price: 100,
-    amenities: ["Luxurious bathroom", "King-size bed", "Panoramic view", "Sitting area", "Room service", "Premium amenities", "Free WiFi", "Breakfast included", "Lunch included", "Dinner included"],
+    amenities: [
+      t('luxuriousBathroom'), 
+      t('kingSizeBed'), 
+      t('panoramicView'), 
+      t('sittingArea'), 
+      t('roomService'), 
+      t('premiumAmenities'), 
+      t('freeWiFi'), 
+      t('breakfastIncluded'), 
+      t('lunchIncluded'), 
+      t('dinnerIncluded')
+    ],
     imageUrl: "/lovable-uploads/0de33748-89e1-424d-8fc8-67b808131ea3.png"
   }
 ];
 
-// Additional room images to showcase
-const additionalRoomImages = [
+// Get additional room images with translations
+const getAdditionalRoomImages = (t: (key: string) => string) => [
   {
     id: 1,
-    title: "Dining Hall",
-    description: "Enjoy meals with stunning ocean views in our spacious dining area",
+    title: t('diningHall'),
+    description: t('diningHallDesc'),
     imageUrl: "/lovable-uploads/446a165f-ea4b-4987-8046-9239e77b97d3.png"
   },
   {
     id: 2,
-    title: "Common Lounge",
-    description: "Relax in our comfortable lounge areas with panoramic windows",
+    title: t('commonLounge'),
+    description: t('commonLoungeDesc'),
     imageUrl: "/lovable-uploads/442bc872-147f-4c60-8391-775238e3487c.png"
   },
   {
     id: 3,
-    title: "Social Space",
-    description: "Spacious social areas for relaxing and connecting with fellow travelers",
+    title: t('socialSpace'),
+    description: t('socialSpaceDesc'),
     imageUrl: "/lovable-uploads/da599504-e72a-4f32-a42d-b7428e612fbc.png"
   },
   {
     id: 4,
-    title: "Premium Lounge",
-    description: "Modern lounge spaces with elegant design and ocean views",
+    title: t('premiumLounge'),
+    description: t('premiumLoungeDesc'),
     imageUrl: "/lovable-uploads/f078f7e9-23fe-429b-9be4-96e4a7a5cf23.png"
   },
   {
     id: 5,
-    title: "Reading Corner",
-    description: "Cozy seating areas perfect for reading or quiet conversation",
+    title: t('readingCorner'),
+    description: t('readingCornerDesc'),
     imageUrl: "/lovable-uploads/94de7d15-c25c-4cae-8c72-1b856127f12c.png"
   }
 ];
@@ -104,7 +170,11 @@ const additionalRoomImages = [
 const Passengers = () => {
   const [activeTab, setActiveTab] = useState("rooms");
   const [showCustomForm, setShowCustomForm] = useState(false);
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  
+  // Get translated data
+  const availableRooms = getRoomData(t);
+  const additionalRoomImages = getAdditionalRoomImages(t);
 
   const handleCustomBookingClick = () => {
     setShowCustomForm(true);

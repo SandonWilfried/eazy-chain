@@ -110,6 +110,30 @@ const translations = {
     moreCabinViews: 'More Cabin Views',
     moreCabinDesc: 'Explore more images of our premium cabin accommodations',
     
+    // Passenger Amenities
+    luxuriousBathroom: 'Luxurious bathroom',
+    kingSizeBed: 'King-size bed',
+    panoramicView: 'Panoramic view',
+    sittingArea: 'Sitting area',
+    roomService: 'Room service',
+    premiumAmenities: 'Premium amenities',
+    freeWiFi: 'Free WiFi',
+    breakfastIncluded: 'Breakfast included',
+    lunchIncluded: 'Lunch included',
+    dinnerIncluded: 'Dinner included',
+    
+    // Cabin View Titles
+    diningHall: 'Dining Hall',
+    diningHallDesc: 'Enjoy meals with stunning ocean views in our spacious dining area',
+    commonLounge: 'Common Lounge',
+    commonLoungeDesc: 'Relax in our comfortable lounge areas with panoramic windows',
+    socialSpace: 'Social Space',
+    socialSpaceDesc: 'Spacious social areas for relaxing and connecting with fellow travelers',
+    premiumLounge: 'Premium Lounge',
+    premiumLoungeDesc: 'Modern lounge spaces with elegant design and ocean views',
+    readingCorner: 'Reading Corner',
+    readingCornerDesc: 'Cozy seating areas perfect for reading or quiet conversation',
+    
     // Payment
     securePayment: 'Secure Payment',
     paymentDesc: 'Complete your payment details to finalize your shipping transaction',
@@ -356,6 +380,30 @@ const translations = {
     moreCabinViews: 'Plus de Vues de Cabines',
     moreCabinDesc: 'Explorez plus d\'images de nos hébergements en cabines premium',
     
+    // Passenger Amenities
+    luxuriousBathroom: 'Salle de bain luxueuse',
+    kingSizeBed: 'Lit king-size',
+    panoramicView: 'Vue panoramique',
+    sittingArea: 'Coin salon',
+    roomService: 'Service de chambre',
+    premiumAmenities: 'Équipements premium',
+    freeWiFi: 'WiFi gratuit',
+    breakfastIncluded: 'Petit-déjeuner inclus',
+    lunchIncluded: 'Déjeuner inclus',
+    dinnerIncluded: 'Dîner inclus',
+    
+    // Cabin View Titles
+    diningHall: 'Salle à Manger',
+    diningHallDesc: 'Profitez de repas avec une vue imprenable sur l\'océan dans notre spacieuse salle à manger',
+    commonLounge: 'Salon Commun',
+    commonLoungeDesc: 'Détendez-vous dans nos confortables espaces salon avec fenêtres panoramiques',
+    socialSpace: 'Espace Social',
+    socialSpaceDesc: 'Espaces sociaux spacieux pour se détendre et se connecter avec d\'autres voyageurs',
+    premiumLounge: 'Salon Premium',
+    premiumLoungeDesc: 'Espaces salon modernes avec design élégant et vues sur l\'océan',
+    readingCorner: 'Coin Lecture',
+    readingCornerDesc: 'Coins salon confortables parfaits pour la lecture ou une conversation tranquille',
+    
     // Payment
     securePayment: 'Paiement Sécurisé',
     paymentDesc: 'Complétez vos détails de paiement pour finaliser votre transaction d\'expédition',
@@ -601,6 +649,30 @@ const translations = {
     customBooking: 'Reserva Personalizada',
     moreCabinViews: 'Más Vistas de Camarotes',
     moreCabinDesc: 'Explore más imágenes de nuestros alojamientos en camarotes premium',
+    
+    // Passenger Amenities
+    luxuriousBathroom: 'Baño lujoso',
+    kingSizeBed: 'Cama king-size',
+    panoramicView: 'Vista panorámica',
+    sittingArea: 'Zona de estar',
+    roomService: 'Servicio de habitaciones',
+    premiumAmenities: 'Servicios premium',
+    freeWiFi: 'WiFi gratuito',
+    breakfastIncluded: 'Desayuno incluido',
+    lunchIncluded: 'Almuerzo incluido',
+    dinnerIncluded: 'Cena incluida',
+    
+    // Cabin View Titles
+    diningHall: 'Comedor',
+    diningHallDesc: 'Disfrute de comidas con impresionantes vistas al océano en nuestro espacioso comedor',
+    commonLounge: 'Salón Común',
+    commonLoungeDesc: 'Relájese en nuestras cómodas áreas de salón con ventanas panorámicas',
+    socialSpace: 'Espacio Social',
+    socialSpaceDesc: 'Amplios espacios sociales para relajarse y conectar con otros viajeros',
+    premiumLounge: 'Salón Premium',
+    premiumLoungeDesc: 'Espacios de salón modernos con diseño elegante y vistas al océano',
+    readingCorner: 'Rincón de Lectura',
+    readingCornerDesc: 'Acogedoras áreas de asiento perfectas para leer o mantener una conversación tranquila',
     
     // Payment
     securePayment: 'Pago Seguro',
