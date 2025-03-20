@@ -2,121 +2,120 @@
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import BookingForm from "@/components/BookingForm";
-import { Card, CardContent } from "@/components/ui/card";
-import PalletPriceCalculator from "@/components/PalletPriceCalculator";
-import { useLanguage } from "@/contexts/LanguageContext";
+import VesselCard, { VesselProps } from "@/components/VesselCard";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Ship } from "lucide-react";
+
+// Mock data for vessels
+const availableVessels: VesselProps[] = [
+  {
+    id: "v1",
+    name: "Nordic Navigator",
+    route: "Shanghai → Rotterdam",
+    departureDate: "2023-11-15",
+    arrivalDate: "2023-12-05",
+    capacity: 100,
+    available: 65,
+    price: 2300,
+  },
+  {
+    id: "v2",
+    name: "Pacific Pathfinder",
+    route: "Hong Kong → Los Angeles",
+    departureDate: "2023-11-20",
+    arrivalDate: "2023-12-10",
+    capacity: 120,
+    available: 30,
+    price: 2700,
+  },
+  {
+    id: "v3",
+    name: "Atlantic Adventurer",
+    route: "New York → Hamburg",
+    departureDate: "2023-11-25",
+    arrivalDate: "2023-12-10",
+    capacity: 80,
+    available: 10,
+    price: 2500,
+  },
+  {
+    id: "v4",
+    name: "Baltic Voyager",
+    route: "St. Petersburg → Helsinki",
+    departureDate: "2023-11-18",
+    arrivalDate: "2023-11-25",
+    capacity: 50,
+    available: 35,
+    price: 1800,
+  },
+];
 
 const Booking = () => {
-  const [selectedVessel, setSelectedVessel] = useState(null);
-  const { t } = useLanguage();
-
-  // Sample vessels data for the fleet section
-  const vessels = [
-    {
-      id: "v1",
-      name: "MS Eazy Voyager",
-      route: "Lomé, Togo ↔ Praia, Cape Verde",
-      departureDate: "2023-12-10",
-      arrivalDate: "2023-12-18",
-      capacity: 300,
-      available: 120,
-      price: 1200,
-      priceXOF: 720000
-    },
-    {
-      id: "v2",
-      name: "MS Eazy Explorer",
-      route: "Lomé, Togo ↔ Praia, Cape Verde",
-      departureDate: "2023-12-22",
-      arrivalDate: "2023-12-30",
-      capacity: 280,
-      available: 35,
-      price: 1300,
-      priceXOF: 780000
-    },
-    {
-      id: "v3",
-      name: "MS Eazy Mariner",
-      route: "Lomé, Togo ↔ Praia, Cape Verde",
-      departureDate: "2024-01-05",
-      arrivalDate: "2024-01-13",
-      capacity: 320,
-      available: 200,
-      price: 1150,
-      priceXOF: 690000
-    }
-  ];
+  const [activeTab, setActiveTab] = useState("vessels");
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-pattern">
       <Navbar />
       
-      <main className="flex-1 pb-16">
-        {/* Page Header */}
-        <section className="pt-24 pb-10 bg-accent/30">
-          <div className="container mx-auto px-4">
-            <h1 className="text-3xl md:text-4xl font-bold mb-2">{t('booking')}</h1>
-            <p className="text-muted-foreground mb-0">{t('bookingDesc')}</p>
-          </div>
-        </section>
-        
-        {/* Main Content Section with Booking Form and Shipping Info Side by Side */}
+      <main className="flex-1 pt-20">
         <div className="container mx-auto px-4 py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {/* Main Content - Book Your Cargo */}
-            <div className="lg:col-span-8">
-              <Card>
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-semibold mb-4">{t('bookYourCargo')}</h3>
-                  <BookingForm />
-                </CardContent>
-              </Card>
+          <div className="max-w-4xl mx-auto">
+            <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
+              <div>
+                <h1 className="text-3xl font-bold mb-2">Book Your Shipment</h1>
+                <p className="text-muted-foreground">
+                  Choose from available vessels or create a custom booking request
+                </p>
+              </div>
             </div>
             
-            {/* Sidebar - Shipping Information */}
-            <div className="lg:col-span-4">
-              <Card className="bg-card mb-6">
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-semibold mb-4">{t('shippingInformation')}</h3>
-                  
-                  <p className="text-muted-foreground mb-4">
-                    {t('vesselDesc')}
-                  </p>
-                  
-                  {/* Pallet type information */}
-                  <div className="bg-primary/10 rounded-lg p-4">
-                    <h4 className="font-medium text-base mb-2">{t('palletTypesAvailable')}</h4>
-                    <div className="grid grid-cols-1 gap-3">
-                      <div className="flex items-start space-x-3">
-                        <div className="bg-primary/20 p-2 rounded-full">
-                          <div className="h-5 w-5 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xs">
-                            US
-                          </div>
-                        </div>
-                        <div>
-                          <p className="font-medium text-sm">{t('usPallet')}</p>
-                          <p className="text-xs text-muted-foreground">1200 x 1000 mm</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start space-x-3">
-                        <div className="bg-primary/20 p-2 rounded-full">
-                          <div className="h-5 w-5 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xs">
-                            EU
-                          </div>
-                        </div>
-                        <div>
-                          <p className="font-medium text-sm">{t('euroPallet')}</p>
-                          <p className="text-xs text-muted-foreground">1200 x 800 mm</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+            <Tabs 
+              defaultValue="vessels" 
+              value={activeTab} 
+              onValueChange={setActiveTab}
+              className="space-y-8"
+            >
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="vessels" className="text-base py-3">
+                  <Ship className="mr-2 h-4 w-4" />
+                  Available Vessels
+                </TabsTrigger>
+                <TabsTrigger value="custom" className="text-base py-3">
+                  Custom Booking
+                </TabsTrigger>
+              </TabsList>
               
-              {/* Price Calculator */}
-              <PalletPriceCalculator />
-            </div>
+              <TabsContent value="vessels" className="space-y-6 animate-fade-in">
+                <div className="grid md:grid-cols-2 gap-6">
+                  {availableVessels.map((vessel) => (
+                    <VesselCard key={vessel.id} vessel={vessel} />
+                  ))}
+                </div>
+                
+                <div className="text-center mt-8">
+                  <p className="text-muted-foreground mb-4">
+                    Don't see a suitable vessel? Create a custom booking request.
+                  </p>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setActiveTab("custom")}
+                  >
+                    Create Custom Booking
+                  </Button>
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="custom" className="animate-fade-in">
+                <div className="glass-panel px-4 py-6 md:p-8 mb-8">
+                  <h2 className="text-2xl font-semibold mb-6">Custom Booking Request</h2>
+                  <p className="text-muted-foreground mb-6">
+                    Please provide details about your shipment and we'll find the best vessel to accommodate your needs.
+                  </p>
+                  <BookingForm />
+                </div>
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
       </main>
@@ -124,7 +123,7 @@ const Booking = () => {
       {/* Footer */}
       <footer className="bg-background border-t py-8">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Eazy Chain. {t('allRightsReserved')}
+          © {new Date().getFullYear()} CargoCaravan. All rights reserved.
         </div>
       </footer>
     </div>

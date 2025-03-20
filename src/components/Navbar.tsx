@@ -3,14 +3,11 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Ship } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/contexts/LanguageContext";
-import LanguageSelector from "./LanguageSelector";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
-  const { t } = useLanguage();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -32,23 +29,13 @@ const Navbar = () => {
   }, [location.pathname]);
 
   const navLinks = [
-    { title: t('home'), path: "/" },
-    { title: t('book'), path: "/booking" },
-    { title: t('passengers'), path: "/passengers" },
-    { title: t('track'), path: "/tracking" },
-    { title: t('otherServices'), path: "/services" }
+    { title: "Home", path: "/" },
+    { title: "Book", path: "/booking" },
+    { title: "Track", path: "/tracking" },
+    { title: "Dashboard", path: "/dashboard" },
   ];
 
   const isActive = (path: string) => location.pathname === path;
-
-  // Special case for hash links
-  const isHashActive = (path: string) => {
-    if (path.includes('#') && location.pathname === '/') {
-      const hash = path.split('#')[1];
-      return location.hash === `#${hash}`;
-    }
-    return false;
-  };
 
   return (
     <nav
@@ -63,7 +50,7 @@ const Navbar = () => {
             className="flex items-center space-x-2 text-primary transition-all duration-300 hover:opacity-80"
           >
             <Ship size={28} strokeWidth={1.5} />
-            <span className="font-semibold text-xl">Eazy Chain</span>
+            <span className="font-semibold text-xl">CargoCaravan</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -73,7 +60,7 @@ const Navbar = () => {
                 key={link.path}
                 to={link.path}
                 className={`text-sm font-medium transition-all duration-300 ${
-                  isActive(link.path) || isHashActive(link.path)
+                  isActive(link.path)
                     ? "text-primary"
                     : "text-foreground/70 hover:text-foreground"
                 }`}
@@ -82,14 +69,12 @@ const Navbar = () => {
               </Link>
             ))}
             <Button asChild size="sm" className="ml-4">
-              <Link to="/payment">{t('payNow')}</Link>
+              <Link to="/payment">Pay Now</Link>
             </Button>
-            <LanguageSelector />
           </div>
 
           {/* Mobile Menu Toggle */}
-          <div className="md:hidden flex items-center gap-2">
-            <LanguageSelector />
+          <div className="md:hidden">
             <Button
               variant="ghost"
               size="icon"
@@ -110,7 +95,7 @@ const Navbar = () => {
                   key={link.path}
                   to={link.path}
                   className={`px-2 py-1 rounded-md text-base font-medium transition-colors ${
-                    isActive(link.path) || isHashActive(link.path)
+                    isActive(link.path)
                       ? "text-primary"
                       : "text-foreground/70 hover:text-foreground"
                   }`}
@@ -119,7 +104,7 @@ const Navbar = () => {
                 </Link>
               ))}
               <Button asChild size="sm" className="mt-4">
-                <Link to="/payment">{t('payNow')}</Link>
+                <Link to="/payment">Pay Now</Link>
               </Button>
             </div>
           </div>

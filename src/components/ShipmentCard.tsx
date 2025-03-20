@@ -10,7 +10,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { useLanguage } from "@/contexts/LanguageContext";
 
 export interface ShipmentProps {
   id: string;
@@ -25,9 +24,20 @@ export interface ShipmentProps {
   totalAmount: number;
 }
 
+const statusConfig = {
+  "pending": { color: "bg-amber-100 text-amber-700", label: "Pending" },
+  "in-transit": { color: "bg-blue-100 text-blue-700", label: "In Transit" },
+  "delivered": { color: "bg-green-100 text-green-700", label: "Delivered" },
+  "cancelled": { color: "bg-red-100 text-red-700", label: "Cancelled" }
+};
+
+const paymentStatusConfig = {
+  "paid": { color: "bg-green-100 text-green-700", label: "Paid" },
+  "pending": { color: "bg-amber-100 text-amber-700", label: "Payment Pending" },
+  "overdue": { color: "bg-red-100 text-red-700", label: "Payment Overdue" }
+};
+
 const ShipmentCard = ({ shipment }: { shipment: ShipmentProps }) => {
-  const { t } = useLanguage();
-  
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = { 
       month: 'short', 
@@ -35,19 +45,6 @@ const ShipmentCard = ({ shipment }: { shipment: ShipmentProps }) => {
       year: 'numeric'
     };
     return new Date(dateString).toLocaleDateString('en-US', options);
-  };
-
-  const statusConfig = {
-    "pending": { color: "bg-amber-100 text-amber-700", label: t('pending') },
-    "in-transit": { color: "bg-blue-100 text-blue-700", label: t('inTransit') },
-    "delivered": { color: "bg-green-100 text-green-700", label: t('delivered') },
-    "cancelled": { color: "bg-red-100 text-red-700", label: t('cancelled') }
-  };
-
-  const paymentStatusConfig = {
-    "paid": { color: "bg-green-100 text-green-700", label: t('paid') },
-    "pending": { color: "bg-amber-100 text-amber-700", label: t('paymentPending') },
-    "overdue": { color: "bg-red-100 text-red-700", label: t('paymentOverdue') }
   };
 
   const { color: statusColor, label: statusLabel } = statusConfig[shipment.status];
@@ -58,7 +55,7 @@ const ShipmentCard = ({ shipment }: { shipment: ShipmentProps }) => {
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
           <div>
-            <div className="text-sm text-muted-foreground mb-1">{t('trackingNumber')}</div>
+            <div className="text-sm text-muted-foreground mb-1">Tracking #</div>
             <CardTitle className="text-lg">{shipment.trackingNumber}</CardTitle>
           </div>
           <Badge className={statusColor}>
@@ -69,7 +66,7 @@ const ShipmentCard = ({ shipment }: { shipment: ShipmentProps }) => {
       <CardContent className="pb-4">
         <div className="flex items-center justify-between text-sm mt-2">
           <div className="flex flex-col gap-1">
-            <span className="text-muted-foreground">{t('origin')}</span>
+            <span className="text-muted-foreground">Origin</span>
             <div className="flex items-center font-medium">
               <MapPin size={14} className="mr-1 text-muted-foreground" />
               {shipment.origin}
@@ -79,7 +76,7 @@ const ShipmentCard = ({ shipment }: { shipment: ShipmentProps }) => {
           <ArrowRight size={16} className="text-muted-foreground mx-2" />
           
           <div className="flex flex-col gap-1 items-end">
-            <span className="text-muted-foreground">{t('destination')}</span>
+            <span className="text-muted-foreground">Destination</span>
             <div className="flex items-center font-medium">
               <MapPin size={14} className="mr-1 text-muted-foreground" />
               {shipment.destination}
@@ -89,7 +86,7 @@ const ShipmentCard = ({ shipment }: { shipment: ShipmentProps }) => {
 
         <div className="grid grid-cols-2 gap-4 mt-4">
           <div>
-            <div className="text-xs text-muted-foreground">{t('departureDate')}</div>
+            <div className="text-xs text-muted-foreground">Departure</div>
             <div className="flex items-center mt-1">
               <Calendar size={14} className="mr-1 text-muted-foreground" />
               <span className="text-sm font-medium">{formatDate(shipment.departureDate)}</span>
@@ -97,7 +94,7 @@ const ShipmentCard = ({ shipment }: { shipment: ShipmentProps }) => {
           </div>
           
           <div>
-            <div className="text-xs text-muted-foreground">{t('estimatedArrival')}</div>
+            <div className="text-xs text-muted-foreground">Estimated Arrival</div>
             <div className="flex items-center mt-1">
               <Calendar size={14} className="mr-1 text-muted-foreground" />
               <span className="text-sm font-medium">{formatDate(shipment.estimatedArrival)}</span>
@@ -107,15 +104,15 @@ const ShipmentCard = ({ shipment }: { shipment: ShipmentProps }) => {
 
         <div className="flex items-center justify-between mt-4">
           <div>
-            <div className="text-xs text-muted-foreground">{t('containers')}</div>
+            <div className="text-xs text-muted-foreground">Containers</div>
             <div className="flex items-center mt-1">
               <Package size={14} className="mr-1 text-muted-foreground" />
-              <span className="text-sm font-medium">{shipment.containerCount} {shipment.containerCount === 1 ? t('unit') : t('units')}</span>
+              <span className="text-sm font-medium">{shipment.containerCount} {shipment.containerCount === 1 ? 'unit' : 'units'}</span>
             </div>
           </div>
 
           <div className="flex flex-col items-end">
-            <div className="text-xs text-muted-foreground">{t('totalAmount')}</div>
+            <div className="text-xs text-muted-foreground">Total Amount</div>
             <div className="text-sm font-semibold mt-1">${shipment.totalAmount.toLocaleString()}</div>
           </div>
         </div>
@@ -129,13 +126,13 @@ const ShipmentCard = ({ shipment }: { shipment: ShipmentProps }) => {
         <div className="flex gap-2">
           <Button variant="outline" size="sm" asChild>
             <Link to={`/tracking?id=${shipment.trackingNumber}`}>
-              {t('track')}
+              Track
             </Link>
           </Button>
           {shipment.paymentStatus !== "paid" && (
             <Button size="sm" asChild>
               <Link to={`/payment?id=${shipment.trackingNumber}`}>
-                {t('payNow')}
+                Pay Now
               </Link>
             </Button>
           )}
