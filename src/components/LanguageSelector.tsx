@@ -21,9 +21,9 @@ const LanguageSelector = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" aria-label={t('changeLanguage')}>
-          <Globe size={20} />
-          <span className="ml-2 hidden md:inline">{language.toUpperCase()}</span>
+        <Button variant="outline" size="sm" className="flex items-center gap-2" aria-label={t('changeLanguage')}>
+          <Globe size={18} />
+          <span className="uppercase">{language}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="bg-background">
