@@ -202,7 +202,7 @@ const translations = {
     next: 'Next',
     previous: 'Previous',
     submit: 'Submit',
-    firstName: 'Full Name',
+    firstName: 'First Name',  // Updated to be more specific
     lastName: 'Last Name',
     email: 'Email',
     phone: 'Phone Number',
@@ -519,7 +519,7 @@ const translations = {
     next: 'Suivant',
     previous: 'Précédent',
     submit: 'Soumettre',
-    firstName: 'Prénom',
+    firstName: 'Prénom',  // Updated to be more specific
     lastName: 'Nom de Famille',
     email: 'Email',
     phone: 'Numéro de Téléphone',
@@ -836,7 +836,7 @@ const translations = {
     next: 'Siguiente',
     previous: 'Anterior',
     submit: 'Enviar',
-    firstName: 'Nombre',
+    firstName: 'Nombre',  // Updated to be more specific
     lastName: 'Apellido',
     email: 'Correo Electrónico',
     phone: 'Número de Teléfono',
@@ -994,4 +994,3 @@ export const useLanguage = (): LanguageContextType => {
   }
   return context;
 };
-
