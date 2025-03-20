@@ -627,7 +627,7 @@ const translations = {
     bookingDesc: 'Reserve espacio de carga en nuestros buques para sus envíos',
     bookYourCargo: 'Reserve Su Carga',
     shippingInformation: 'Información de Envío',
-    vesselDesc: 'Nuestros buques operan viajes de ida y vuelta entre Lomé, Togo y Praia, Cabo Verde con múltiples paradas portuarias.',
+    vesselDesc: 'Nuestros buques efectuan viajes de ida y vuelta entre Lomé, Togo y Praia, Cabo Verde con múltiples paradas portuarias.',
     palletTypesAvailable: 'Tipos de Palés Disponibles',
     usPallet: 'Palé US',
     euroPallet: 'Palé Euro',
