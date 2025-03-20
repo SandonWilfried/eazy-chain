@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { Ship, MapPin, Calendar, Package, CheckCircle, Clock, AlertCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface TrackingEvent {
   id: string;
@@ -72,38 +73,11 @@ const mockTrackingData: TrackingData = {
   ],
 };
 
-const statusConfig = {
-  "pending": { 
-    icon: Clock, 
-    color: "bg-amber-100 text-amber-700", 
-    label: "Pending Departure" 
-  },
-  "in-transit": { 
-    icon: Ship, 
-    color: "bg-blue-100 text-blue-700", 
-    label: "In Transit" 
-  },
-  "delivered": { 
-    icon: CheckCircle, 
-    color: "bg-green-100 text-green-700", 
-    label: "Delivered" 
-  },
-  "customs": { 
-    icon: AlertCircle, 
-    color: "bg-purple-100 text-purple-700", 
-    label: "Customs Clearance" 
-  },
-  "delayed": { 
-    icon: AlertCircle, 
-    color: "bg-red-100 text-red-700", 
-    label: "Delayed" 
-  },
-};
-
 const Tracking = () => {
   const [trackingData, setTrackingData] = useState<TrackingData | null>(null);
   const [loading, setLoading] = useState(false);
   const location = useLocation();
+  const { t } = useLanguage();
 
   useEffect(() => {
     const trackingId = new URLSearchParams(location.search).get("id");
@@ -142,6 +116,45 @@ const Tracking = () => {
     return new Date(dateTimeString).toLocaleDateString('en-US', options);
   };
 
+  const getStatusLabel = (status: string) => {
+    const statusMap: Record<string, string> = {
+      "pending": t('pending'),
+      "in-transit": t('inTransit'),
+      "delivered": t('delivered'),
+      "customs": t('customs'),
+      "delayed": t('delayed')
+    };
+    return statusMap[status] || status;
+  };
+
+  const statusConfig = {
+    "pending": { 
+      icon: Clock, 
+      color: "bg-amber-100 text-amber-700", 
+      label: t('pending')
+    },
+    "in-transit": { 
+      icon: Ship, 
+      color: "bg-blue-100 text-blue-700", 
+      label: t('inTransit')
+    },
+    "delivered": { 
+      icon: CheckCircle, 
+      color: "bg-green-100 text-green-700", 
+      label: t('delivered')
+    },
+    "customs": { 
+      icon: AlertCircle, 
+      color: "bg-purple-100 text-purple-700", 
+      label: t('customs')
+    },
+    "delayed": { 
+      icon: AlertCircle, 
+      color: "bg-red-100 text-red-700", 
+      label: t('delayed')
+    },
+  };
+
   const StatusIcon = trackingData ? statusConfig[trackingData.currentStatus].icon : Clock;
   const statusColor = trackingData ? statusConfig[trackingData.currentStatus].color : "";
   const statusLabel = trackingData ? statusConfig[trackingData.currentStatus].label : "";
@@ -154,13 +167,13 @@ const Tracking = () => {
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-4xl mx-auto">
             <div className="glass-panel p-6 md:p-8 mb-8">
-              <h1 className="text-2xl md:text-3xl font-bold mb-6">Track Your Shipment</h1>
+              <h1 className="text-2xl md:text-3xl font-bold mb-6">{t('trackYourShipment')}</h1>
               <TrackingForm />
             </div>
             
             {loading && (
               <div className="glass-panel p-8 text-center animate-pulse">
-                <p className="text-lg">Loading tracking information...</p>
+                <p className="text-lg">{t('loading')}</p>
               </div>
             )}
             
@@ -169,7 +182,7 @@ const Tracking = () => {
                 <div className="glass-panel p-6 md:p-8">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
                     <div>
-                      <div className="text-sm text-muted-foreground mb-1">Tracking Number</div>
+                      <div className="text-sm text-muted-foreground mb-1">{t('trackingNumber')}</div>
                       <h2 className="text-xl font-semibold">{trackingData.trackingNumber}</h2>
                     </div>
                     <Badge className={`${statusColor} mt-2 md:mt-0 text-sm px-3 py-1`}>
@@ -181,7 +194,7 @@ const Tracking = () => {
                   <div className="space-y-6">
                     <div>
                       <div className="mb-2 flex justify-between items-end">
-                        <div className="text-sm text-muted-foreground">Shipment Progress</div>
+                        <div className="text-sm text-muted-foreground">{t('shipmentProgress')}</div>
                         <div className="text-sm font-medium">{trackingData.progress}%</div>
                       </div>
                       <Progress value={trackingData.progress} className="h-2" />
@@ -189,7 +202,7 @@ const Tracking = () => {
                     
                     <div className="grid grid-cols-2 gap-x-4 gap-y-6">
                       <div>
-                        <div className="text-sm text-muted-foreground mb-1">Origin</div>
+                        <div className="text-sm text-muted-foreground mb-1">{t('origin')}</div>
                         <div className="flex items-center">
                           <MapPin className="h-4 w-4 mr-1 text-muted-foreground" />
                           <span className="font-medium">{trackingData.origin}</span>
@@ -197,7 +210,7 @@ const Tracking = () => {
                       </div>
                       
                       <div>
-                        <div className="text-sm text-muted-foreground mb-1">Destination</div>
+                        <div className="text-sm text-muted-foreground mb-1">{t('destination')}</div>
                         <div className="flex items-center">
                           <MapPin className="h-4 w-4 mr-1 text-muted-foreground" />
                           <span className="font-medium">{trackingData.destination}</span>
@@ -205,7 +218,7 @@ const Tracking = () => {
                       </div>
                       
                       <div>
-                        <div className="text-sm text-muted-foreground mb-1">Departure Date</div>
+                        <div className="text-sm text-muted-foreground mb-1">{t('departureDate')}</div>
                         <div className="flex items-center">
                           <Calendar className="h-4 w-4 mr-1 text-muted-foreground" />
                           <span className="font-medium">{formatDate(trackingData.departureDate)}</span>
@@ -213,7 +226,7 @@ const Tracking = () => {
                       </div>
                       
                       <div>
-                        <div className="text-sm text-muted-foreground mb-1">Estimated Arrival</div>
+                        <div className="text-sm text-muted-foreground mb-1">{t('estimatedArrival')}</div>
                         <div className="flex items-center">
                           <Calendar className="h-4 w-4 mr-1 text-muted-foreground" />
                           <span className="font-medium">{formatDate(trackingData.estimatedArrival)}</span>
@@ -221,7 +234,7 @@ const Tracking = () => {
                       </div>
                       
                       <div>
-                        <div className="text-sm text-muted-foreground mb-1">Vessel</div>
+                        <div className="text-sm text-muted-foreground mb-1">{t('vessel')}</div>
                         <div className="flex items-center">
                           <Ship className="h-4 w-4 mr-1 text-muted-foreground" />
                           <span className="font-medium">{trackingData.vessel}</span>
@@ -229,7 +242,7 @@ const Tracking = () => {
                       </div>
                       
                       <div>
-                        <div className="text-sm text-muted-foreground mb-1">Last Updated</div>
+                        <div className="text-sm text-muted-foreground mb-1">{t('lastUpdated')}</div>
                         <div className="flex items-center">
                           <Clock className="h-4 w-4 mr-1 text-muted-foreground" />
                           <span className="font-medium">{formatDateTime(trackingData.lastUpdated)}</span>
@@ -240,7 +253,7 @@ const Tracking = () => {
                 </div>
                 
                 <div className="glass-panel p-6 md:p-8">
-                  <h3 className="text-xl font-semibold mb-6">Shipment Timeline</h3>
+                  <h3 className="text-xl font-semibold mb-6">{t('shipmentTimeline')}</h3>
                   
                   <div className="space-y-6">
                     {trackingData.events.map((event, index) => (
@@ -276,12 +289,11 @@ const Tracking = () => {
             {!loading && !trackingData && location.search && (
               <div className="glass-panel p-8 text-center">
                 <AlertCircle className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                <h3 className="text-xl font-semibold mb-2">No Tracking Information Found</h3>
+                <h3 className="text-xl font-semibold mb-2">{t('noTrackingInfo')}</h3>
                 <p className="text-muted-foreground mb-6">
-                  We couldn't find any shipment with the provided tracking number. 
-                  Please verify and try again.
+                  {t('verifyAndTryAgain')}
                 </p>
-                <Button variant="outline">Contact Support</Button>
+                <Button variant="outline">{t('contactSupport')}</Button>
               </div>
             )}
           </div>
@@ -291,7 +303,7 @@ const Tracking = () => {
       {/* Footer */}
       <footer className="bg-background border-t py-8">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} CargoCaravan. All rights reserved.
+          © {new Date().getFullYear()} Eazy Chain. {t('allRightsReserved')}
         </div>
       </footer>
     </div>

@@ -15,6 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const formSchema = z.object({
   trackingNumber: z.string().min(6, {
@@ -26,6 +27,7 @@ const TrackingForm = () => {
   const [isSearching, setIsSearching] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -64,7 +66,7 @@ const TrackingForm = () => {
                   <div className="relative">
                     <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input 
-                      placeholder="Enter tracking number" 
+                      placeholder={t('enterTrackingNumber')} 
                       className="pl-10" 
                       {...field} 
                     />
@@ -80,7 +82,7 @@ const TrackingForm = () => {
             className="md:w-auto"
             disabled={isSearching}
           >
-            {isSearching ? "Searching..." : "Track Shipment"}
+            {isSearching ? t('searching') : t('trackShipment')}
           </Button>
         </div>
       </form>

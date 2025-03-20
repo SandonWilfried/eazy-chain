@@ -1,8 +1,9 @@
 
 import { useState } from "react";
-import { Ship, Calendar, Package, Users } from "lucide-react";
+import { Ship, Calendar, Package, Users, RepeatIcon, BarChart4 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import {
   Card,
   CardContent,
@@ -22,6 +23,7 @@ export interface VesselProps {
   capacity: number;
   available: number;
   price: number;
+  priceXOF?: number;
 }
 
 const VesselCard = ({ vessel }: { vessel: VesselProps }) => {
@@ -39,7 +41,23 @@ const VesselCard = ({ vessel }: { vessel: VesselProps }) => {
   };
 
   const handleBookNow = () => {
-    // This would typically navigate to booking page with vessel pre-selected
+    // Create email content
+    const emailSubject = `Vessel Booking Request: ${vessel.name}`;
+    const emailBody = `
+      Vessel Booking Details:
+      -----------------------
+      Vessel Name: ${vessel.name}
+      Route: ${vessel.route}
+      Departure Date: ${formatDate(vessel.departureDate)}
+      Arrival Date: ${formatDate(vessel.arrivalDate)}
+      Price per pallet: $${vessel.price.toLocaleString()}${vessel.priceXOF ? ` (${vessel.priceXOF.toLocaleString()} XOF)` : ''}
+      
+      This is an automated booking request from the website.
+    `;
+    
+    // Open the user's email client with pre-filled details
+    window.location.href = `mailto:contact@eazy-chain.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+    
     toast({
       title: "Vessel Selected",
       description: `You've selected ${vessel.name}. Complete your booking details.`,
@@ -64,7 +82,13 @@ const VesselCard = ({ vessel }: { vessel: VesselProps }) => {
               <Ship size={18} className="text-primary" />
               {vessel.name}
             </CardTitle>
-            <CardDescription className="mt-1">{vessel.route}</CardDescription>
+            <CardDescription className="mt-1 flex items-center">
+              <span>{vessel.route}</span>
+              <Badge className="ml-2 bg-primary/10 text-primary border-primary/20 flex items-center gap-1">
+                <RepeatIcon size={12} />
+                Round Trip
+              </Badge>
+            </CardDescription>
           </div>
           <Badge 
             variant={availabilityPercentage > 30 ? "outline" : "destructive"}
@@ -90,26 +114,56 @@ const VesselCard = ({ vessel }: { vessel: VesselProps }) => {
             </div>
             <span className="font-medium">{formatDate(vessel.arrivalDate)}</span>
           </div>
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Package size={16} />
-              <span>Available Space</span>
+          
+          {/* Cargo space visualization using the provided ship image */}
+          <div className="mt-6 pt-2 border-t">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <BarChart4 size={16} />
+                <span>Available Space</span>
+              </div>
+              <span className="font-medium">{vessel.available} of {vessel.capacity} pallets</span>
             </div>
-            <span className="font-medium">{vessel.available} of {vessel.capacity} TEU</span>
-          </div>
-          <div className="mt-2">
-            <div className="w-full bg-secondary rounded-full h-2 overflow-hidden">
-              <div 
-                className="bg-primary h-full rounded-full" 
-                style={{ width: `${(vessel.available / vessel.capacity) * 100}%` }}
-              />
+            
+            {/* New realistic vessel cargo visualization using the uploaded image */}
+            
+            
+            {/* Keep the boxes and progress bar */}
+            <div className="relative h-16 bg-secondary/50 rounded-lg overflow-hidden mb-2">
+              <div className="absolute inset-0 flex flex-wrap p-1 gap-1">
+                {Array.from({ length: 80 }).map((_, i) => (
+                  <div 
+                    key={i} 
+                    className={`h-2 w-2 rounded-sm ${
+                      i < Math.round((vessel.available / vessel.capacity) * 80) 
+                        ? "bg-primary/70" 
+                        : "bg-gray-200 dark:bg-gray-700"
+                    }`}
+                  />
+                ))}
+              </div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-xs font-medium bg-white/80 dark:bg-black/50 px-2 py-1 rounded backdrop-blur-sm">
+                  {Math.round(availabilityPercentage)}% Available
+                </span>
+              </div>
             </div>
+            
+            <Progress 
+              value={availabilityPercentage} 
+              className="h-2"
+            />
           </div>
         </div>
       </CardContent>
       <CardFooter className="flex justify-between items-center border-t pt-4">
-        <div className="text-lg font-semibold">
-          ${vessel.price.toLocaleString()}<span className="text-sm text-muted-foreground font-normal"> per TEU</span>
+        <div className="text-lg font-semibold flex flex-col">
+          ${vessel.price.toLocaleString()}<span className="text-sm text-muted-foreground font-normal"> per pallet</span>
+          {vessel.priceXOF && (
+            <span className="text-sm text-muted-foreground font-normal">
+              ({vessel.priceXOF.toLocaleString()} XOF)
+            </span>
+          )}
         </div>
         <Button onClick={handleBookNow}>Book Now</Button>
       </CardFooter>

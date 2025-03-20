@@ -1,22 +1,40 @@
 
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import Navbar from "@/components/Navbar";
 import PaymentForm from "@/components/PaymentForm";
+import BillOfLadingModal from "@/components/BillOfLadingModal";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
+
+// Initialize Stripe with your public key
+// Replace with your actual Stripe publishable key when in production
+const stripePromise = loadStripe("pk_test_TYooMQauvdEDq54NiTphI7jx");
 
 const mockShipmentData = {
   id: "CARGO12345678",
   amount: 4600,
+  origin: "Shanghai Port, China",
+  destination: "Rotterdam Port, Netherlands",
+  containerCount: 2,
 };
 
 const Payment = () => {
-  const [shipmentData, setShipmentData] = useState<{ id: string; amount: number } | null>(null);
+  const [shipmentData, setShipmentData] = useState<{
+    id: string;
+    amount: number;
+    origin: string;
+    destination: string;
+    containerCount: number;
+  } | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showBillOfLading, setShowBillOfLading] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   useEffect(() => {
     const shipmentId = new URLSearchParams(location.search).get("id");
@@ -29,6 +47,9 @@ const Payment = () => {
         setShipmentData({
           id: shipmentId,
           amount: mockShipmentData.amount,
+          origin: mockShipmentData.origin,
+          destination: mockShipmentData.destination,
+          containerCount: mockShipmentData.containerCount,
         });
         setLoading(false);
       }, 1000);
@@ -37,6 +58,11 @@ const Payment = () => {
       setShipmentData(mockShipmentData);
     }
   }, [location.search]);
+
+  const handlePaymentSuccess = () => {
+    // Show bill of lading modal after successful payment
+    setShowBillOfLading(true);
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-pattern">
@@ -53,25 +79,58 @@ const Payment = () => {
                 onClick={() => navigate(-1)}
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back
+                {t('back')}
               </Button>
-              <h1 className="text-3xl font-bold mb-2">Secure Payment</h1>
+              <h1 className="text-3xl font-bold mb-2">{t('securePayment')}</h1>
               <p className="text-muted-foreground">
-                Complete your payment details to finalize your shipping transaction
+                {t('paymentDesc')}
               </p>
+              
+              {/* Payment amount summary */}
+              {shipmentData && (
+                <div className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="text-sm text-red-700 dark:text-red-300">{t('shipmentTotal')}</p>
+                      <p className="text-2xl font-bold text-red-800 dark:text-red-200">
+                        ${shipmentData.amount.toLocaleString()}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm text-red-700 dark:text-red-300">{t('shipmentId')}</p>
+                      <p className="font-medium text-red-800 dark:text-red-200">{shipmentData.id}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
             
             {loading ? (
               <div className="glass-panel p-8 text-center animate-pulse">
-                <p className="text-lg">Loading payment information...</p>
+                <p className="text-lg">{t('loadingPayment')}</p>
               </div>
             ) : (
               <div className="animate-fade-in">
                 {shipmentData && (
-                  <PaymentForm 
-                    shipmentId={shipmentData.id} 
-                    amount={shipmentData.amount} 
-                  />
+                  <>
+                    <Elements stripe={stripePromise}>
+                      <PaymentForm 
+                        shipmentId={shipmentData.id} 
+                        amount={shipmentData.amount}
+                        onPaymentSuccess={handlePaymentSuccess}
+                      />
+                    </Elements>
+                    
+                    {/* Bill of Lading Modal */}
+                    <BillOfLadingModal
+                      open={showBillOfLading}
+                      onOpenChange={setShowBillOfLading}
+                      shipmentId={shipmentData.id}
+                      origin={shipmentData.origin}
+                      destination={shipmentData.destination}
+                      containerCount={shipmentData.containerCount}
+                    />
+                  </>
                 )}
               </div>
             )}
@@ -82,7 +141,7 @@ const Payment = () => {
       {/* Footer */}
       <footer className="bg-background border-t py-8">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} CargoCaravan. All rights reserved.
+          © {new Date().getFullYear()} Eazy Chain. {t('allRightsReserved')}
         </div>
       </footer>
     </div>
