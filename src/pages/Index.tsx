@@ -1,8 +1,8 @@
-
 import { useNavigate } from "react-router-dom";
 import { Ship, Package, Truck, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import TrackingForm from "@/components/TrackingForm";
 import ContactSection from "@/components/ContactSection";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -220,19 +220,7 @@ const Index = () => {
       <ContactSection />
       
       {/* Footer */}
-      <footer className="bg-background border-t py-12">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center mb-6 md:mb-0">
-              <Ship className="h-8 w-8 text-primary mr-2" />
-              <span className="font-semibold text-xl">Eazy Chain</span>
-            </div>
-            <div className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} Eazy Chain. {t('allRightsReserved')}
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
