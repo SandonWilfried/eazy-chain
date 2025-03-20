@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -38,6 +39,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // List of West African ports as specified
 const westAfricanPorts = [
@@ -145,6 +147,7 @@ const formSchema = z.object({
 
 const BookingForm = () => {
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
   const [availableDestinationPorts, setAvailableDestinationPorts] = useState(westAfricanPorts);
@@ -216,8 +219,8 @@ const BookingForm = () => {
     setTimeout(() => {
       setIsSubmitting(false);
       toast({
-        title: "Booking Request Submitted",
-        description: "We will contact you shortly to confirm your booking.",
+        title: t('bookingRequestSubmitted'),
+        description: t('bookingConfirmation'),
       });
       form.reset();
     }, 1500);
@@ -232,11 +235,11 @@ const BookingForm = () => {
             name="originPort"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Origin Port</FormLabel>
+                <FormLabel>{t('originPort')}</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select origin port" />
+                      <SelectValue placeholder={t('selectOriginPort')} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -256,11 +259,11 @@ const BookingForm = () => {
             name="destinationPort"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Destination Port</FormLabel>
+                <FormLabel>{t('destinationPort')}</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select destination port" />
+                      <SelectValue placeholder={t('selectDestinationPort')} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -282,7 +285,7 @@ const BookingForm = () => {
           name="departureDate"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>Departure Date</FormLabel>
+              <FormLabel>{t('departureDate')}</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -296,7 +299,7 @@ const BookingForm = () => {
                       {field.value ? (
                         format(field.value, "PPP")
                       ) : (
-                        <span>Select your preferred date</span>
+                        <span>{t('selectDepartureDate')}</span>
                       )}
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
@@ -325,11 +328,11 @@ const BookingForm = () => {
             name="cargoType"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Cargo Type</FormLabel>
+                <FormLabel>{t('cargoType')}</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select cargo type" />
+                      <SelectValue placeholder={t('selectCargoType')} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -349,7 +352,7 @@ const BookingForm = () => {
             name="palletCount"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Number of Pallets</FormLabel>
+                <FormLabel>{t('palletCount')}</FormLabel>
                 <FormControl>
                   <Input type="number" min="1" {...field} />
                 </FormControl>
@@ -362,7 +365,7 @@ const BookingForm = () => {
             name="weight"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Weight (kg)</FormLabel>
+                <FormLabel>{t('weight')}</FormLabel>
                 <FormControl>
                   <Input type="number" min="1" {...field} />
                 </FormControl>
@@ -378,11 +381,11 @@ const BookingForm = () => {
           name="palletType"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Pallet Type</FormLabel>
+              <FormLabel>{t('palletType')}</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select pallet type" />
+                    <SelectValue placeholder={t('selectPalletType')} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -403,7 +406,7 @@ const BookingForm = () => {
           name="cargoDescription"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>Cargo Description</FormLabel>
+              <FormLabel>{t('cargoDescription')}</FormLabel>
               <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -418,15 +421,15 @@ const BookingForm = () => {
                     >
                       {field.value
                         ? cargoDescriptions.find((description) => description === field.value)
-                        : "Select cargo description"}
+                        : t('selectCargoDescription')}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
                 <PopoverContent className="w-full p-0">
                   <Command>
-                    <CommandInput placeholder="Search cargo description..." />
-                    <CommandEmpty>No description found.</CommandEmpty>
+                    <CommandInput placeholder={t('selectCargoDescription')} />
+                    <CommandEmpty>{t('noDescriptionFound')}</CommandEmpty>
                     <CommandList>
                       <CommandGroup>
                         {cargoDescriptions.map((description) => (
@@ -463,9 +466,9 @@ const BookingForm = () => {
             name="contactName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Contact Name</FormLabel>
+                <FormLabel>{t('contactName')}</FormLabel>
                 <FormControl>
-                  <Input placeholder="Full Name" {...field} />
+                  <Input placeholder={t('fullName')} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -476,9 +479,9 @@ const BookingForm = () => {
             name="contactEmail"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>{t('contactEmail')}</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder="email@example.com" {...field} />
+                  <Input type="email" placeholder={t('emailPlaceholder')} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -489,9 +492,9 @@ const BookingForm = () => {
             name="contactPhone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Phone Number</FormLabel>
+                <FormLabel>{t('contactPhone')}</FormLabel>
                 <FormControl>
-                  <Input placeholder="+1 (555) 000-0000" {...field} />
+                  <Input placeholder={t('phonePlaceholder')} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -500,7 +503,7 @@ const BookingForm = () => {
         </div>
 
         <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {isSubmitting ? "Submitting..." : "Submit Booking Request"}
+          {isSubmitting ? t('submitting') : t('submitBookingRequest')}
         </Button>
       </form>
     </Form>

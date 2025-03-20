@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calculator, Anchor, Ship, MapPin } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // Currency conversion rates
 const CURRENCY_RATES = {
@@ -88,6 +89,7 @@ type Currency = "usd" | "xof" | "eur";
 type PortCode = keyof typeof PORTS;
 
 const PalletPriceCalculator = () => {
+  const { t } = useLanguage();
   const [palletType, setPalletType] = useState<PalletType>("euro");
   const [quantity, setQuantity] = useState<number>(1);
   const [currency, setCurrency] = useState<Currency>("eur");
@@ -182,19 +184,19 @@ const PalletPriceCalculator = () => {
       <CardContent className="p-6">
         <h3 className="text-xl font-semibold mb-4 flex items-center">
           <Ship className="mr-2 h-5 w-5 text-primary" />
-          Pallet Price Calculator
+          {t('palletPriceCalculator')}
         </h3>
         
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="departure-port">Port of Departure</Label>
+              <Label htmlFor="departure-port">{t('portOfDeparture')}</Label>
               <Select 
                 value={departurePort} 
                 onValueChange={(value: PortCode) => setDeparturePort(value)}
               >
                 <SelectTrigger id="departure-port" className="w-full">
-                  <SelectValue placeholder="Select departure port" />
+                  <SelectValue placeholder={t('selectDeparturePort')} />
                 </SelectTrigger>
                 <SelectContent>
                   {Object.entries(PORTS).map(([code, name]) => (
@@ -207,14 +209,14 @@ const PalletPriceCalculator = () => {
             </div>
             
             <div>
-              <Label htmlFor="arrival-port">Port of Arrival</Label>
+              <Label htmlFor="arrival-port">{t('portOfArrival')}</Label>
               <Select 
                 value={arrivalPort} 
                 onValueChange={(value: PortCode) => setArrivalPort(value)}
                 disabled={!departurePort}
               >
                 <SelectTrigger id="arrival-port" className="w-full">
-                  <SelectValue placeholder="Select arrival port" />
+                  <SelectValue placeholder={t('selectArrivalPort')} />
                 </SelectTrigger>
                 <SelectContent>
                   {Object.entries(PORTS)
@@ -231,23 +233,23 @@ const PalletPriceCalculator = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="pallet-type">Pallet Type</Label>
+              <Label htmlFor="pallet-type">{t('palletType')}</Label>
               <Select 
                 value={palletType} 
                 onValueChange={(value: PalletType) => setPalletType(value)}
               >
                 <SelectTrigger id="pallet-type" className="w-full">
-                  <SelectValue placeholder="Select pallet type" />
+                  <SelectValue placeholder={t('selectPalletType')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="euro">Euro Pallet (1200 x 800 mm)</SelectItem>
-                  <SelectItem value="us">US Pallet (1200 x 1000 mm)</SelectItem>
+                  <SelectItem value="euro">{t('euroPallet')} (1200 x 800 mm)</SelectItem>
+                  <SelectItem value="us">{t('usPallet')} (1200 x 1000 mm)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             
             <div>
-              <Label htmlFor="quantity">Quantity</Label>
+              <Label htmlFor="quantity">{t('quantity')}</Label>
               <Input
                 id="quantity"
                 type="number"
@@ -260,13 +262,13 @@ const PalletPriceCalculator = () => {
           </div>
           
           <div>
-            <Label htmlFor="currency">Currency</Label>
+            <Label htmlFor="currency">{t('currency')}</Label>
             <Select 
               value={currency} 
               onValueChange={(value: Currency) => setCurrency(value)}
             >
               <SelectTrigger id="currency" className="w-full">
-                <SelectValue placeholder="Select currency" />
+                <SelectValue placeholder={t('selectCurrency')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="eur">EUR (€)</SelectItem>
@@ -281,17 +283,17 @@ const PalletPriceCalculator = () => {
             className="w-full"
           >
             <Calculator className="mr-2 h-4 w-4" />
-            Calculate Price
+            {t('calculatePrice')}
           </Button>
           
           {prices.perPallet !== null && prices.total !== null && (
             <div className="mt-4 p-4 bg-primary/10 rounded-md">
-              <h4 className="font-medium mb-3">Estimated Shipping Costs:</h4>
+              <h4 className="font-medium mb-3">{t('estimatedShippingCosts')}</h4>
               
               <div className="grid grid-cols-1 gap-4">
                 {/* Per pallet costs */}
                 <div className="border-b border-primary/20 pb-3">
-                  <h5 className="text-sm text-muted-foreground mb-2">Per pallet:</h5>
+                  <h5 className="text-sm text-muted-foreground mb-2">{t('perPallet')}</h5>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                     <div className="bg-secondary/10 p-2 rounded">
                       <span className="text-xs text-muted-foreground">EUR</span>
@@ -310,7 +312,7 @@ const PalletPriceCalculator = () => {
                 
                 {/* Total costs */}
                 <div>
-                  <h5 className="text-sm text-muted-foreground mb-2">Total ({quantity} pallets):</h5>
+                  <h5 className="text-sm text-muted-foreground mb-2">{t('total')} ({quantity} {t('pallets')}):</h5>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                     <div className="bg-primary/20 p-2 rounded">
                       <span className="text-xs text-muted-foreground">EUR</span>
@@ -331,11 +333,11 @@ const PalletPriceCalculator = () => {
               <div className="mt-3 text-sm text-muted-foreground">
                 <p className="flex items-center">
                   <MapPin className="h-4 w-4 mr-1 text-primary" />
-                  Route: {PORTS[departurePort]} → {PORTS[arrivalPort]}
+                  {t('route')} {PORTS[departurePort]} → {PORTS[arrivalPort]}
                 </p>
-                <p>Pallet type: {palletType === "us" ? "US Pallet" : "Euro Pallet"}</p>
-                <p>Distance: {PORT_DISTANCES[`${departurePort}-${arrivalPort}` as keyof typeof PORT_DISTANCES] || 0} nautical miles</p>
-                <p>Rate: {RATE_PER_NAUTICAL_MILE} EUR per nautical mile</p>
+                <p>{t('palletType')}: {palletType === "us" ? t('usPallet') : t('euroPallet')}</p>
+                <p>{t('distance')} {PORT_DISTANCES[`${departurePort}-${arrivalPort}` as keyof typeof PORT_DISTANCES] || 0} {t('nauticalMiles')}</p>
+                <p>{t('rate')} {RATE_PER_NAUTICAL_MILE} EUR {t('perNauticalMile')}</p>
               </div>
             </div>
           )}
@@ -348,10 +350,7 @@ const PalletPriceCalculator = () => {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">
-                This calculator provides an estimate for shipping pallets on our wind-powered vessels.
-                Prices are based on a rate of {RATE_PER_NAUTICAL_MILE} EUR per nautical mile.
-                Our eco-friendly vessels offer 15% lower costs than diesel vessels, with a capacity of 1,000 pallets per vessel.
-                Contact us for bulk shipping quotes.
+                {t('calculatorNote').replace('{rate}', RATE_PER_NAUTICAL_MILE.toString())}
               </p>
             </div>
           </div>
