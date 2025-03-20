@@ -213,6 +213,8 @@ const translations = {
     submitBooking: 'Submit Booking',
     bookingSuccess: 'Request Submitted',
     bookingSuccessDesc: 'We\'ll contact you shortly to confirm your drone delivery service.',
+    fullName: 'Full Name',
+    address: 'Address',
     
     // PassengerBookingForm
     roomType: 'Room Type',
@@ -241,8 +243,6 @@ const translations = {
     cvResume: 'CV/Resume',
     coverLetter: 'Cover Letter',
     message: 'Message',
-    fullName: 'Full Name',
-    address: 'Address',
     iWouldLikeTo: 'I would like to',
     shipMyCargo: 'Ship my cargo',
     bookCabin: 'Book a cabin',
@@ -519,7 +519,7 @@ const translations = {
     next: 'Suivant',
     previous: 'Précédent',
     submit: 'Soumettre',
-    firstName: 'Nom Complet',
+    firstName: 'Prénom',
     lastName: 'Nom de Famille',
     email: 'Email',
     phone: 'Numéro de Téléphone',
@@ -530,6 +530,8 @@ const translations = {
     submitBooking: 'Soumettre la Réservation',
     bookingSuccess: 'Demande Soumise',
     bookingSuccessDesc: 'Nous vous contacterons sous peu pour confirmer votre service de livraison par drone.',
+    fullName: 'Nom Complet',
+    address: 'Adresse',
     
     // PassengerBookingForm
     roomType: 'Type de Chambre',
@@ -558,8 +560,6 @@ const translations = {
     cvResume: 'CV',
     coverLetter: 'Lettre de Motivation',
     message: 'Message',
-    fullName: 'Nom Complet',
-    address: 'Adresse',
     iWouldLikeTo: 'Je voudrais',
     shipMyCargo: 'Expédier ma cargaison',
     bookCabin: 'Réserver une cabine',
@@ -836,7 +836,7 @@ const translations = {
     next: 'Siguiente',
     previous: 'Anterior',
     submit: 'Enviar',
-    firstName: 'Nombre Completo',
+    firstName: 'Nombre',
     lastName: 'Apellido',
     email: 'Correo Electrónico',
     phone: 'Número de Teléfono',
@@ -847,6 +847,8 @@ const translations = {
     submitBooking: 'Enviar Reserva',
     bookingSuccess: 'Solicitud Enviada',
     bookingSuccessDesc: 'Nos pondremos en contacto con usted pronto para confirmar su servicio de entrega por dron.',
+    fullName: 'Nombre Completo',
+    address: 'Dirección',
     
     // PassengerBookingForm
     roomType: 'Tipo de Habitación',
@@ -875,8 +877,6 @@ const translations = {
     cvResume: 'CV/Currículum',
     coverLetter: 'Carta de Presentación',
     message: 'Mensaje',
-    fullName: 'Nombre Completo',
-    address: 'Dirección',
     iWouldLikeTo: 'Me gustaría',
     shipMyCargo: 'Enviar mi carga',
     bookCabin: 'Reservar un camarote',
@@ -994,3 +994,4 @@ export const useLanguage = (): LanguageContextType => {
   }
   return context;
 };
+
