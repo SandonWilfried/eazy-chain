@@ -202,7 +202,7 @@ const translations = {
     next: 'Next',
     previous: 'Previous',
     submit: 'Submit',
-    firstName: 'First Name',  // Updated to be more specific
+    personFirstName: 'First Name',  // Changed key from firstName to personFirstName
     lastName: 'Last Name',
     email: 'Email',
     phone: 'Phone Number',
@@ -519,7 +519,7 @@ const translations = {
     next: 'Suivant',
     previous: 'Précédent',
     submit: 'Soumettre',
-    firstName: 'Prénom',  // Updated to be more specific
+    personFirstName: 'Prénom',  // Changed key from firstName to personFirstName
     lastName: 'Nom de Famille',
     email: 'Email',
     phone: 'Numéro de Téléphone',
@@ -836,7 +836,7 @@ const translations = {
     next: 'Siguiente',
     previous: 'Anterior',
     submit: 'Enviar',
-    firstName: 'Nombre',  // Updated to be more specific
+    personFirstName: 'Nombre',  // Changed key from firstName to personFirstName
     lastName: 'Apellido',
     email: 'Correo Electrónico',
     phone: 'Número de Teléfono',

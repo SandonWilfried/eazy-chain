@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -107,7 +108,7 @@ export default function PassengerBookingForm({ roomId }: PassengerBookingFormPro
             name="firstName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t('firstName')}</FormLabel>
+                <FormLabel>{t('personFirstName')}</FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input placeholder={t('enterFullName')} {...field} />
