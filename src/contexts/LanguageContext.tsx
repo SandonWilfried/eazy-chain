@@ -595,8 +595,6 @@ const translations = {
     trackingNumber: 'Numéro de suivi',
     containers: 'Conteneurs',
     unit: 'unité',
-    // units is already defined above in Payment section
-    // totalAmount is already defined above in Payment section
     paid: 'Payé',
     paymentPending: 'Paiement en attente',
     paymentOverdue: 'Paiement en retard',
@@ -924,8 +922,6 @@ const translations = {
     trackingNumber: 'Número de seguimiento',
     containers: 'Contenedores',
     unit: 'unidad',
-    // units is already defined above in Payment section
-    // totalAmount is already defined above in Payment section
     paid: 'Pagado',
     paymentPending: 'Pago Pendiente',
     paymentOverdue: 'Pago Atrasado',
