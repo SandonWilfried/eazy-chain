@@ -10,7 +10,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { CreditCard, Phone } from "lucide-react";
+import { CreditCard, Phone, DollarSign, Package, Truck, Calendar } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export interface PaymentFormProps {
   shipmentId: string;
@@ -49,13 +51,70 @@ const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }).optional(),
 });
 
+// Mock shipment data based on booking reference
+const mockShipmentDatabase = {
+  "REF123456": {
+    id: "CARGO12345678",
+    amount: 4600,
+    origin: "Shanghai Port, China",
+    destination: "Rotterdam Port, Netherlands",
+    containerCount: 2,
+    description: "General Merchandise",
+    weight: "12,500 kg",
+    deliveryDate: "2023-11-15",
+    currency: "USD",
+    itemizedCosts: {
+      freight: 3200,
+      handling: 800,
+      documentation: 300,
+      insurance: 300
+    }
+  },
+  "REF654321": {
+    id: "CARGO87654321",
+    amount: 3800,
+    origin: "Los Angeles Port, USA",
+    destination: "Hamburg Port, Germany",
+    containerCount: 1,
+    description: "Electronic Equipment",
+    weight: "8,200 kg",
+    deliveryDate: "2023-12-05",
+    currency: "USD",
+    itemizedCosts: {
+      freight: 2600,
+      handling: 600,
+      documentation: 300,
+      insurance: 300
+    }
+  },
+  "REF789012": {
+    id: "CARGO90123456",
+    amount: 6200,
+    origin: "Singapore Port, Singapore",
+    destination: "Yokohama Port, Japan",
+    containerCount: 3,
+    description: "Automotive Parts",
+    weight: "18,700 kg",
+    deliveryDate: "2023-11-25",
+    currency: "USD",
+    itemizedCosts: {
+      freight: 4500,
+      handling: 1000,
+      documentation: 400,
+      insurance: 300
+    }
+  }
+};
+
 const PaymentForm = ({ shipmentId, amount, onPaymentSuccess, autoVerifyReference }: PaymentFormProps) => {
   const stripe = useStripe();
   const elements = useElements();
   const [processing, setProcessing] = useState(false);
   const [verifying, setVerifying] = useState(false);
   const [referenceVerified, setReferenceVerified] = useState(false);
+  const [shipmentDetails, setShipmentDetails] = useState<any>(null);
   const { toast } = useToast();
+  const { t } = useLanguage();
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -89,12 +148,23 @@ const PaymentForm = ({ shipmentId, amount, onPaymentSuccess, autoVerifyReference
     
     // For demo purposes, we're adding a slight delay to simulate an API call
     setTimeout(() => {
-      // In a real app, you would validate this against your backend
-      setReferenceVerified(true);
-      toast({
-        title: "Booking Reference Verified",
-        description: "Your booking reference has been verified successfully."
-      });
+      // Check if the reference exists in our mock database
+      const shipmentInfo = mockShipmentDatabase[reference as keyof typeof mockShipmentDatabase];
+      
+      if (shipmentInfo) {
+        setReferenceVerified(true);
+        setShipmentDetails(shipmentInfo);
+        toast({
+          title: "Booking Reference Verified",
+          description: "Your booking reference has been verified successfully."
+        });
+      } else {
+        toast({
+          title: "Invalid Reference",
+          description: "The booking reference you entered could not be verified.",
+          variant: "destructive"
+        });
+      }
       setVerifying(false);
     }, 1500);
   };
@@ -183,177 +253,275 @@ const PaymentForm = ({ shipmentId, amount, onPaymentSuccess, autoVerifyReference
   };
   
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle>Payment Details</CardTitle>
-        <CardDescription>Enter your booking reference and card details below to complete your secure payment.</CardDescription>
-      </CardHeader>
+    <div className="space-y-6">
+      <Card className="w-full">
+        <CardHeader>
+          <CardTitle>{t('enterBookingReference')}</CardTitle>
+          <CardDescription>{t('verifyBookingDesc')}</CardDescription>
+        </CardHeader>
+        
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+              <div className="space-y-2">
+                <FormField
+                  control={form.control}
+                  name="bookingReference"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('bookingReference')}</FormLabel>
+                      <div className="flex gap-2">
+                        <FormControl>
+                          <Input 
+                            placeholder={t('enterReferenceNumber')} 
+                            {...field}
+                            disabled={referenceVerified}
+                          />
+                        </FormControl>
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          onClick={handleVerifyReference}
+                          disabled={verifying || referenceVerified}
+                        >
+                          {verifying ? t('verifying') : referenceVerified ? t('verified') : t('verify')}
+                        </Button>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
       
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-            <div className="space-y-2">
-              <FormField
-                control={form.control}
-                name="bookingReference"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Booking Reference</FormLabel>
-                    <div className="flex gap-2">
-                      <FormControl>
-                        <Input 
-                          placeholder="Enter your booking reference" 
-                          {...field}
-                          disabled={referenceVerified}
-                        />
-                      </FormControl>
-                      <Button 
-                        type="button" 
-                        variant="outline" 
-                        onClick={handleVerifyReference}
-                        disabled={verifying || referenceVerified}
-                      >
-                        {verifying ? "Verifying..." : referenceVerified ? "Verified ✓" : "Verify"}
-                      </Button>
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            
-            <div className={!referenceVerified ? "opacity-50 pointer-events-none" : ""}>
-              <FormField
-                control={form.control}
-                name="paymentMethod"
-                render={({ field }) => (
-                  <FormItem className="space-y-3">
-                    <FormLabel>Select Payment Method</FormLabel>
-                    <FormControl>
-                      <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        className="flex flex-col space-y-1"
-                      >
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="card" />
-                          </FormControl>
-                          <FormLabel className="font-normal flex items-center gap-2">
-                            <CreditCard size={18} />
-                            Credit/Debit Card
-                          </FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="mobile_money" />
-                          </FormControl>
-                          <FormLabel className="font-normal flex items-center gap-2">
-                            <Phone size={18} />
-                            Mobile Money
-                          </FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="paypal" />
-                          </FormControl>
-                          <FormLabel className="font-normal flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                              <path d="M7 11l4.06-6.5C12.48 2.34 14.5 1.5 16.5 1.5c2.53 0 4.35 1.5 4.89 3.87.43 2-.84 4.24-2.13 5.13H17"/>
-                              <path d="M13.5 9.5L8.21 15.9c-1.42 1.71-3.44 2.55-5.44 2.55-2.53 0-4.35-1.5-4.89-3.87-.43-2 .84-4.24 2.13-5.13H3"/>
-                              <path d="M4.5 13.5L10 8"/>
-                            </svg>
-                            PayPal
-                          </FormLabel>
-                        </FormItem>
-                      </RadioGroup>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+      {/* Payment Details - Only shown after verification */}
+      {referenceVerified && shipmentDetails && (
+        <Card className="overflow-hidden">
+          <div className="bg-primary py-3 px-4">
+            <h2 className="text-lg font-semibold text-primary-foreground flex items-center">
+              <DollarSign className="mr-2 h-5 w-5" />
+              {t('paymentDetails')}
+            </h2>
+          </div>
+          <CardContent className="p-0">
+            <div className="p-4 space-y-4">
+              <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                <div>
+                  <p className="text-sm text-muted-foreground">{t('shipmentId')}</p>
+                  <p className="font-medium">{shipmentDetails.id}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">{t('description')}</p>
+                  <p className="font-medium">{shipmentDetails.description || "N/A"}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">{t('origin')}</p>
+                  <p className="font-medium">{shipmentDetails.origin}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">{t('destination')}</p>
+                  <p className="font-medium">{shipmentDetails.destination}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">{t('containerCount')}</p>
+                  <p className="font-medium">{shipmentDetails.containerCount} {t('units')}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">{t('weight')}</p>
+                  <p className="font-medium">{shipmentDetails.weight || "N/A"}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">{t('estimatedDelivery')}</p>
+                  <p className="font-medium">{shipmentDetails.deliveryDate || "N/A"}</p>
+                </div>
+              </div>
               
-              {selectedPaymentMethod === "card" && (
-                <div className="mt-4">
-                  <FormLabel htmlFor="card" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Card Details
-                  </FormLabel>
-                  <div className="p-3 border rounded-md mt-1">
-                    <CardElement
-                      id="card"
-                      options={cardStyle}
-                      className="w-full"
-                    />
+              <Separator />
+              
+              {shipmentDetails.itemizedCosts && (
+                <div className="space-y-3">
+                  <h3 className="font-medium">{t('costBreakdown')}</h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">{t('freightCost')}</span>
+                      <span>${shipmentDetails.itemizedCosts.freight.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">{t('handlingFees')}</span>
+                      <span>${shipmentDetails.itemizedCosts.handling.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">{t('documentation')}</span>
+                      <span>${shipmentDetails.itemizedCosts.documentation.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">{t('insurance')}</span>
+                      <span>${shipmentDetails.itemizedCosts.insurance.toLocaleString()}</span>
+                    </div>
+                  </div>
+                  
+                  <Separator />
+                  
+                  <div className="flex justify-between font-semibold">
+                    <span>{t('totalAmount')}</span>
+                    <span className="text-lg text-primary">
+                      ${shipmentDetails.amount.toLocaleString()} {shipmentDetails.currency}
+                    </span>
                   </div>
                 </div>
               )}
-              
-              {selectedPaymentMethod === "mobile_money" && (
-                <div className="mt-4">
-                  <FormField
-                    control={form.control}
-                    name="phoneNumber"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Phone Number</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="Enter your phone number"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              )}
-              
-              {selectedPaymentMethod === "paypal" && (
-                <div className="mt-4">
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>PayPal Email</FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="email"
-                            placeholder="Enter your PayPal email"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              )}
             </div>
-          </form>
-        </Form>
-      </CardContent>
+          </CardContent>
+        </Card>
+      )}
       
-      <CardFooter>
-        <Button 
-          onClick={form.handleSubmit(handleSubmit)}
-          disabled={!referenceVerified || processing || (selectedPaymentMethod === "card" && !stripe)} 
-          className="w-full"
-        >
-          {processing ? (
-            "Processing..."
-          ) : (
-            <div className="flex items-center justify-center">
-              <span>Pay </span>
-              <span className="inline-block bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-200 px-3 py-1 ml-2 rounded-md font-bold">
-                ${amount.toLocaleString()}
-              </span>
-            </div>
-          )}
-        </Button>
-      </CardFooter>
-    </Card>
+      {/* Payment Methods - Only shown after verification */}
+      {referenceVerified && shipmentDetails && (
+        <Card className="w-full">
+          <CardHeader>
+            <CardTitle>{t('paymentMethod')}</CardTitle>
+            <CardDescription>{t('choosePaymentMethod')}</CardDescription>
+          </CardHeader>
+          
+          <CardContent>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+                <div className={!referenceVerified ? "opacity-50 pointer-events-none" : ""}>
+                  <FormField
+                    control={form.control}
+                    name="paymentMethod"
+                    render={({ field }) => (
+                      <FormItem className="space-y-3">
+                        <FormControl>
+                          <RadioGroup
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                            className="flex flex-col space-y-1"
+                          >
+                            <FormItem className="flex items-center space-x-3 space-y-0">
+                              <FormControl>
+                                <RadioGroupItem value="card" />
+                              </FormControl>
+                              <FormLabel className="font-normal flex items-center gap-2">
+                                <CreditCard size={18} />
+                                {t('creditDebitCard')}
+                              </FormLabel>
+                            </FormItem>
+                            <FormItem className="flex items-center space-x-3 space-y-0">
+                              <FormControl>
+                                <RadioGroupItem value="mobile_money" />
+                              </FormControl>
+                              <FormLabel className="font-normal flex items-center gap-2">
+                                <Phone size={18} />
+                                {t('mobileMoney')}
+                              </FormLabel>
+                            </FormItem>
+                            <FormItem className="flex items-center space-x-3 space-y-0">
+                              <FormControl>
+                                <RadioGroupItem value="paypal" />
+                              </FormControl>
+                              <FormLabel className="font-normal flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="M7 11l4.06-6.5C12.48 2.34 14.5 1.5 16.5 1.5c2.53 0 4.35 1.5 4.89 3.87.43 2-.84 4.24-2.13 5.13H17"/>
+                                  <path d="M13.5 9.5L8.21 15.9c-1.42 1.71-3.44 2.55-5.44 2.55-2.53 0-4.35-1.5-4.89-3.87-.43-2 .84-4.24 2.13-5.13H3"/>
+                                  <path d="M4.5 13.5L10 8"/>
+                                </svg>
+                                PayPal
+                              </FormLabel>
+                            </FormItem>
+                          </RadioGroup>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  {selectedPaymentMethod === "card" && (
+                    <div className="mt-4">
+                      <FormLabel htmlFor="card" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {t('cardDetails')}
+                      </FormLabel>
+                      <div className="p-3 border rounded-md mt-1">
+                        <CardElement
+                          id="card"
+                          options={cardStyle}
+                          className="w-full"
+                        />
+                      </div>
+                    </div>
+                  )}
+                  
+                  {selectedPaymentMethod === "mobile_money" && (
+                    <div className="mt-4">
+                      <FormField
+                        control={form.control}
+                        name="phoneNumber"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t('phoneNumber')}</FormLabel>
+                            <FormControl>
+                              <Input 
+                                placeholder={t('enterPhoneNumber')}
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  )}
+                  
+                  {selectedPaymentMethod === "paypal" && (
+                    <div className="mt-4">
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t('paypalEmail')}</FormLabel>
+                            <FormControl>
+                              <Input 
+                                type="email"
+                                placeholder={t('enterPaypalEmail')}
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  )}
+                </div>
+              </form>
+            </Form>
+          </CardContent>
+          
+          <CardFooter>
+            <Button 
+              onClick={form.handleSubmit(handleSubmit)}
+              disabled={!referenceVerified || processing || (selectedPaymentMethod === "card" && !stripe)} 
+              className="w-full"
+            >
+              {processing ? (
+                t('processing')
+              ) : (
+                <div className="flex items-center justify-center">
+                  <span>{t('pay')} </span>
+                  <span className="inline-block bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-200 px-3 py-1 ml-2 rounded-md font-bold">
+                    ${shipmentDetails ? shipmentDetails.amount.toLocaleString() : amount.toLocaleString()}
+                  </span>
+                </div>
+              )}
+            </Button>
+          </CardFooter>
+        </Card>
+      )}
+    </div>
   );
 };
 
