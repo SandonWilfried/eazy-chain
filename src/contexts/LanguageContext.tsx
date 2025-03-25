@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 type Language = 'en' | 'fr' | 'es';
@@ -676,3 +677,340 @@ const translations = {
     vesselsDesc: 'Buques modernos y eficientes para transportar su carga de manera segura',
     ourDigitalPlatform: 'Nuestra Plataforma Digital',
     platformDesc: 'Gestione sus envíos fácilmente con nuestra intuitiva aplicación móvil',
+    ourTrustedPartners: 'Nuestros Socios de Confianza',
+    partnersDesc: 'Colaboramos con líderes de la industria para proporcionar las mejores soluciones de envío',
+    readyToShip: '¿Listo para Enviar con Nosotros?',
+    joinThousands: 'Únase a miles de empresas que confían en nosotros para sus necesidades de envío. Comience hoy mismo.',
+    getStarted: 'Comenzar',
+    
+    // Tracking
+    enterTrackingNumber: 'Ingrese número de seguimiento',
+    searching: 'Buscando...',
+    trackShipment: 'Rastrear Envío',
+    noTrackingInfo: 'No Se Encontró Información de Seguimiento',
+    verifyAndTryAgain: 'No pudimos encontrar ningún envío con el número de seguimiento proporcionado. Por favor, verifique e intente nuevamente.',
+    contactSupport: 'Contactar Soporte',
+    shipmentProgress: 'Progreso del Envío',
+    origin: 'Origen',
+    destination: 'Destino',
+    departureDate: 'Fecha de Salida',
+    estimatedArrival: 'Llegada Estimada',
+    vessel: 'Buque',
+    lastUpdated: 'Última Actualización',
+    shipmentTimeline: 'Cronología del Envío',
+    
+    // Services
+    internationalShippingServices: 'Servicios de Envío Internacional',
+    customsClearance: 'Solicitud de Despacho Aduanero',
+    customsClearanceDesc: 'Servicios agilizados de despacho aduanero para acelerar sus envíos a través de controles fronterizos y puntos de control regulatorios.',
+    airFreight: 'Flete Aéreo',
+    airFreightDesc: 'Servicios de flete aéreo rápidos y confiables para envíos urgentes y carga sensible al tiempo, incluidas opciones de consolidación aérea.',
+    airGroupage: 'Agrupamiento Aéreo',
+    oceanFreight: 'Flete Marítimo',
+    oceanFreightDesc: 'Servicios de flete marítimo rentables para envíos en contenedores y grandes volúmenes de carga, incluidas opciones de consolidación.',
+    oceanGroupage: 'Agrupamiento Marítimo',
+    courierServices: 'Servicios de Mensajería',
+    courierServicesDesc: 'Servicios de mensajería rápidos y confiables para documentos y paquetes pequeños con entrega puerta a puerta a todos los países atendidos por Asky Airlines.',
+    droneServices: 'Servicios de Entrega por Dron',
+    droneServicesDesc: 'Servicios de entrega por dron rápidos y eficientes para paquetes en Togo, Benin, Costa de Marfil y Senegal con opciones de entrega el mismo día.',
+    droneServiceRequest: 'Solicitud de Servicio de Entrega por Dron',
+    maritimeSolutions: 'Soluciones Marítimas',
+    
+    // Booking
+    booking: 'Reserva',
+    bookingDesc: 'Reserve espacio para carga en nuestros buques para sus envíos',
+    bookYourCargo: 'Reserve Su Carga',
+    shippingInformation: 'Información de Envío',
+    vesselDesc: 'Nuestros buques operan viajes de ida y vuelta entre Lomé, Togo y Praia, Cabo Verde con múltiples paradas en puertos.',
+    palletTypesAvailable: 'Tipos de Paletas Disponibles',
+    usPallet: 'Paleta US',
+    euroPallet: 'Paleta Euro',
+    
+    // Passengers
+    passengerAccommodations: 'Alojamiento para Pasajeros',
+    passengerDesc: 'Reserve su camarote en nuestro velero para un viaje oceánico único y sostenible',
+    sailingVoyageExperience: 'Experiencia de Viaje en Velero',
+    sailingDesc: 'Eazy Chain ofrece alojamiento para pasajeros en nuestro velero de carga. Únase a nosotros para un viaje único de 10 días entre Lomé, Togo y Praia, Cabo Verde, con paradas en hermosas ciudades costeras en el camino.',
+    ecoFriendlyTravel: 'Viaje Ecológico',
+    ecoDesc: 'Nuestro buque funciona con energía eólica y solar, lo que hace que su viaje sea ambientalmente responsable.',
+    limitedCapacity: 'Capacidad Limitada',
+    capacityDesc: 'Con solo 6 camarotes para 12 pasajeros, disfrute de una experiencia de navegación exclusiva y personalizada.',
+    tenDayVoyage: 'Viaje de 10 Días',
+    voyageDesc: 'Experimente un tranquilo viaje de 10 días entre Lomé, Togo y Praia, Cabo Verde con paradas costeras.',
+    cantFind: '¿No encuentra lo que está buscando? Cree una solicitud de reserva personalizada.',
+    createCustomBooking: 'Crear Reserva Personalizada',
+    availableCabins: 'Camarotes Disponibles',
+    customBooking: 'Reserva Personalizada',
+    moreCabinViews: 'Más Vistas de Camarotes',
+    moreCabinDesc: 'Explore más imágenes de nuestros alojamientos en camarotes premium',
+    
+    // Passenger Amenities
+    luxuriousBathroom: 'Baño lujoso',
+    kingSizeBed: 'Cama king-size',
+    panoramicView: 'Vista panorámica',
+    sittingArea: 'Área de estar',
+    roomService: 'Servicio de habitación',
+    premiumAmenities: 'Amenidades premium',
+    freeWiFi: 'WiFi gratuito',
+    breakfastIncluded: 'Desayuno incluido',
+    lunchIncluded: 'Almuerzo incluido',
+    dinnerIncluded: 'Cena incluida',
+    
+    // Cabin View Titles
+    diningHall: 'Comedor',
+    diningHallDesc: 'Disfrute de comidas con impresionantes vistas al océano en nuestro espacioso comedor',
+    commonLounge: 'Sala Común',
+    commonLoungeDesc: 'Relájese en nuestras cómodas áreas de salón con ventanas panorámicas',
+    socialSpace: 'Espacio Social',
+    socialSpaceDesc: 'Amplios espacios sociales para relajarse y conectarse con otros viajeros',
+    premiumLounge: 'Salón Premium',
+    premiumLoungeDesc: 'Espacios de salón modernos con diseño elegante y vistas al océano',
+    readingCorner: 'Rincón de Lectura',
+    readingCornerDesc: 'Acogedoras áreas de asientos perfectas para leer o mantener una conversación tranquila',
+    
+    // Payment
+    securePayment: 'Pago Seguro',
+    paymentDesc: 'Complete sus datos de pago para finalizar su transacción de envío',
+    shipmentTotal: 'Total del Envío',
+    shipmentId: 'ID de Envío',
+    loadingPayment: 'Cargando información de pago...',
+    
+    // Supplier Payment
+    paymentToSuppliers: 'Pago a Proveedores',
+    suppliersDesc: 'Pague de forma segura a sus proveedores internacionales con nuestro fiable servicio de pago',
+    backToServices: 'Volver a Servicios',
+    
+    // Footer
+    allRightsReserved: 'Todos los derechos reservados.',
+    
+    // Status
+    pending: 'Pendiente de Salida',
+    inTransit: 'En Tránsito',
+    delivered: 'Entregado',
+    customs: 'Despacho Aduanero',
+    delayed: 'Retrasado',
+    
+    // Drone Services Form
+    personalInformation: 'Información Personal',
+    enterFullName: 'Ingrese su nombre completo',
+    enterEmail: 'Ingrese su correo electrónico',
+    enterPhone: 'Ingrese su número de teléfono',
+    selectCountry: 'Seleccione su país',
+    enterCity: 'Ingrese su ciudad',
+    packageInformation: 'Información del Paquete',
+    packageType: 'Tipo de Paquete',
+    selectPackageType: 'Seleccione tipo de paquete',
+    packageWeight: 'Peso del Paquete (kg)',
+    enterWeight: 'Ingrese peso en kg',
+    packageDimensions: 'Dimensiones del Paquete (cm)',
+    lengthWidthHeight: 'Largo x Ancho x Alto',
+    pickupAddress: 'Dirección de Recogida',
+    enterPickupAddress: 'Ingrese dirección de recogida',
+    deliveryAddress: 'Dirección de Entrega',
+    enterDeliveryAddress: 'Ingrese dirección de entrega',
+    urgentDelivery: 'Entrega Urgente',
+    selectForPriority: 'Seleccione para manejo prioritario y entrega más rápida',
+    additionalInformation: 'Información Adicional',
+    specialInstructions: 'Cualquier instrucción especial o requisitos',
+    cancel: 'Cancelar',
+    processing: 'Procesando...',
+    submitRequest: 'Enviar Solicitud',
+    
+    // Package types
+    documents: 'Documentos',
+    smallPackage: 'Paquete Pequeño',
+    mediumPackage: 'Paquete Mediano',
+    fragileItems: 'Artículos Frágiles',
+    medicalSupplies: 'Suministros Médicos',
+    
+    // Common
+    back: 'Atrás',
+    loading: 'Cargando...',
+    available: 'Disponible',
+    soldOut: 'Agotado',
+    perNight: 'por noche',
+    bookNow: 'Reservar Ahora',
+    amenities: 'Comodidades:',
+    roomSelected: 'Habitación Seleccionada',
+    roomSelectedDesc: 'Ha seleccionado {name}. Complete los detalles de su reserva.',
+    next: 'Siguiente',
+    previous: 'Anterior',
+    submit: 'Enviar',
+    personFirstName: 'Nombre',  // Changed key from firstName to personFirstName to avoid duplicates
+    lastName: 'Apellido',
+    email: 'Correo Electrónico',
+    phone: 'Número de Teléfono',
+    country: 'País',
+    city: 'Ciudad',
+    specialRequests: 'Solicitudes Especiales',
+    processingRequest: 'Procesando...',
+    submitBooking: 'Enviar Reserva',
+    bookingSuccess: 'Solicitud Enviada',
+    bookingSuccessDesc: 'Nos pondremos en contacto con usted en breve para confirmar su servicio de entrega por dron.',
+    fullName: 'Nombre Completo',
+    address: 'Dirección',
+    
+    // PassengerBookingForm
+    roomType: 'Tipo de Habitación',
+    selectRoomType: 'Seleccione un tipo de habitación',
+    standardCabin: 'Camarote Estándar',
+    deluxeCabin: 'Camarote Deluxe',
+    premiumCabin: 'Camarote Premium',
+    numberOfPassengers: 'Número de Pasajeros',
+    selectNumberOfPassengers: 'Seleccione número de pasajeros',
+    passenger: 'Pasajero',
+    passengers: 'Pasajeros',
+    pickDate: 'Elija una fecha',
+    specialRequestsPlaceholder: 'Cualquier requisito dietético, necesidades de accesibilidad u otras solicitudes especiales...',
+    enterLastName: 'Ingrese su apellido',
+    
+    // RoomCard
+    person: 'persona',
+    persons: 'personas',
+    
+    // ContactSection
+    submitApplication: 'Enviar Solicitud',
+    applyFormDesc: 'Complete el formulario a continuación para solicitar un puesto en Eazy Chain. Cargue su CV y carta de presentación.',
+    position: 'Puesto',
+    positionApplyingFor: 'Puesto al que está solicitando',
+    tellUsAboutYourself: 'Cuéntenos sobre usted y por qué está interesado en este puesto',
+    cvResume: 'CV/Currículum',
+    coverLetter: 'Carta de Presentación',
+    message: 'Mensaje',
+    iWouldLikeTo: 'Me gustaría',
+    shipMyCargo: 'Enviar mi carga',
+    bookCabin: 'Reservar un camarote',
+    applyAtEazyChain: 'Solicitar en Eazy Chain',
+    discussAnotherTopic: 'Discutir otro tema',
+    whatWouldYouLikeToDiscuss: '¿Qué le gustaría discutir?',
+    
+    // ShipmentCard
+    trackingNumber: 'Seguimiento #',
+    containers: 'Contenedores',
+    unit: 'unidad',
+    units: 'unidades',
+    totalAmount: 'Monto Total',
+    paid: 'Pagado',
+    paymentPending: 'Pago Pendiente',
+    paymentOverdue: 'Pago Atrasado',
+    cancelled: 'Cancelado',
+    
+    // Maritime Solutions
+    globalTradeConsulting: 'Consultoría en Comercio Global',
+    globalTradeConsultingDesc: 'Asesoramiento experto sobre regulaciones de comercio internacional, aduanas y cumplimiento para ayudar a su negocio a navegar en mercados globales.',
+    supplyChainAnalytics: 'Análisis de Cadena de Suministro',
+    supplyChainAnalyticsDesc: 'Información basada en datos para optimizar sus operaciones de cadena de suministro y reducir costos mientras mejora la eficiencia.',
+    sustainableShipping: 'Envío Sostenible',
+    sustainableShippingDesc: 'Opciones de envío ecológicas para reducir su huella de carbono y cumplir con los estándares de cumplimiento ambiental.',
+    weatherRoutingServices: 'Servicios de Ruteo Meteorológico',
+    weatherRoutingServicesDesc: 'Planificación de ruta optimizada basada en pronósticos meteorológicos para garantizar viajes más seguros y reducir el consumo de combustible.',
+    ballastWaterManagement: 'Gestión de Agua de Lastre',
+    ballastWaterManagementDesc: 'Soluciones integrales para sistemas de tratamiento de agua de lastre para cumplir con las regulaciones internacionales.',
+    energyEfficiencyConsulting: 'Consultoría en Eficiencia Energética',
+    energyEfficiencyConsultingDesc: 'Asesoramiento experto sobre la reducción del consumo de energía y emisiones para sus operaciones de buques.',
+    
+    // CTA Section
+    readyToGetStarted: '¿Listo para Comenzar?',
+    contactOurTeam: 'Contacte a nuestro equipo hoy para discutir cómo podemos ayudar a optimizar sus operaciones marítimas.',
+    bookConsultation: 'Reservar una Consulta',
+    
+    // Pallet Price Calculator
+    palletPriceCalculator: 'Calculadora de Precio de Paleta',
+    portOfDeparture: 'Puerto de Salida',
+    portOfArrival: 'Puerto de Llegada',
+    selectDeparturePort: 'Seleccionar puerto de salida',
+    selectArrivalPort: 'Seleccionar puerto de llegada',
+    palletType: 'Tipo de Paleta',
+    selectPalletType: 'Seleccionar tipo de paleta',
+    quantity: 'Cantidad',
+    currency: 'Moneda',
+    selectCurrency: 'Seleccionar moneda',
+    calculatePrice: 'Calcular Precio',
+    estimatedShippingCosts: 'Costos Estimados de Envío:',
+    perPallet: 'Por paleta:',
+    total: 'Total',
+    pallets: 'paletas',
+    route: 'Ruta:',
+    distance: 'Distancia:',
+    nauticalMiles: 'millas náuticas',
+    rate: 'Tarifa:',
+    perNauticalMile: 'por milla náutica',
+    calculatorNote: 'Esta calculadora proporciona una estimación para el envío de paletas en nuestros buques propulsados por viento. Los precios se basan en una tarifa de {rate} EUR por milla náutica. Nuestros buques ecológicos ofrecen costos 15% más bajos que los buques diésel, con una capacidad de 1,000 paletas por buque. Contáctenos para cotizaciones de envío a granel.',
+    
+    // BookingForm
+    originPort: 'Puerto de Origen',
+    destinationPort: 'Puerto de Destino',
+    selectOriginPort: 'Seleccionar puerto de origen',
+    selectDestinationPort: 'Seleccionar puerto de destino',
+    selectDepartureDate: 'Seleccione su fecha preferida',
+    cargoType: 'Tipo de Carga',
+    selectCargoType: 'Seleccionar tipo de carga',
+    containerCount: 'Número de Contenedores',
+    palletCount: 'Número de Paletas',
+    weight: 'Peso (kg)',
+    cargoDescription: 'Descripción de la Carga',
+    selectCargoDescription: 'Seleccionar descripción de la carga',
+    noDescriptionFound: 'No se encontró descripción.',
+    contactName: 'Nombre de Contacto',
+    contactEmail: 'Correo Electrónico de Contacto',
+    contactPhone: 'Teléfono de Contacto',
+    emailPlaceholder: 'email@ejemplo.com',
+    phonePlaceholder: '+34 612 345 678',
+    submitting: 'Enviando...',
+    submitBookingRequest: 'Enviar Solicitud de Reserva',
+    bookingRequestSubmitted: 'Solicitud de Reserva Enviada',
+    bookingConfirmation: 'Nos pondremos en contacto con usted en breve para confirmar su reserva.'
+  }
+};
+
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+
+export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [language, setLanguage] = useState<Language>('en');
+
+  useEffect(() => {
+    // Try to get the language from localStorage
+    const savedLanguage = localStorage.getItem('language');
+    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'fr' || savedLanguage === 'es')) {
+      setLanguage(savedLanguage as Language);
+    } else {
+      // Try to get the browser language
+      const browserLang = navigator.language.split('-')[0];
+      if (browserLang === 'fr' || browserLang === 'es') {
+        setLanguage(browserLang as Language);
+      }
+      // Default is 'en', which is already set
+    }
+  }, []);
+
+  useEffect(() => {
+    // Save language preference to localStorage
+    localStorage.setItem('language', language);
+  }, [language]);
+
+  const t = (key: string): string => {
+    // @ts-ignore
+    const translation = translations[language][key];
+    if (!translation) {
+      console.warn(`Translation missing for key: ${key} in language: ${language}`);
+      // @ts-ignore
+      const fallbackTranslation = translations['en'][key];
+      return fallbackTranslation || key;
+    }
+    return translation;
+  };
+
+  return (
+    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+};
+
+export const useLanguage = (): LanguageContextType => {
+  const context = useContext(LanguageContext);
+  if (context === undefined) {
+    throw new Error('useLanguage must be used within a LanguageProvider');
+  }
+  return context;
+};
