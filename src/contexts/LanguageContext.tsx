@@ -140,6 +140,18 @@ const translations = {
     shipmentTotal: 'Shipment Total',
     shipmentId: 'Shipment ID',
     loadingPayment: 'Loading payment information...',
+    paymentDetails: 'Payment Details',
+    description: 'Description',
+    containerCount: 'Container Count',
+    units: 'units',
+    weight: 'Weight',
+    estimatedDelivery: 'Estimated Delivery',
+    costBreakdown: 'Cost Breakdown',
+    freightCost: 'Freight Cost',
+    handlingFees: 'Handling Fees',
+    documentation: 'Documentation',
+    insurance: 'Insurance',
+    totalAmount: 'Total Amount',
     
     // Supplier Payment
     paymentToSuppliers: 'Payment to Suppliers',
@@ -254,8 +266,8 @@ const translations = {
     trackingNumber: 'Tracking #',
     containers: 'Containers',
     unit: 'unit',
-    units: 'units',
-    totalAmount: 'Total Amount',
+    // units is already defined above in Payment section
+    // totalAmount is already defined above in Payment section
     paid: 'Paid',
     paymentPending: 'Payment Pending',
     paymentOverdue: 'Payment Overdue',
@@ -311,9 +323,9 @@ const translations = {
     selectDepartureDate: 'Select your preferred date',
     cargoType: 'Cargo Type',
     selectCargoType: 'Select cargo type',
-    containerCount: 'Number of Containers',
+    // containerCount is already defined above in Payment section
     palletCount: 'Number of Pallets',
-    weight: 'Weight (kg)',
+    // weight is already defined above in Payment section
     cargoDescription: 'Cargo Description',
     selectCargoDescription: 'Select cargo description',
     noDescriptionFound: 'No description found.',
@@ -457,6 +469,18 @@ const translations = {
     shipmentTotal: 'Total de l\'Expédition',
     shipmentId: 'ID d\'Expédition',
     loadingPayment: 'Chargement des informations de paiement...',
+    paymentDetails: 'Détails du Paiement',
+    description: 'Description',
+    containerCount: 'Nombre de Conteneurs',
+    units: 'unités',
+    weight: 'Poids',
+    estimatedDelivery: 'Livraison Estimée',
+    costBreakdown: 'Ventilation des Coûts',
+    freightCost: 'Coût du Fret',
+    handlingFees: 'Frais de Manutention',
+    documentation: 'Documentation',
+    insurance: 'Assurance',
+    totalAmount: 'Montant Total',
     
     // Supplier Payment
     paymentToSuppliers: 'Paiement aux Fournisseurs',
@@ -571,8 +595,8 @@ const translations = {
     trackingNumber: 'Numéro de suivi',
     containers: 'Conteneurs',
     unit: 'unité',
-    units: 'unités',
-    totalAmount: 'Montant Total',
+    // units is already defined above in Payment section
+    // totalAmount is already defined above in Payment section
     paid: 'Payé',
     paymentPending: 'Paiement en attente',
     paymentOverdue: 'Paiement en retard',
@@ -628,9 +652,9 @@ const translations = {
     selectDepartureDate: 'Sélectionner votre date préférée',
     cargoType: 'Type de Cargaison',
     selectCargoType: 'Sélectionner le type de cargaison',
-    containerCount: 'Nombre de Conteneurs',
+    // containerCount is already defined above in Payment section
     palletCount: 'Nombre de Palettes',
-    weight: 'Poids (kg)',
+    // weight is already defined above in Payment section
     cargoDescription: 'Description de la Cargaison',
     selectCargoDescription: 'Sélectionner la description de la cargaison',
     noDescriptionFound: 'Aucune description trouvée.',
@@ -774,6 +798,18 @@ const translations = {
     shipmentTotal: 'Total del Envío',
     shipmentId: 'ID del Envío',
     loadingPayment: 'Cargando información de pago...',
+    paymentDetails: 'Detalles del Pago',
+    description: 'Descripción',
+    containerCount: 'Número de Contenedores',
+    units: 'unidades',
+    weight: 'Peso',
+    estimatedDelivery: 'Entrega Estimada',
+    costBreakdown: 'Desglose de Costos',
+    freightCost: 'Costo de Flete',
+    handlingFees: 'Cargos por Manipulación',
+    documentation: 'Documentación',
+    insurance: 'Seguro',
+    totalAmount: 'Monto Total',
     
     // Supplier Payment
     paymentToSuppliers: 'Pago a Proveedores',
@@ -888,8 +924,8 @@ const translations = {
     trackingNumber: 'Número de seguimiento',
     containers: 'Contenedores',
     unit: 'unidad',
-    units: 'unidades',
-    totalAmount: 'Cantidad Total',
+    // units is already defined above in Payment section
+    // totalAmount is already defined above in Payment section
     paid: 'Pagado',
     paymentPending: 'Pago Pendiente',
     paymentOverdue: 'Pago Atrasado',
@@ -945,9 +981,9 @@ const translations = {
     selectDepartureDate: 'Seleccione su fecha preferida',
     cargoType: 'Tipo de Carga',
     selectCargoType: 'Seleccione tipo de carga',
-    containerCount: 'Número de Contenedores',
+    // containerCount is already defined above in Payment section
     palletCount: 'Número de Pallets',
-    weight: 'Peso (kg)',
+    // weight is already defined above in Payment section
     cargoDescription: 'Descripción de la Carga',
     selectCargoDescription: 'Seleccione descripción de la carga',
     noDescriptionFound: 'No se encontró descripción.',
@@ -1000,3 +1036,4 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export const useLanguage = () => useContext(LanguageContext);
+
