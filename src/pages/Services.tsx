@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Globe, BarChart, Leaf, Wind, Droplets, ZapOff, Ship, Package, Plane, Truck, CreditCard, Send, Cpu } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -24,7 +23,6 @@ const Services = () => {
   const [droneServiceDialogOpen, setDroneServiceDialogOpen] = useState(false);
   const { t } = useLanguage();
   
-  // Get current date and set default value for 1 month from now
   const getDefaultDate = () => {
     const date = new Date();
     date.setMonth(date.getMonth() + 1);
@@ -68,7 +66,6 @@ const Services = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      {/* Header */}
       <section className="bg-primary/5 py-16 md:py-24">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-3xl md:text-4xl font-bold mb-6">{t('ourServices')}</h1>
@@ -78,12 +75,10 @@ const Services = () => {
         </div>
       </section>
       
-      {/* International Shipping Services - Moved above Maritime Solutions */}
       <section className="py-16 bg-gray-50 dark:bg-gray-900/20">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl font-bold mb-8 text-center">{t('internationalShippingServices')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Customs Clearance */}
             <Card 
               className="transition-all duration-300 hover:shadow-md cursor-pointer"
               onClick={() => setCustomsDialogOpen(true)}
@@ -101,7 +96,6 @@ const Services = () => {
               </CardContent>
             </Card>
             
-            {/* Air Freight */}
             <Card 
               className="transition-all duration-300 hover:shadow-md cursor-pointer"
               onClick={() => setAirFreightDialogOpen(true)}
@@ -130,7 +124,6 @@ const Services = () => {
               </CardContent>
             </Card>
             
-            {/* Ocean Freight */}
             <Card 
               className="transition-all duration-300 hover:shadow-md cursor-pointer"
               onClick={() => setOceanFreightDialogOpen(true)}
@@ -159,7 +152,6 @@ const Services = () => {
               </CardContent>
             </Card>
             
-            {/* Payment to Suppliers */}
             <Link to="/supplier-payment" className="block">
               <Card className="transition-all duration-300 hover:shadow-md h-full">
                 <CardHeader className="text-center">
@@ -176,7 +168,6 @@ const Services = () => {
               </Card>
             </Link>
             
-            {/* Courier Services */}
             <Card 
               className="transition-all duration-300 hover:shadow-md cursor-pointer"
               onClick={() => setCourierServiceDialogOpen(true)}
@@ -194,7 +185,6 @@ const Services = () => {
               </CardContent>
             </Card>
             
-            {/* Drone Services */}
             <Card 
               className="transition-all duration-300 hover:shadow-md cursor-pointer"
               onClick={() => setDroneServiceDialogOpen(true)}
@@ -215,7 +205,6 @@ const Services = () => {
         </div>
       </section>
       
-      {/* Services Grid - Maritime Solutions */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl font-bold mb-8 text-center">{t('maritimeSolutions')}</h2>
@@ -239,7 +228,6 @@ const Services = () => {
         </div>
       </section>
       
-      {/* Customs Clearance Dialog */}
       <Dialog open={customsDialogOpen} onOpenChange={setCustomsDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
@@ -249,7 +237,6 @@ const Services = () => {
         </DialogContent>
       </Dialog>
       
-      {/* Air Freight Dialog */}
       <Dialog open={airFreightDialogOpen} onOpenChange={setAirFreightDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
@@ -259,7 +246,6 @@ const Services = () => {
         </DialogContent>
       </Dialog>
       
-      {/* Air Groupage Dialog */}
       <Dialog open={airConsolidationDialogOpen} onOpenChange={setAirConsolidationDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
@@ -269,7 +255,6 @@ const Services = () => {
         </DialogContent>
       </Dialog>
       
-      {/* Ocean Freight Dialog */}
       <Dialog open={oceanFreightDialogOpen} onOpenChange={setOceanFreightDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
@@ -279,7 +264,6 @@ const Services = () => {
         </DialogContent>
       </Dialog>
       
-      {/* Ocean Groupage Dialog */}
       <Dialog open={oceanConsolidationDialogOpen} onOpenChange={setOceanConsolidationDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
@@ -289,7 +273,6 @@ const Services = () => {
         </DialogContent>
       </Dialog>
       
-      {/* Courier Service Dialog */}
       <Dialog open={courierServiceDialogOpen} onOpenChange={setCourierServiceDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
@@ -299,7 +282,6 @@ const Services = () => {
         </DialogContent>
       </Dialog>
       
-      {/* Drone Service Dialog */}
       <Dialog open={droneServiceDialogOpen} onOpenChange={setDroneServiceDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
@@ -309,7 +291,6 @@ const Services = () => {
         </DialogContent>
       </Dialog>
       
-      {/* CTA Section */}
       <section className="bg-primary text-primary-foreground py-16">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-6">{t('readyToGetStarted')}</h2>
@@ -324,7 +305,6 @@ const Services = () => {
         </div>
       </section>
       
-      {/* Footer */}
       <footer className="bg-background border-t py-12 mt-auto">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
