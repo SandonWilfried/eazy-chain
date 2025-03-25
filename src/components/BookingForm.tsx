@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
+import { CalendarIcon, Check, ChevronsUpDown, MapPin } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -40,6 +40,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Checkbox } from "@/components/ui/checkbox";
 
 // List of West African ports as specified
 const westAfricanPorts = [
@@ -131,6 +132,8 @@ const formSchema = z.object({
     message: "Weight is required.",
   }),
   cargoDescription: z.string().optional(),
+  pickupAddressRequired: z.boolean().default(false),
+  pickupAddress: z.string().optional(),
   contactName: z.string().min(2, {
     message: "Contact name is required.",
   }),
@@ -151,6 +154,15 @@ const BookingForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
   const [availableDestinationPorts, setAvailableDestinationPorts] = useState(westAfricanPorts);
+  const [bookingReference, setBookingReference] = useState<string | null>(null);
+  const [qrCodeUrl, setQrCodeUrl] = useState<string>("");
+
+  // Get default departure date (1 month from today)
+  const getDefaultDepartureDate = () => {
+    const date = new Date();
+    date.setMonth(date.getMonth() + 1);
+    return date;
+  };
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -160,11 +172,15 @@ const BookingForm = () => {
       palletCount: 1,
       palletType: "Euro Pallet (1200 x 800 mm)",
       weight: 1000,
+      departureDate: getDefaultDepartureDate(),
+      pickupAddressRequired: false,
+      pickupAddress: "",
     },
   });
 
   // Update available destination ports when origin port changes
   const originPort = form.watch("originPort");
+  const watchPickupAddressRequired = form.watch("pickupAddressRequired");
   
   useEffect(() => {
     if (originPort) {
@@ -183,15 +199,29 @@ const BookingForm = () => {
     }
   }, [originPort, form]);
 
+  // Generate QR code URL for payment and tracking
+  const generateQrCodeUrl = (reference: string) => {
+    return `${window.location.origin}/payment?reference=${reference}`;
+  };
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     console.log(values);
+    
+    // Generate booking reference
+    const bookingRef = `BKG-${Math.floor(Math.random() * 1000000)}`;
+    setBookingReference(bookingRef);
+    
+    // Generate QR code URL
+    const paymentUrl = generateQrCodeUrl(bookingRef);
+    setQrCodeUrl(paymentUrl);
     
     // Create email content
     const emailSubject = "Cargo Booking Request";
     const emailBody = `
       Cargo Booking Request Details:
       ----------------------------
+      Booking Reference: ${bookingRef}
       Origin Port: ${values.originPort}
       Destination Port: ${values.destinationPort}
       Departure Date: ${format(values.departureDate, 'PPP')}
@@ -203,6 +233,7 @@ const BookingForm = () => {
       - Pallet Type: ${values.palletType}
       - Weight (kg): ${values.weight}
       - Cargo Description: ${values.cargoDescription || 'Not provided'}
+      ${values.pickupAddressRequired ? `- Pickup Address: ${values.pickupAddress}` : ''}
       
       Contact Information:
       - Name: ${values.contactName}
@@ -222,8 +253,51 @@ const BookingForm = () => {
         title: t('bookingRequestSubmitted'),
         description: t('bookingConfirmation'),
       });
-      form.reset();
     }, 1500);
+  }
+
+  if (bookingReference) {
+    return (
+      <div className="text-center space-y-6 p-6 bg-background rounded-lg border shadow-sm">
+        <h2 className="text-2xl font-bold mb-2">{t('bookingConfirmed')}</h2>
+        <div className="bg-green-50 dark:bg-green-900/20 p-6 rounded-lg">
+          <p className="mb-4">
+            {t('yourBookingReference')}:
+          </p>
+          <div className="text-2xl font-bold p-3 bg-background border rounded-md inline-block">
+            {bookingReference}
+          </div>
+          
+          <p className="mt-4 text-red-600 font-medium">
+            {t('keepReferenceForPaymentTracking')}
+          </p>
+          
+          {qrCodeUrl && (
+            <div className="mt-6">
+              <p className="mb-2 font-medium">{t('scanQrCodeForPayment')}:</p>
+              <div className="flex justify-center">
+                <img 
+                  src={`https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(qrCodeUrl)}&size=150x150`} 
+                  alt="Payment QR Code" 
+                  className="border p-2 bg-white"
+                />
+              </div>
+            </div>
+          )}
+          
+          <div className="mt-6 flex space-x-4 justify-center">
+            <Button variant="default" asChild>
+              <a href={qrCodeUrl} target="_blank" rel="noopener noreferrer">
+                {t('payNow')}
+              </a>
+            </Button>
+            <Button variant="outline" onClick={() => form.reset()}>
+              {t('newBooking')}
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -314,6 +388,7 @@ const BookingForm = () => {
                       date < new Date() || date > new Date(new Date().setMonth(new Date().getMonth() + 6))
                     }
                     initialFocus
+                    className={cn("p-3 pointer-events-auto")}
                   />
                 </PopoverContent>
               </Popover>
@@ -459,6 +534,51 @@ const BookingForm = () => {
             </FormItem>
           )}
         />
+
+        {/* Pickup Address Option */}
+        <FormField
+          control={form.control}
+          name="pickupAddressRequired"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel>{t('needPickupService')}</FormLabel>
+                <p className="text-sm text-muted-foreground">
+                  {t('checkBoxIfPickupNeeded')}
+                </p>
+              </div>
+            </FormItem>
+          )}
+        />
+
+        {watchPickupAddressRequired && (
+          <FormField
+            control={form.control}
+            name="pickupAddress"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('pickupAddress')}</FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <Textarea
+                      placeholder={t('enterPickupAddress')}
+                      className="resize-none min-h-[80px] pl-10"
+                      {...field}
+                    />
+                    <MapPin className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <FormField

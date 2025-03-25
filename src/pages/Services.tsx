@@ -24,6 +24,13 @@ const Services = () => {
   const [droneServiceDialogOpen, setDroneServiceDialogOpen] = useState(false);
   const { t } = useLanguage();
   
+  // Get current date and set default value for 1 month from now
+  const getDefaultDate = () => {
+    const date = new Date();
+    date.setMonth(date.getMonth() + 1);
+    return date;
+  };
+  
   const maritimeSolutions = [
     {
       icon: <Globe className="h-8 w-8 text-primary" />,
@@ -117,7 +124,7 @@ const Services = () => {
                     }} 
                     className="text-primary hover:underline text-sm font-medium"
                   >
-                    {t('airConsolidation')}
+                    {t('airGroupage')}
                   </button>
                 </div>
               </CardContent>
@@ -146,7 +153,7 @@ const Services = () => {
                     }} 
                     className="text-primary hover:underline text-sm font-medium"
                   >
-                    {t('oceanConsolidation')}
+                    {t('oceanGroupage')}
                   </button>
                 </div>
               </CardContent>
@@ -252,11 +259,11 @@ const Services = () => {
         </DialogContent>
       </Dialog>
       
-      {/* Air Consolidation Dialog */}
+      {/* Air Groupage Dialog */}
       <Dialog open={airConsolidationDialogOpen} onOpenChange={setAirConsolidationDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-2xl">{t('airConsolidation')}</DialogTitle>
+            <DialogTitle className="text-2xl">{t('airGroupage')}</DialogTitle>
           </DialogHeader>
           <AirConsolidationForm onClose={() => setAirConsolidationDialogOpen(false)} />
         </DialogContent>
@@ -272,11 +279,11 @@ const Services = () => {
         </DialogContent>
       </Dialog>
       
-      {/* Ocean Consolidation Dialog */}
+      {/* Ocean Groupage Dialog */}
       <Dialog open={oceanConsolidationDialogOpen} onOpenChange={setOceanConsolidationDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-2xl">{t('oceanConsolidation')}</DialogTitle>
+            <DialogTitle className="text-2xl">{t('oceanGroupage')}</DialogTitle>
           </DialogHeader>
           <OceanConsolidationForm onClose={() => setOceanConsolidationDialogOpen(false)} />
         </DialogContent>

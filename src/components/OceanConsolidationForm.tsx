@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -22,7 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Info, Upload } from "lucide-react";
+import { Info, Upload, QrCode } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -31,6 +32,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const formSchema = z.object({
   originCountry: z.string({
@@ -64,6 +66,8 @@ const formSchema = z.object({
   contactPhone: z.string().min(7, {
     message: "Please enter a valid phone number",
   }),
+  pickupAddressRequired: z.boolean().default(false),
+  pickupAddress: z.string().optional(),
   additionalInstructions: z.string().optional(),
   identityDocument: z.instanceof(File).optional().refine(file => {
     if (!file) return false;
@@ -107,6 +111,7 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
   const [identityDocumentUploaded, setIdentityDocumentUploaded] = useState<boolean>(false);
   const [identityDocumentFile, setIdentityDocumentFile] = useState<File | null>(null);
   const [initialPaymentConfirmed, setInitialPaymentConfirmed] = useState<boolean>(false);
+  const [qrCodeUrl, setQrCodeUrl] = useState<string>("");
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -117,6 +122,8 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
       cargoWidth: 100,   // Default 100 cm
       cargoHeight: 100,  // Default 100 cm
       cargoType: "",
+      pickupAddressRequired: false,
+      pickupAddress: "",
       additionalInstructions: "",
     },
   });
@@ -126,6 +133,7 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
   const watchCargoWidth = form.watch("cargoWidth");
   const watchCargoHeight = form.watch("cargoHeight");
   const watchCargoVolume = form.watch("cargoVolume");
+  const watchPickupAddressRequired = form.watch("pickupAddressRequired");
 
   // Calculate volume based on dimensions
   useEffect(() => {
@@ -209,6 +217,12 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
     toast.success("Initial payment confirmed!");
   };
 
+  // Generate QR code for payment and tracking
+  const generateQrCodeUrl = (reference: string) => {
+    // Create URL for payment page with reference included
+    return `${window.location.origin}/payment?reference=${reference}`;
+  };
+
   const requestBookingReference = () => {
     if (!identityDocumentFile) {
       toast.error("Please upload your identity document first.");
@@ -225,8 +239,10 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
     // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
-      setBookingReference(`OCN-${Math.floor(Math.random() * 1000000)}`);
-      toast.success("Ocean consolidation request submitted successfully!");
+      const reference = `OCN-${Math.floor(Math.random() * 1000000)}`;
+      setBookingReference(reference);
+      setQrCodeUrl(generateQrCodeUrl(reference));
+      toast.success("Ocean groupage request submitted successfully!");
       console.log("Form data:", form.getValues(), "Quotation:", quotation, "Payment details:", paymentDetails);
     }, 1500);
   };
@@ -252,8 +268,10 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
     // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
-      setBookingReference(`OCN-${Math.floor(Math.random() * 1000000)}`);
-      toast.success("Ocean consolidation request submitted successfully!");
+      const reference = `OCN-${Math.floor(Math.random() * 1000000)}`;
+      setBookingReference(reference);
+      setQrCodeUrl(generateQrCodeUrl(reference));
+      toast.success("Ocean groupage request submitted successfully!");
       console.log("Form data:", data);
     }, 1500);
   };
@@ -270,6 +288,24 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
             <div className="text-2xl font-bold p-3 bg-background border rounded-md inline-block">
               {bookingReference}
             </div>
+            
+            <p className="mt-4 text-red-600 font-medium">
+              Please keep this reference number for payment and tracking purposes.
+            </p>
+            
+            {qrCodeUrl && (
+              <div className="mt-6">
+                <p className="mb-2 font-medium">Scan this QR code to proceed with payment:</p>
+                <div className="flex justify-center">
+                  <img 
+                    src={`https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(qrCodeUrl)}&size=150x150`} 
+                    alt="Payment QR Code" 
+                    className="border p-2 bg-white"
+                  />
+                </div>
+              </div>
+            )}
+            
             {paymentDetails && (
               <div className="mt-4 p-4 bg-muted rounded-md text-left">
                 <h4 className="font-medium mb-2">Payment Terms:</h4>
@@ -279,13 +315,18 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
                 <p className="mt-1 text-sm text-muted-foreground">This amount will be due when you pick up your goods.</p>
               </div>
             )}
-            <p className="mt-4 text-sm text-muted-foreground">
-              Please save this reference number for tracking your shipment.
-            </p>
+            
+            <div className="mt-6 flex space-x-4 justify-center">
+              <Button variant="default" asChild>
+                <a href={qrCodeUrl} target="_blank" rel="noopener noreferrer">
+                  Pay Now
+                </a>
+              </Button>
+              <Button variant="outline" onClick={onClose}>
+                Close
+              </Button>
+            </div>
           </div>
-          <Button onClick={onClose} className="mt-4">
-            Close
-          </Button>
         </div>
       ) : (
         <Form {...form}>
@@ -415,6 +456,48 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
                 )}
               />
             </div>
+
+            {/* Pickup Address Option */}
+            <FormField
+              control={form.control}
+              name="pickupAddressRequired"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel>I need pickup service</FormLabel>
+                    <FormDescription>
+                      Check this box if you need us to pick up your cargo
+                    </FormDescription>
+                  </div>
+                </FormItem>
+              )}
+            />
+
+            {watchPickupAddressRequired && (
+              <FormField
+                control={form.control}
+                name="pickupAddress"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Pickup Address</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Enter the address where we should pick up your cargo"
+                        className="resize-none"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
 
             {quotation && watchOriginCountry === "China" && (
               <div className="bg-muted p-4 rounded-md">
@@ -620,7 +703,7 @@ const OceanConsolidationForm = ({ onClose }: { onClose: () => void }) => {
                        (showBookingButton && !identityDocumentUploaded) ||
                        (showBookingButton && !initialPaymentConfirmed)}
             >
-              {isSubmitting ? "Submitting..." : "Submit Ocean Consolidation Request"}
+              {isSubmitting ? "Submitting..." : "Submit Ocean Groupage Request"}
             </Button>
           </form>
         </Form>

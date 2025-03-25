@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -54,6 +54,13 @@ export default function PassengerBookingForm({ roomId }: PassengerBookingFormPro
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { t } = useLanguage();
+  
+  // Set default departure date to 1 month from today
+  const getDefaultDepartureDate = () => {
+    const date = new Date();
+    date.setMonth(date.getMonth() + 1);
+    return date;
+  };
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -64,6 +71,7 @@ export default function PassengerBookingForm({ roomId }: PassengerBookingFormPro
       phone: "",
       roomType: roomId || "",
       passengers: 1,
+      departureDate: getDefaultDepartureDate(),
       specialRequests: "",
     }
   });
@@ -259,6 +267,7 @@ export default function PassengerBookingForm({ roomId }: PassengerBookingFormPro
                     onSelect={field.onChange}
                     disabled={(date) => date < new Date() || date > new Date(2026, 11, 31)}
                     initialFocus
+                    className={cn("p-3 pointer-events-auto")}
                   />
                 </PopoverContent>
               </Popover>
