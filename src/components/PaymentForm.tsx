@@ -11,14 +11,12 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CreditCard, Phone } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
 
 export interface PaymentFormProps {
   shipmentId: string;
   amount: number;
   onPaymentSuccess?: () => void;
   autoVerifyReference?: string | null;
-  onVerificationSuccess?: () => void;
 }
 
 const cardStyle = {
@@ -51,20 +49,13 @@ const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }).optional(),
 });
 
-const PaymentForm = ({ 
-  shipmentId, 
-  amount, 
-  onPaymentSuccess, 
-  autoVerifyReference,
-  onVerificationSuccess 
-}: PaymentFormProps) => {
+const PaymentForm = ({ shipmentId, amount, onPaymentSuccess, autoVerifyReference }: PaymentFormProps) => {
   const stripe = useStripe();
   const elements = useElements();
   const [processing, setProcessing] = useState(false);
   const [verifying, setVerifying] = useState(false);
   const [referenceVerified, setReferenceVerified] = useState(false);
   const { toast } = useToast();
-  const { t } = useLanguage();
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -105,11 +96,6 @@ const PaymentForm = ({
         description: "Your booking reference has been verified successfully."
       });
       setVerifying(false);
-      
-      // Call the onVerificationSuccess callback if provided
-      if (onVerificationSuccess) {
-        onVerificationSuccess();
-      }
     }, 1500);
   };
   
@@ -199,12 +185,8 @@ const PaymentForm = ({
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>{t('paymentDetails')}</CardTitle>
-        <CardDescription>
-          {!referenceVerified 
-            ? t('enterBookingReference')
-            : t('paymentDesc')}
-        </CardDescription>
+        <CardTitle>Payment Details</CardTitle>
+        <CardDescription>Enter your booking reference and card details below to complete your secure payment.</CardDescription>
       </CardHeader>
       
       <CardContent>
@@ -216,11 +198,11 @@ const PaymentForm = ({
                 name="bookingReference"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t('bookingReference')}</FormLabel>
+                    <FormLabel>Booking Reference</FormLabel>
                     <div className="flex gap-2">
                       <FormControl>
                         <Input 
-                          placeholder={t('enterBookingReference')}
+                          placeholder="Enter your booking reference" 
                           {...field}
                           disabled={referenceVerified}
                         />
@@ -231,7 +213,7 @@ const PaymentForm = ({
                         onClick={handleVerifyReference}
                         disabled={verifying || referenceVerified}
                       >
-                        {verifying ? t('verifying') : referenceVerified ? `${t('verified')} ✓` : t('verify')}
+                        {verifying ? "Verifying..." : referenceVerified ? "Verified ✓" : "Verify"}
                       </Button>
                     </div>
                     <FormMessage />
@@ -240,148 +222,136 @@ const PaymentForm = ({
               />
             </div>
             
-            {referenceVerified && (
-              <>
-                <FormField
-                  control={form.control}
-                  name="paymentMethod"
-                  render={({ field }) => (
-                    <FormItem className="space-y-3">
-                      <FormLabel>{t('paymentMethod')}</FormLabel>
-                      <FormControl>
-                        <RadioGroup
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                          className="flex flex-col space-y-1"
-                        >
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="card" />
-                            </FormControl>
-                            <FormLabel className="font-normal flex items-center gap-2">
-                              <CreditCard size={18} />
-                              {t('creditCard')}
-                            </FormLabel>
-                          </FormItem>
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="mobile_money" />
-                            </FormControl>
-                            <FormLabel className="font-normal flex items-center gap-2">
-                              <Phone size={18} />
-                              {t('mobilePayment')}
-                            </FormLabel>
-                          </FormItem>
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="paypal" />
-                            </FormControl>
-                            <FormLabel className="font-normal flex items-center gap-2">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M7 11l4.06-6.5C12.48 2.34 14.5 1.5 16.5 1.5c2.53 0 4.35 1.5 4.89 3.87.43 2-.84 4.24-2.13 5.13H17"/>
-                                <path d="M13.5 9.5L8.21 15.9c-1.42 1.71-3.44 2.55-5.44 2.55-2.53 0-4.35-1.5-4.89-3.87-.43-2 .84-4.24 2.13-5.13H3"/>
-                                <path d="M4.5 13.5L10 8"/>
-                              </svg>
-                              {t('paypal')}
-                            </FormLabel>
-                          </FormItem>
-                        </RadioGroup>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                {selectedPaymentMethod === "card" && (
-                  <div className="mt-4">
-                    <FormLabel htmlFor="card" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      {t('cardNumber')}
-                    </FormLabel>
-                    <div className="p-3 border rounded-md mt-1">
-                      <CardElement
-                        id="card"
-                        options={cardStyle}
-                        className="w-full"
-                      />
-                    </div>
-                  </div>
-                )}
-                
-                {selectedPaymentMethod === "mobile_money" && (
-                  <div className="mt-4">
-                    <FormField
-                      control={form.control}
-                      name="phoneNumber"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{t('phone')}</FormLabel>
+            <div className={!referenceVerified ? "opacity-50 pointer-events-none" : ""}>
+              <FormField
+                control={form.control}
+                name="paymentMethod"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel>Select Payment Method</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex flex-col space-y-1"
+                      >
+                        <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
-                            <Input 
-                              placeholder={t('enterMobileNumber')}
-                              {...field}
-                            />
+                            <RadioGroupItem value="card" />
                           </FormControl>
-                          <FormMessage />
+                          <FormLabel className="font-normal flex items-center gap-2">
+                            <CreditCard size={18} />
+                            Credit/Debit Card
+                          </FormLabel>
                         </FormItem>
-                      )}
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="mobile_money" />
+                          </FormControl>
+                          <FormLabel className="font-normal flex items-center gap-2">
+                            <Phone size={18} />
+                            Mobile Money
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="paypal" />
+                          </FormControl>
+                          <FormLabel className="font-normal flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M7 11l4.06-6.5C12.48 2.34 14.5 1.5 16.5 1.5c2.53 0 4.35 1.5 4.89 3.87.43 2-.84 4.24-2.13 5.13H17"/>
+                              <path d="M13.5 9.5L8.21 15.9c-1.42 1.71-3.44 2.55-5.44 2.55-2.53 0-4.35-1.5-4.89-3.87-.43-2 .84-4.24 2.13-5.13H3"/>
+                              <path d="M4.5 13.5L10 8"/>
+                            </svg>
+                            PayPal
+                          </FormLabel>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              {selectedPaymentMethod === "card" && (
+                <div className="mt-4">
+                  <FormLabel htmlFor="card" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Card Details
+                  </FormLabel>
+                  <div className="p-3 border rounded-md mt-1">
+                    <CardElement
+                      id="card"
+                      options={cardStyle}
+                      className="w-full"
                     />
                   </div>
-                )}
-                
-                {selectedPaymentMethod === "paypal" && (
-                  <div className="mt-4">
-                    <FormField
-                      control={form.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{t('email')}</FormLabel>
-                          <FormControl>
-                            <Input 
-                              type="email"
-                              placeholder={t('enterPayPalEmail')}
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                )}
-              </>
-            )}
+                </div>
+              )}
+              
+              {selectedPaymentMethod === "mobile_money" && (
+                <div className="mt-4">
+                  <FormField
+                    control={form.control}
+                    name="phoneNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Phone Number</FormLabel>
+                        <FormControl>
+                          <Input 
+                            placeholder="Enter your phone number"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              )}
+              
+              {selectedPaymentMethod === "paypal" && (
+                <div className="mt-4">
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>PayPal Email</FormLabel>
+                        <FormControl>
+                          <Input 
+                            type="email"
+                            placeholder="Enter your PayPal email"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              )}
+            </div>
           </form>
         </Form>
       </CardContent>
       
       <CardFooter>
-        {!referenceVerified ? (
-          <Button 
-            onClick={handleVerifyReference}
-            disabled={verifying || form.getValues("bookingReference").length < 6} 
-            className="w-full"
-          >
-            {verifying ? t('verifying') : t('verify')}
-          </Button>
-        ) : (
-          <Button 
-            onClick={form.handleSubmit(handleSubmit)}
-            disabled={processing || (selectedPaymentMethod === "card" && !stripe)} 
-            className="w-full"
-          >
-            {processing ? (
-              t('processing')
-            ) : (
-              <div className="flex items-center justify-center">
-                <span>{t('pay')} </span>
-                <span className="inline-block bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-200 px-3 py-1 ml-2 rounded-md font-bold">
-                  ${amount.toLocaleString()}
-                </span>
-              </div>
-            )}
-          </Button>
-        )}
+        <Button 
+          onClick={form.handleSubmit(handleSubmit)}
+          disabled={!referenceVerified || processing || (selectedPaymentMethod === "card" && !stripe)} 
+          className="w-full"
+        >
+          {processing ? (
+            "Processing..."
+          ) : (
+            <div className="flex items-center justify-center">
+              <span>Pay </span>
+              <span className="inline-block bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-200 px-3 py-1 ml-2 rounded-md font-bold">
+                ${amount.toLocaleString()}
+              </span>
+            </div>
+          )}
+        </Button>
       </CardFooter>
     </Card>
   );
