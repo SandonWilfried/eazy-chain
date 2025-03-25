@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -42,7 +41,6 @@ import {
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Checkbox } from "@/components/ui/checkbox";
 
-// List of West African ports as specified
 const westAfricanPorts = [
   "Port of Lomé, Togo",
   "Port of Abidjan, Côte d'Ivoire", 
@@ -64,7 +62,6 @@ const cargoTypes = [
   "Hazardous",
 ];
 
-// Pallet types
 const palletTypes = [
   "US Pallet (1200 x 1000 mm)",
   "Euro Pallet (1200 x 800 mm)",
@@ -157,7 +154,6 @@ const BookingForm = () => {
   const [bookingReference, setBookingReference] = useState<string | null>(null);
   const [qrCodeUrl, setQrCodeUrl] = useState<string>("");
 
-  // Get default departure date (1 month from today)
   const getDefaultDepartureDate = () => {
     const date = new Date();
     date.setMonth(date.getMonth() + 1);
@@ -178,18 +174,15 @@ const BookingForm = () => {
     },
   });
 
-  // Update available destination ports when origin port changes
   const originPort = form.watch("originPort");
   const watchPickupAddressRequired = form.watch("pickupAddressRequired");
   
   useEffect(() => {
     if (originPort) {
-      // Filter out the selected origin port from available destinations
       setAvailableDestinationPorts(
         westAfricanPorts.filter(port => port !== originPort)
       );
       
-      // If the current destination is the same as the new origin, reset destination
       const currentDestination = form.getValues("destinationPort");
       if (currentDestination === originPort) {
         form.setValue("destinationPort", "");
@@ -199,7 +192,6 @@ const BookingForm = () => {
     }
   }, [originPort, form]);
 
-  // Generate QR code URL for payment and tracking
   const generateQrCodeUrl = (reference: string) => {
     return `${window.location.origin}/payment?reference=${reference}`;
   };
@@ -208,15 +200,12 @@ const BookingForm = () => {
     setIsSubmitting(true);
     console.log(values);
     
-    // Generate booking reference
     const bookingRef = `BKG-${Math.floor(Math.random() * 1000000)}`;
     setBookingReference(bookingRef);
     
-    // Generate QR code URL
     const paymentUrl = generateQrCodeUrl(bookingRef);
     setQrCodeUrl(paymentUrl);
     
-    // Create email content
     const emailSubject = "Cargo Booking Request";
     const emailBody = `
       Cargo Booking Request Details:
@@ -243,10 +232,8 @@ const BookingForm = () => {
       This is an automated booking request from the website.
     `;
     
-    // Open email client with pre-filled details
     window.location.href = `mailto:contact@eazy-chain.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
     
-    // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
       toast({
@@ -450,7 +437,6 @@ const BookingForm = () => {
           />
         </div>
 
-        {/* Pallet Type Selection */}
         <FormField
           control={form.control}
           name="palletType"
@@ -535,7 +521,6 @@ const BookingForm = () => {
           )}
         />
 
-        {/* Pickup Address Option */}
         <FormField
           control={form.control}
           name="pickupAddressRequired"

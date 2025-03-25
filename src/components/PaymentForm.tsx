@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,6 +16,7 @@ export interface PaymentFormProps {
   shipmentId: string;
   amount: number;
   onPaymentSuccess?: () => void;
+  autoVerifyReference?: string | null;
 }
 
 const cardStyle = {
@@ -47,7 +49,7 @@ const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }).optional(),
 });
 
-const PaymentForm = ({ shipmentId, amount, onPaymentSuccess }: PaymentFormProps) => {
+const PaymentForm = ({ shipmentId, amount, onPaymentSuccess, autoVerifyReference }: PaymentFormProps) => {
   const stripe = useStripe();
   const elements = useElements();
   const [processing, setProcessing] = useState(false);
@@ -58,29 +60,32 @@ const PaymentForm = ({ shipmentId, amount, onPaymentSuccess }: PaymentFormProps)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      bookingReference: "",
+      bookingReference: autoVerifyReference || "",
       paymentMethod: "card",
       phoneNumber: "",
       email: "",
     },
   });
   
+  // Auto-verify reference when provided from URL
+  useEffect(() => {
+    if (autoVerifyReference && !referenceVerified) {
+      form.setValue("bookingReference", autoVerifyReference);
+      verifyBookingReference(autoVerifyReference);
+    }
+  }, [autoVerifyReference]);
+  
   const selectedPaymentMethod = form.watch("paymentMethod");
   
-  const handleVerifyReference = async () => {
-    const bookingReference = form.getValues("bookingReference");
-    
-    if (!bookingReference || bookingReference.length < 6) {
-      form.setError("bookingReference", {
-        message: "Please enter a valid booking reference (at least 6 characters)."
-      });
+  const verifyBookingReference = async (reference: string) => {
+    if (!reference || reference.length < 6) {
       return;
     }
     
     setVerifying(true);
     
     // Simulate API call to verify booking reference
-    console.log('Verifying booking reference:', bookingReference);
+    console.log('Verifying booking reference:', reference);
     
     // For demo purposes, we're adding a slight delay to simulate an API call
     setTimeout(() => {
@@ -92,6 +97,11 @@ const PaymentForm = ({ shipmentId, amount, onPaymentSuccess }: PaymentFormProps)
       });
       setVerifying(false);
     }, 1500);
+  };
+  
+  const handleVerifyReference = async () => {
+    const bookingReference = form.getValues("bookingReference");
+    verifyBookingReference(bookingReference);
   };
   
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {

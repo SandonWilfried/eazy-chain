@@ -11,7 +11,6 @@ import { ArrowLeft } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 // Initialize Stripe with your public key
-// Replace with your actual Stripe publishable key when in production
 const stripePromise = loadStripe("pk_test_TYooMQauvdEDq54NiTphI7jx");
 
 const mockShipmentData = {
@@ -32,12 +31,18 @@ const Payment = () => {
   } | null>(null);
   const [loading, setLoading] = useState(false);
   const [showBillOfLading, setShowBillOfLading] = useState(false);
+  const [bookingReference, setBookingReference] = useState<string | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { t } = useLanguage();
 
   useEffect(() => {
     const shipmentId = new URLSearchParams(location.search).get("id");
+    const reference = new URLSearchParams(location.search).get("reference");
+    
+    if (reference) {
+      setBookingReference(reference);
+    }
     
     if (shipmentId) {
       setLoading(true);
@@ -85,24 +90,6 @@ const Payment = () => {
               <p className="text-muted-foreground">
                 {t('paymentDesc')}
               </p>
-              
-              {/* Payment amount summary */}
-              {shipmentData && (
-                <div className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="text-sm text-red-700 dark:text-red-300">{t('shipmentTotal')}</p>
-                      <p className="text-2xl font-bold text-red-800 dark:text-red-200">
-                        ${shipmentData.amount.toLocaleString()}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-sm text-red-700 dark:text-red-300">{t('shipmentId')}</p>
-                      <p className="font-medium text-red-800 dark:text-red-200">{shipmentData.id}</p>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
             
             {loading ? (
@@ -118,6 +105,7 @@ const Payment = () => {
                         shipmentId={shipmentData.id} 
                         amount={shipmentData.amount}
                         onPaymentSuccess={handlePaymentSuccess}
+                        autoVerifyReference={bookingReference}
                       />
                     </Elements>
                     
