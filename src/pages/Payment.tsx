@@ -7,8 +7,10 @@ import Navbar from "@/components/Navbar";
 import PaymentForm from "@/components/PaymentForm";
 import BillOfLadingModal from "@/components/BillOfLadingModal";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Package, Truck, Calendar, DollarSign } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Card, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 // Initialize Stripe with your public key
 const stripePromise = loadStripe("pk_test_TYooMQauvdEDq54NiTphI7jx");
@@ -19,6 +21,16 @@ const mockShipmentData = {
   origin: "Shanghai Port, China",
   destination: "Rotterdam Port, Netherlands",
   containerCount: 2,
+  description: "General Merchandise",
+  weight: "12,500 kg",
+  deliveryDate: "2023-11-15",
+  currency: "USD",
+  itemizedCosts: {
+    freight: 3200,
+    handling: 800,
+    documentation: 300,
+    insurance: 300
+  }
 };
 
 const Payment = () => {
@@ -28,6 +40,16 @@ const Payment = () => {
     origin: string;
     destination: string;
     containerCount: number;
+    description?: string;
+    weight?: string;
+    deliveryDate?: string;
+    currency?: string;
+    itemizedCosts?: {
+      freight: number;
+      handling: number;
+      documentation: number;
+      insurance: number;
+    }
   } | null>(null);
   const [loading, setLoading] = useState(false);
   const [showBillOfLading, setShowBillOfLading] = useState(false);
@@ -55,6 +77,11 @@ const Payment = () => {
           origin: mockShipmentData.origin,
           destination: mockShipmentData.destination,
           containerCount: mockShipmentData.containerCount,
+          description: mockShipmentData.description,
+          weight: mockShipmentData.weight,
+          deliveryDate: mockShipmentData.deliveryDate,
+          currency: mockShipmentData.currency,
+          itemizedCosts: mockShipmentData.itemizedCosts
         });
         setLoading(false);
       }, 1000);
@@ -97,9 +124,88 @@ const Payment = () => {
                 <p className="text-lg">{t('loadingPayment')}</p>
               </div>
             ) : (
-              <div className="animate-fade-in">
+              <div className="animate-fade-in space-y-6">
                 {shipmentData && (
                   <>
+                    {/* Payment Details Card */}
+                    <Card className="overflow-hidden">
+                      <div className="bg-primary py-3 px-4">
+                        <h2 className="text-lg font-semibold text-primary-foreground flex items-center">
+                          <DollarSign className="mr-2 h-5 w-5" />
+                          {t('paymentDetails')}
+                        </h2>
+                      </div>
+                      <CardContent className="p-0">
+                        <div className="p-4 space-y-4">
+                          <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                            <div>
+                              <p className="text-sm text-muted-foreground">{t('shipmentId')}</p>
+                              <p className="font-medium">{shipmentData.id}</p>
+                            </div>
+                            <div>
+                              <p className="text-sm text-muted-foreground">{t('description')}</p>
+                              <p className="font-medium">{shipmentData.description || "N/A"}</p>
+                            </div>
+                            <div>
+                              <p className="text-sm text-muted-foreground">{t('origin')}</p>
+                              <p className="font-medium">{shipmentData.origin}</p>
+                            </div>
+                            <div>
+                              <p className="text-sm text-muted-foreground">{t('destination')}</p>
+                              <p className="font-medium">{shipmentData.destination}</p>
+                            </div>
+                            <div>
+                              <p className="text-sm text-muted-foreground">{t('containerCount')}</p>
+                              <p className="font-medium">{shipmentData.containerCount} {t('units')}</p>
+                            </div>
+                            <div>
+                              <p className="text-sm text-muted-foreground">{t('weight')}</p>
+                              <p className="font-medium">{shipmentData.weight || "N/A"}</p>
+                            </div>
+                            <div>
+                              <p className="text-sm text-muted-foreground">{t('estimatedDelivery')}</p>
+                              <p className="font-medium">{shipmentData.deliveryDate || "N/A"}</p>
+                            </div>
+                          </div>
+                          
+                          <Separator />
+                          
+                          {shipmentData.itemizedCosts && (
+                            <div className="space-y-3">
+                              <h3 className="font-medium">{t('costBreakdown')}</h3>
+                              <div className="space-y-2">
+                                <div className="flex justify-between">
+                                  <span className="text-muted-foreground">{t('freightCost')}</span>
+                                  <span>${shipmentData.itemizedCosts.freight.toLocaleString()}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="text-muted-foreground">{t('handlingFees')}</span>
+                                  <span>${shipmentData.itemizedCosts.handling.toLocaleString()}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="text-muted-foreground">{t('documentation')}</span>
+                                  <span>${shipmentData.itemizedCosts.documentation.toLocaleString()}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="text-muted-foreground">{t('insurance')}</span>
+                                  <span>${shipmentData.itemizedCosts.insurance.toLocaleString()}</span>
+                                </div>
+                              </div>
+                              
+                              <Separator />
+                              
+                              <div className="flex justify-between font-semibold">
+                                <span>{t('totalAmount')}</span>
+                                <span className="text-lg text-primary">
+                                  ${shipmentData.amount.toLocaleString()} {shipmentData.currency}
+                                </span>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+
                     <Elements stripe={stripePromise}>
                       <PaymentForm 
                         shipmentId={shipmentData.id} 
