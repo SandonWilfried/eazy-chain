@@ -9,6 +9,16 @@ import BillOfLadingModal from "@/components/BillOfLadingModal";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Card, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { 
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 // Initialize Stripe with your public key
 const stripePromise = loadStripe("pk_test_TYooMQauvdEDq54NiTphI7jx");
@@ -52,6 +62,8 @@ const Payment = () => {
   const [loading, setLoading] = useState(false);
   const [showBillOfLading, setShowBillOfLading] = useState(false);
   const [bookingReference, setBookingReference] = useState<string | null>(null);
+  const [showPaymentDetails, setShowPaymentDetails] = useState(false);
+  
   const location = useLocation();
   const navigate = useNavigate();
   const { t } = useLanguage();
@@ -84,8 +96,7 @@ const Payment = () => {
         setLoading(false);
       }, 1000);
     } else {
-      // Just set the shipment data, but don't display it yet
-      // It will only be shown after booking reference verification
+      // If no shipment ID, use default data
       setShipmentData(mockShipmentData);
     }
   }, [location.search]);
@@ -93,6 +104,10 @@ const Payment = () => {
   const handlePaymentSuccess = () => {
     // Show bill of lading modal after successful payment
     setShowBillOfLading(true);
+  };
+
+  const handleVerificationSuccess = () => {
+    setShowPaymentDetails(true);
   };
 
   return (
@@ -126,14 +141,101 @@ const Payment = () => {
               <div className="animate-fade-in space-y-6">
                 {shipmentData && (
                   <>
+                    {/* Display Payment Form first for verification */}
                     <Elements stripe={stripePromise}>
                       <PaymentForm 
                         shipmentId={shipmentData.id} 
                         amount={shipmentData.amount}
                         onPaymentSuccess={handlePaymentSuccess}
                         autoVerifyReference={bookingReference}
+                        onVerificationSuccess={handleVerificationSuccess}
                       />
                     </Elements>
+                    
+                    {/* Only show payment details after verification */}
+                    {showPaymentDetails && (
+                      <Card className="overflow-hidden mt-6">
+                        <div className="bg-primary py-3 px-4">
+                          <h2 className="text-lg font-semibold text-primary-foreground flex items-center">
+                            {t('paymentDetails')}
+                          </h2>
+                        </div>
+                        <CardContent className="p-0">
+                          <div className="p-4 space-y-4">
+                            <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                              <div>
+                                <p className="text-sm text-muted-foreground">{t('shipmentId')}</p>
+                                <p className="font-medium">{shipmentData.id}</p>
+                              </div>
+                              <div>
+                                <p className="text-sm text-muted-foreground">{t('description')}</p>
+                                <p className="font-medium">{shipmentData.description || "N/A"}</p>
+                              </div>
+                              <div>
+                                <p className="text-sm text-muted-foreground">{t('origin')}</p>
+                                <p className="font-medium">{shipmentData.origin}</p>
+                              </div>
+                              <div>
+                                <p className="text-sm text-muted-foreground">{t('destination')}</p>
+                                <p className="font-medium">{shipmentData.destination}</p>
+                              </div>
+                              <div>
+                                <p className="text-sm text-muted-foreground">{t('containerCount')}</p>
+                                <p className="font-medium">{shipmentData.containerCount} {t('units')}</p>
+                              </div>
+                              <div>
+                                <p className="text-sm text-muted-foreground">{t('weight')}</p>
+                                <p className="font-medium">{shipmentData.weight || "N/A"}</p>
+                              </div>
+                              <div>
+                                <p className="text-sm text-muted-foreground">{t('estimatedDelivery')}</p>
+                                <p className="font-medium">{shipmentData.deliveryDate || "N/A"}</p>
+                              </div>
+                            </div>
+                            
+                            <Separator />
+                            
+                            {shipmentData.itemizedCosts && (
+                              <div className="space-y-3">
+                                <h3 className="font-medium">{t('costBreakdown')}</h3>
+                                <Table>
+                                  <TableHeader>
+                                    <TableRow>
+                                      <TableHead>{t('description')}</TableHead>
+                                      <TableHead className="text-right">{t('amount')}</TableHead>
+                                    </TableRow>
+                                  </TableHeader>
+                                  <TableBody>
+                                    <TableRow>
+                                      <TableCell>{t('freightCost')}</TableCell>
+                                      <TableCell className="text-right">${shipmentData.itemizedCosts.freight.toLocaleString()}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                      <TableCell>{t('handlingFees')}</TableCell>
+                                      <TableCell className="text-right">${shipmentData.itemizedCosts.handling.toLocaleString()}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                      <TableCell>{t('documentation')}</TableCell>
+                                      <TableCell className="text-right">${shipmentData.itemizedCosts.documentation.toLocaleString()}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                      <TableCell>{t('insurance')}</TableCell>
+                                      <TableCell className="text-right">${shipmentData.itemizedCosts.insurance.toLocaleString()}</TableCell>
+                                    </TableRow>
+                                    <TableRow className="font-bold border-t-2">
+                                      <TableCell>{t('totalAmount')}</TableCell>
+                                      <TableCell className="text-right text-primary">
+                                        ${shipmentData.amount.toLocaleString()} {shipmentData.currency}
+                                      </TableCell>
+                                    </TableRow>
+                                  </TableBody>
+                                </Table>
+                              </div>
+                            )}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    )}
                     
                     {/* Bill of Lading Modal */}
                     <BillOfLadingModal
