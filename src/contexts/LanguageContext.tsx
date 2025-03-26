@@ -565,7 +565,7 @@ const translations = {
     processingRequest: 'Traitement en cours...',
     submitBooking: 'Soumettre la Réservation',
     bookingSuccess: 'Demande Soumise',
-    bookingSuccessDesc: 'Nous vous contacterons sous peu pour confirmer votre service de livraison par drone.',
+    bookingSuccessDesc: 'Nous vous contacterons sous peu pour confirmer votre transaction d\'expédition.',
     fullName: 'Nom Complet',
     address: 'Adresse',
     
@@ -1048,4 +1048,3 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export const useLanguage = () => useContext(LanguageContext);
-
