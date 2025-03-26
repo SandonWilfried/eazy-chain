@@ -81,6 +81,8 @@ const translations = {
     droneServicesDesc: 'Fast, efficient drone delivery services for packages within Togo, Benin, Côte d\'Ivoire, and Senegal with same-day delivery options.',
     droneServiceRequest: 'Drone Delivery Service Request',
     maritimeSolutions: 'Maritime Solutions',
+    roadFreight: 'Road Freight',
+    roadFreightDesc: 'Efficient road freight services for regional transportation of cargo with flexible loading options and door-to-door delivery.',
     
     // Booking
     booking: 'Booking',
@@ -152,6 +154,12 @@ const translations = {
     documentation: 'Documentation',
     insurance: 'Insurance',
     totalAmount: 'Total Amount',
+    enterBookingReference: 'Enter Booking Reference',
+    verifyBookingDesc: 'Enter your booking reference to view and pay for your shipment',
+    paymentMethods: 'Payment Methods',
+    mobileMoneyPayment: 'Mobile Money',
+    creditCardPayment: 'Credit Card',
+    bankTransferPayment: 'Bank Transfer',
     
     // Supplier Payment
     paymentToSuppliers: 'Payment to Suppliers',
@@ -266,8 +274,6 @@ const translations = {
     trackingNumber: 'Tracking #',
     containers: 'Containers',
     unit: 'unit',
-    // units is already defined above in Payment section
-    // totalAmount is already defined above in Payment section
     paid: 'Paid',
     paymentPending: 'Payment Pending',
     paymentOverdue: 'Payment Overdue',
@@ -323,9 +329,7 @@ const translations = {
     selectDepartureDate: 'Select your preferred date',
     cargoType: 'Cargo Type',
     selectCargoType: 'Select cargo type',
-    // containerCount is already defined above in Payment section
     palletCount: 'Number of Pallets',
-    // weight is already defined above in Payment section
     cargoDescription: 'Cargo Description',
     selectCargoDescription: 'Select cargo description',
     noDescriptionFound: 'No description found.',
@@ -410,6 +414,8 @@ const translations = {
     droneServicesDesc: 'Services de livraison par drone rapides et efficaces pour les colis au Togo, au Bénin, en Côte d\'Ivoire et au Sénégal avec options de livraison le jour même.',
     droneServiceRequest: 'Demande de Service de Livraison par Drone',
     maritimeSolutions: 'Solutions Maritimes',
+    roadFreight: 'Fret Routier',
+    roadFreightDesc: 'Services de fret routier efficaces pour le transport régional de marchandises avec options de chargement flexibles et livraison porte-à-porte.',
     
     // Booking
     booking: 'Réservation',
@@ -481,6 +487,12 @@ const translations = {
     documentation: 'Documentation',
     insurance: 'Assurance',
     totalAmount: 'Montant Total',
+    enterBookingReference: 'Entrez la Référence de Réservation',
+    verifyBookingDesc: 'Entrez votre référence de réservation pour consulter et payer votre expédition',
+    paymentMethods: 'Méthodes de Paiement',
+    mobileMoneyPayment: 'Mobile Money',
+    creditCardPayment: 'Carte de Crédit',
+    bankTransferPayment: 'Virement Bancaire',
     
     // Supplier Payment
     paymentToSuppliers: 'Paiement aux Fournisseurs',
@@ -595,8 +607,6 @@ const translations = {
     trackingNumber: 'Numéro de suivi',
     containers: 'Conteneurs',
     unit: 'unité',
-    // units is already defined above in Payment section
-    // totalAmount is already defined above in Payment section
     paid: 'Payé',
     paymentPending: 'Paiement en attente',
     paymentOverdue: 'Paiement en retard',
@@ -652,9 +662,7 @@ const translations = {
     selectDepartureDate: 'Sélectionner votre date préférée',
     cargoType: 'Type de Cargaison',
     selectCargoType: 'Sélectionner le type de cargaison',
-    // containerCount is already defined above in Payment section
     palletCount: 'Nombre de Palettes',
-    // weight is already defined above in Payment section
     cargoDescription: 'Description de la Cargaison',
     selectCargoDescription: 'Sélectionner la description de la cargaison',
     noDescriptionFound: 'Aucune description trouvée.',
@@ -739,6 +747,8 @@ const translations = {
     droneServicesDesc: 'Servicios de entrega por dron rápidos y eficientes para paquetes dentro de Togo, Benin, Costa de Marfil y Senegal con opciones de entrega el mismo día.',
     droneServiceRequest: 'Solicitud de Servicio de Entrega por Dron',
     maritimeSolutions: 'Soluciones Marítimas',
+    roadFreight: 'Flete Terrestre',
+    roadFreightDesc: 'Servicios de flete terrestre eficientes para el transporte regional de carga con opciones de carga flexibles y entrega puerta a puerta.',
     
     // Booking
     booking: 'Reserva',
@@ -810,6 +820,12 @@ const translations = {
     documentation: 'Documentación',
     insurance: 'Seguro',
     totalAmount: 'Monto Total',
+    enterBookingReference: 'Ingrese Referencia de Reserva',
+    verifyBookingDesc: 'Ingrese su referencia de reserva para ver y pagar su envío',
+    paymentMethods: 'Métodos de Pago',
+    mobileMoneyPayment: 'Dinero Móvil',
+    creditCardPayment: 'Tarjeta de Crédito',
+    bankTransferPayment: 'Transferencia Bancaria',
     
     // Supplier Payment
     paymentToSuppliers: 'Pago a Proveedores',
@@ -924,8 +940,6 @@ const translations = {
     trackingNumber: 'Número de seguimiento',
     containers: 'Contenedores',
     unit: 'unidad',
-    // units is already defined above in Payment section
-    // totalAmount is already defined above in Payment section
     paid: 'Pagado',
     paymentPending: 'Pago Pendiente',
     paymentOverdue: 'Pago Atrasado',
@@ -981,9 +995,7 @@ const translations = {
     selectDepartureDate: 'Seleccione su fecha preferida',
     cargoType: 'Tipo de Carga',
     selectCargoType: 'Seleccione tipo de carga',
-    // containerCount is already defined above in Payment section
     palletCount: 'Número de Pallets',
-    // weight is already defined above in Payment section
     cargoDescription: 'Descripción de la Carga',
     selectCargoDescription: 'Seleccione descripción de la carga',
     noDescriptionFound: 'No se encontró descripción.',
