@@ -10,7 +10,6 @@ import AirConsolidationForm from "@/components/AirConsolidationForm";
 import OceanConsolidationForm from "@/components/OceanConsolidationForm";
 import AirFreightForm from "@/components/AirFreightForm";
 import OceanFreightForm from "@/components/OceanFreightForm";
-import RoadFreightForm from "@/components/RoadFreightForm";
 import CourierServiceForm from "@/components/CourierServiceForm";
 import DroneServiceForm from "@/components/DroneServiceForm";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -21,7 +20,6 @@ const Services = () => {
   const [oceanConsolidationDialogOpen, setOceanConsolidationDialogOpen] = useState(false);
   const [airFreightDialogOpen, setAirFreightDialogOpen] = useState(false);
   const [oceanFreightDialogOpen, setOceanFreightDialogOpen] = useState(false);
-  const [roadFreightDialogOpen, setRoadFreightDialogOpen] = useState(false);
   const [courierServiceDialogOpen, setCourierServiceDialogOpen] = useState(false);
   const [droneServiceDialogOpen, setDroneServiceDialogOpen] = useState(false);
   const { t } = useLanguage();
@@ -155,23 +153,6 @@ const Services = () => {
               </CardContent>
             </Card>
             
-            <Card 
-              className="transition-all duration-300 hover:shadow-md cursor-pointer"
-              onClick={() => setRoadFreightDialogOpen(true)}
-            >
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                  <Truck className="h-8 w-8 text-primary" />
-                </div>
-                <CardTitle>{t('roadFreight')}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  {t('roadFreightDesc')}
-                </CardDescription>
-              </CardContent>
-            </Card>
-            
             <Link to="/supplier-payment" className="block">
               <Card className="transition-all duration-300 hover:shadow-md h-full">
                 <CardHeader className="text-center">
@@ -290,15 +271,6 @@ const Services = () => {
             <DialogTitle className="text-2xl">{t('oceanGroupage')}</DialogTitle>
           </DialogHeader>
           <OceanConsolidationForm onClose={() => setOceanConsolidationDialogOpen(false)} />
-        </DialogContent>
-      </Dialog>
-      
-      <Dialog open={roadFreightDialogOpen} onOpenChange={setRoadFreightDialogOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="text-2xl">{t('roadFreight')}</DialogTitle>
-          </DialogHeader>
-          <RoadFreightForm onClose={() => setRoadFreightDialogOpen(false)} />
         </DialogContent>
       </Dialog>
       

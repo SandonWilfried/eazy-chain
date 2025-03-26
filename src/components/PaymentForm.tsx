@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { CreditCard, Phone, DollarSign, Package, Building, Calendar, BanknoteIcon } from "lucide-react";
+import { CreditCard, Phone, DollarSign, Package, Truck, Calendar } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -44,12 +44,11 @@ const formSchema = z.object({
   bookingReference: z.string().min(6, {
     message: "Booking reference must be at least 6 characters.",
   }),
-  paymentMethod: z.enum(["card", "mobile_money", "bank_transfer"]),
+  paymentMethod: z.enum(["card", "mobile_money", "paypal"]),
   // Additional fields specific to mobile money
   phoneNumber: z.string().optional(),
-  // Additional fields specific to bank transfer
-  accountName: z.string().optional(),
-  bankName: z.string().optional(),
+  // Additional fields specific to PayPal
+  email: z.string().email({ message: "Please enter a valid email address." }).optional(),
 });
 
 // Mock shipment data based on booking reference
@@ -123,8 +122,7 @@ const PaymentForm = ({ shipmentId, amount, onPaymentSuccess, autoVerifyReference
       bookingReference: autoVerifyReference || "",
       paymentMethod: "card",
       phoneNumber: "",
-      accountName: "",
-      bankName: "",
+      email: "",
     },
   });
   
@@ -235,9 +233,9 @@ const PaymentForm = ({ shipmentId, amount, onPaymentSuccess, autoVerifyReference
     } else if (values.paymentMethod === "mobile_money") {
       // Simulate mobile money payment processing
       console.log("Processing Mobile Money payment with phone:", values.phoneNumber);
-    } else if (values.paymentMethod === "bank_transfer") {
-      // Simulate bank transfer processing
-      console.log("Processing Bank Transfer with account:", values.accountName, values.bankName);
+    } else if (values.paymentMethod === "paypal") {
+      // Simulate PayPal payment processing
+      console.log("Processing PayPal payment with email:", values.email);
     }
     
     // Simulate a successful payment for the demo
@@ -304,50 +302,77 @@ const PaymentForm = ({ shipmentId, amount, onPaymentSuccess, autoVerifyReference
         <Card className="overflow-hidden">
           <div className="bg-primary py-3 px-4">
             <h2 className="text-lg font-semibold text-primary-foreground flex items-center">
-              <Package className="mr-2 h-5 w-5" />
-              {t('shipmentDetails')}
+              <DollarSign className="mr-2 h-5 w-5" />
+              {t('paymentDetails')}
             </h2>
           </div>
-          <CardContent className="p-4 space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
+          <CardContent className="p-0">
+            <div className="p-4 space-y-4">
+              <div className="grid grid-cols-2 gap-x-4 gap-y-3">
                 <div>
                   <p className="text-sm text-muted-foreground">{t('shipmentId')}</p>
                   <p className="font-medium">{shipmentDetails.id}</p>
                 </div>
-                
-                <div>
-                  <p className="text-sm text-muted-foreground">{t('origin')}</p>
-                  <p className="font-medium">{shipmentDetails.origin}</p>
-                </div>
-                
-                <div>
-                  <p className="text-sm text-muted-foreground">{t('containerCount')}</p>
-                  <p className="font-medium">{shipmentDetails.containerCount} {t('units')}</p>
-                </div>
-
                 <div>
                   <p className="text-sm text-muted-foreground">{t('description')}</p>
                   <p className="font-medium">{shipmentDetails.description || "N/A"}</p>
                 </div>
-              </div>
-              
-              <div className="space-y-2">
+                <div>
+                  <p className="text-sm text-muted-foreground">{t('origin')}</p>
+                  <p className="font-medium">{shipmentDetails.origin}</p>
+                </div>
                 <div>
                   <p className="text-sm text-muted-foreground">{t('destination')}</p>
                   <p className="font-medium">{shipmentDetails.destination}</p>
                 </div>
-                
+                <div>
+                  <p className="text-sm text-muted-foreground">{t('containerCount')}</p>
+                  <p className="font-medium">{shipmentDetails.containerCount} {t('units')}</p>
+                </div>
                 <div>
                   <p className="text-sm text-muted-foreground">{t('weight')}</p>
                   <p className="font-medium">{shipmentDetails.weight || "N/A"}</p>
                 </div>
-                
                 <div>
                   <p className="text-sm text-muted-foreground">{t('estimatedDelivery')}</p>
                   <p className="font-medium">{shipmentDetails.deliveryDate || "N/A"}</p>
                 </div>
               </div>
+              
+              <Separator />
+              
+              {shipmentDetails.itemizedCosts && (
+                <div className="space-y-3">
+                  <h3 className="font-medium">{t('costBreakdown')}</h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">{t('freightCost')}</span>
+                      <span>${shipmentDetails.itemizedCosts.freight.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">{t('handlingFees')}</span>
+                      <span>${shipmentDetails.itemizedCosts.handling.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">{t('documentation')}</span>
+                      <span>${shipmentDetails.itemizedCosts.documentation.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">{t('insurance')}</span>
+                      <span>${shipmentDetails.itemizedCosts.insurance.toLocaleString()}</span>
+                    </div>
+                  </div>
+                  
+                  <Separator />
+                  
+                  <div className="flex justify-between font-semibold">
+                    <span>{t('totalAmount')}</span>
+                    <span className="text-lg text-primary">
+                      ${shipmentDetails.amount.toLocaleString()} {shipmentDetails.currency}
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -396,11 +421,15 @@ const PaymentForm = ({ shipmentId, amount, onPaymentSuccess, autoVerifyReference
                             </FormItem>
                             <FormItem className="flex items-center space-x-3 space-y-0">
                               <FormControl>
-                                <RadioGroupItem value="bank_transfer" />
+                                <RadioGroupItem value="paypal" />
                               </FormControl>
                               <FormLabel className="font-normal flex items-center gap-2">
-                                <BanknoteIcon size={18} />
-                                {t('bankTransfer')}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="M7 11l4.06-6.5C12.48 2.34 14.5 1.5 16.5 1.5c2.53 0 4.35 1.5 4.89 3.87.43 2-.84 4.24-2.13 5.13H17"/>
+                                  <path d="M13.5 9.5L8.21 15.9c-1.42 1.71-3.44 2.55-5.44 2.55-2.53 0-4.35-1.5-4.89-3.87-.43-2 .84-4.24 2.13-5.13H3"/>
+                                  <path d="M4.5 13.5L10 8"/>
+                                </svg>
+                                PayPal
                               </FormLabel>
                             </FormItem>
                           </RadioGroup>
@@ -446,34 +475,18 @@ const PaymentForm = ({ shipmentId, amount, onPaymentSuccess, autoVerifyReference
                     </div>
                   )}
                   
-                  {selectedPaymentMethod === "bank_transfer" && (
-                    <div className="mt-4 space-y-4">
+                  {selectedPaymentMethod === "paypal" && (
+                    <div className="mt-4">
                       <FormField
                         control={form.control}
-                        name="accountName"
+                        name="email"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>{t('accountName')}</FormLabel>
+                            <FormLabel>{t('paypalEmail')}</FormLabel>
                             <FormControl>
                               <Input 
-                                placeholder={t('enterAccountName')}
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      
-                      <FormField
-                        control={form.control}
-                        name="bankName"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>{t('bankName')}</FormLabel>
-                            <FormControl>
-                              <Input 
-                                placeholder={t('enterBankName')}
+                                type="email"
+                                placeholder={t('enterPaypalEmail')}
                                 {...field}
                               />
                             </FormControl>
