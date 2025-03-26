@@ -114,7 +114,7 @@ const Payment = () => {
               </Button>
               <h1 className="text-3xl font-bold mb-2">{t('securePayment')}</h1>
               <p className="text-muted-foreground">
-                {t('completePaymentDetails')}
+                {t('paymentDesc')}
               </p>
             </div>
             
