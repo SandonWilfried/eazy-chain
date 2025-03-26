@@ -256,7 +256,7 @@ const PaymentForm = ({ shipmentId, amount, onPaymentSuccess, autoVerifyReference
     <div className="space-y-6">
       <Card className="w-full">
         <CardHeader>
-          <CardTitle>{t('enterBookingReference')}</CardTitle>
+          <CardTitle>Enter Booking Reference</CardTitle>
           <CardDescription>{t('verifyBookingDesc')}</CardDescription>
         </CardHeader>
         
